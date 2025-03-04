@@ -63,6 +63,9 @@ dependencies {
 
     // Firebase realtime database
     implementation("com.google.firebase:firebase-database-ktx:20.3.1")
+
+    // Firebase authentication
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
 }
 
 apply(plugin = "com.google.gms.google-services")
