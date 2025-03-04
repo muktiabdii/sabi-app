@@ -58,6 +58,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Setup Firebase
+    // Firebase library
     implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+
+    // Firebase realtime database
+    implementation("com.google.firebase:firebase-database-ktx:20.3.1")
 }
+
+apply(plugin = "com.google.gms.google-services")
