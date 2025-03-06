@@ -12,18 +12,22 @@ import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
 
+    // Membuat instance AuthRepositoryImpl untuk digunakan dalam AuthUseCase
     private val authRepo = AuthRepositoryImpl()
+
+    // Membuat instance AuthUseCase dengan AuthRepositoryImpl
     private val authUseCase = AuthUseCase(authRepo)
+
+    // Membuat instance AuthViewModel dengan AuthUseCase
     private val authViewModel = AuthViewModel(authUseCase)
-    private lateinit var firebaseApp: FirebaseApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        firebaseApp = FirebaseApp.getInstance()
-
         setContent {
             WasteBankTheme {
                 LaunchedEffect(Unit) {
+
+                    // Contoh penggunaan AuthUseCase untuk login
                     authViewModel.register("abdi@example.com", "password217") { success, message ->
                         if (success) {
                             println("✅ Registrasi berhasil!")
