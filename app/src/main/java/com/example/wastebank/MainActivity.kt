@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 LaunchedEffect(Unit) {
 
                     // Contoh penggunaan AuthUseCase untuk login
-                    authViewModel.register("abdi@example.com", "password217") { success, message ->
+                    authViewModel.register("abdi@example.com", "password217", "089653111625") { success, message ->
                         if (success) {
                             println("✅ Registrasi berhasil!")
                         }

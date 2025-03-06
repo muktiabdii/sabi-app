@@ -4,7 +4,7 @@ import com.example.wastebank.domain.repository.AuthRepository
 
 // Kelas AuthUseCase yang digunakan untuk melakukan validasi dan autentikasi pengguna
 class AuthUseCase(private val authRepository: AuthRepository) {
-    fun registerUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
+    fun registerUser(email: String, password: String, phoneNumber: String, onResult: (Boolean, String?) -> Unit) {
 
         // Validasi email
         if (!validateEmail(email)) {
@@ -18,7 +18,13 @@ class AuthUseCase(private val authRepository: AuthRepository) {
             return
         }
 
-        authRepository.registerUser(email, password, onResult) // Panggil fungsi registerUser dari AuthRepository
+        // Validasi nomor hp
+        if (!validateNumber(phoneNumber)) {
+            onResult(false, "Nomor HP harus terdiri dari minimal 8 karakter")
+            return
+        }
+
+        authRepository.registerUser(email, password, phoneNumber, onResult) // Panggil fungsi registerUser dari AuthRepository
     }
 
     fun loginUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
@@ -37,5 +43,10 @@ class AuthUseCase(private val authRepository: AuthRepository) {
     // Fungsi untuk melakukan validasi password
     private fun validatePass(password: String): Boolean {
         return password.length >= 6 && password.any { it.isDigit() }
+    }
+
+    // Fungsi untuk melakukan validasi nomor HP
+    private fun validateNumber(number: String): Boolean {
+        return number.length >= 8
     }
 }
