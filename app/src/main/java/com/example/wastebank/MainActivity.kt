@@ -1,47 +1,41 @@
 package com.example.wastebank
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.LaunchedEffect
+import com.example.wastebank.data.repository.AuthRepositoryImpl
+import com.example.wastebank.domain.usecase.AuthUseCase
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
+
+    private val authRepo = AuthRepositoryImpl()
+    private val authUseCase = AuthUseCase(authRepo)
+    private val authViewModel = AuthViewModel(authUseCase)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        val firebaseApp = FirebaseApp.getInstance()
+
         setContent {
             WasteBankTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                LaunchedEffect(Unit) {
+                    authViewModel.register("abdi@example.com", "password217") { success, message ->
+                        if (success) {
+                            println("✅ Registrasi berhasil!")
+                        }
+
+                        else {
+                            println("❌ Gagal: $message")
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    WasteBankTheme {
-        Greeting("Android")
     }
 }
