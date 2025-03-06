@@ -1,8 +1,6 @@
 package com.example.wastebank
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
@@ -17,10 +15,11 @@ class MainActivity : ComponentActivity() {
     private val authRepo = AuthRepositoryImpl()
     private val authUseCase = AuthUseCase(authRepo)
     private val authViewModel = AuthViewModel(authUseCase)
+    private lateinit var firebaseApp: FirebaseApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val firebaseApp = FirebaseApp.getInstance()
+        firebaseApp = FirebaseApp.getInstance()
 
         setContent {
             WasteBankTheme {
