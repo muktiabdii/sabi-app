@@ -4,7 +4,7 @@ import com.example.wastebank.domain.repository.AuthRepository
 
 // Kelas AuthUseCase yang digunakan untuk melakukan validasi dan autentikasi pengguna
 class AuthUseCase(private val authRepository: AuthRepository) {
-    fun registerUser(email: String, password: String, phoneNumber: String, onResult: (Boolean, String?) -> Unit) {
+    fun registerUser(nama: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
 
         // Validasi email
         if (!validateEmail(email)) {
@@ -24,7 +24,7 @@ class AuthUseCase(private val authRepository: AuthRepository) {
             return
         }
 
-        authRepository.registerUser(email, password, phoneNumber, onResult) // Panggil fungsi registerUser dari AuthRepository
+        authRepository.registerUser(nama, email, password, phoneNumber, gender, onResult) // Panggil fungsi registerUser dari AuthRepository
     }
 
     fun loginUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
@@ -33,6 +33,10 @@ class AuthUseCase(private val authRepository: AuthRepository) {
 
     fun logoutUser() {
         authRepository.logoutUser() // Panggil fungsi logoutUser dari AuthRepository
+    }
+
+    fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
+        authRepository.resetPassword(email, onResult) // Panggil fungsi resetPassword dari AuthRepository
     }
 
     // Fungsi untuk melakukan validasi email

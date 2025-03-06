@@ -8,7 +8,6 @@ import com.example.wastebank.data.repository.AuthRepositoryImpl
 import com.example.wastebank.domain.usecase.AuthUseCase
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
-import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
 
@@ -27,14 +26,23 @@ class MainActivity : ComponentActivity() {
             WasteBankTheme {
                 LaunchedEffect(Unit) {
 
-                    // Contoh penggunaan AuthUseCase untuk login
-                    authViewModel.register("abdi@example.com", "password217", "089653111625") { success, message ->
-                        if (success) {
-                            println("✅ Registrasi berhasil!")
-                        }
+//                    authViewModel.register("mukti", "abdisyukur10@gmail.com", "123456", "08123456789", "Pria") { success, message ->
+//                        if (success) {
+//                            // Registrasi berhasil
+//                            println("Registrasi berhasil")
+//                        } else {
+//                            // Registrasi gagal
+//                            println("Registrasi gagal: $message")
+//                        }
+//                    }
 
-                        else {
-                            println("❌ Gagal: $message")
+                    authViewModel.resetPassword("abdisyukur10@gmail.com") { success, message ->
+                        if (success) {
+                            // Password berhasil diubah
+                            println("Password berhasil diubah")
+                        } else {
+                            // Password gagal diubah
+                            println("Password gagal diubah: $message")
                         }
                     }
                 }
