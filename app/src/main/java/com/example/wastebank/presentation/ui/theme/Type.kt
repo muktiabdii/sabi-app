@@ -21,7 +21,7 @@ val manrope = FontFamily(
 val Typography = Typography(
     headlineLarge = TextStyle(
         fontFamily = manrope,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.ExtraBold,
         fontSize = 20.sp,
     ),
     headlineMedium = TextStyle(

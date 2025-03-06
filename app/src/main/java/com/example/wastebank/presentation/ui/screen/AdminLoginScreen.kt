@@ -1,11 +1,10 @@
-package com.example.wastebank.ui.splash
+package com.example.wastebank.presentation.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,19 +24,31 @@ import androidx.compose.ui.unit.sp
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
-import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
-fun RegisterScreen() {
+fun AdminLoginScreen(navigateToForgotPassword: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(GreenBg)
     ) {
+        // Tombol Back
+        IconButton(
+            onClick = { },
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(30.dp)
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_back),
+                contentDescription = "back"
+            )
+        }
+
         // Dekorasi atas
         Image(
             painter = painterResource(id = R.drawable.decor_top),
@@ -63,7 +74,7 @@ fun RegisterScreen() {
         ) {
             Spacer(modifier = Modifier.weight(0.2f))
             Text(
-                text = "Bergabung dengan SABI",
+                text = "Masuk Sebagai Admin",
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontFamily = manrope,
@@ -72,89 +83,69 @@ fun RegisterScreen() {
                     textAlign = TextAlign.Start
                 )
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // TextFields Email
             Text(
-                text = "Jadilah bagian dari gerakan SABI dalam mengelola sampah organik, berkolaborasi dengan sesama peduli lingkungan, dan raih berbagai reward menarik dari kontribusimu.",
+                text = "Email atau No. Telepon",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.Normal,
+                    color = GreyMedium,
+                )
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            TextFieldAuth(value = "", placeholder = "Masukkan alamat email", onValueChange = {})
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // TextFields ID Admin
+            Text(
+                text = "ID Admin",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.Normal,
+                    color = GreyMedium,
+                )
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            TextFieldAuth(value = "", placeholder = "Masukkan ID email", onValueChange = {})
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // TextFields Kata Sandi
+            Text(
+                text = "Kata Sandi",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.Normal,
+                    color = GreyMedium,
+                    textAlign = TextAlign.Start,
+                )
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            TextFieldAuth(value = "", placeholder = "Masukkan kata sandi", onValueChange = {})
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Lupa Sandi
+            Text(
+                text = "Lupa kata sandi?",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { navigateToForgotPassword() },
                 style = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = manrope,
                     fontWeight = FontWeight.Normal,
                     color = GreyMedium,
-                    textAlign = TextAlign.Justify,
+                    textAlign = TextAlign.End,
                 )
             )
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // TextFields Nama
-            Text(
-                text = "Nama",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                )
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan nama Anda", onValueChange = {})
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // TextFields No. Telepon
-            Text(
-                text = "No. Telepon",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
-                )
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan nomor telepon", onValueChange = {})
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // TextFields Email
-            Text(
-                text = "Email",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
-                )
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan email", onValueChange = {})
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Gender Selection
-            Text(
-                text = "Gender",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                )
-            )
-            Row {
-                var selectedGender by remember {
-                    mutableStateOf("")
-                }
-                GenderRadioButton("Wanita", selectedGender) {
-                    selectedGender = it
-                }
-                Spacer(modifier = Modifier.width(5.dp))
-                GenderRadioButton("Pria", selectedGender) {
-                    selectedGender = it
-                }
-            }
             Spacer(modifier = Modifier.weight(0.1f))
 
-            // Button Daftar
-            ButtonAuth(text = "DAFTAR", onClick = {})
+            // Button Masuk
+            ButtonAuth(text = "MASUK", onClick = {})
             Spacer(modifier = Modifier.height(8.dp))
 
             // Sudah Punya Akun
@@ -164,58 +155,8 @@ fun RegisterScreen() {
     }
 }
 
-// Radio Button Gender
-@Composable
-fun GenderRadioButton(label: String, selected: String, onSelect: (String) -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        RadioButton(
-            selected = selected == label,
-            onClick = { onSelect(label) },
-            colors = RadioButtonDefaults.colors(
-                selectedColor = BrownMain,
-                unselectedColor = GreyMedium
-            )
-        )
-        Text(
-            text = label,
-            fontSize = 14.sp,
-            color = Color.Black
-        )
-    }
-}
-
-// Button Masuk
-@Composable
-fun LoginText(navigateToLogin: () -> Unit) {
-    val annotatedText = buildAnnotatedString {
-        append("Sudah Punya Akun? ")
-
-        pushStringAnnotation(tag = "login", annotation = "login")
-        withStyle(
-            style = SpanStyle(color = TextRed)
-        ) {
-            append("Masuk")
-        }
-        pop()
-    }
-
-    Text(
-        text = annotatedText,
-        fontSize = 12.sp,
-        color = GreyMedium,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                navigateToLogin()
-            }
-    )
-}
-
 @Preview
 @Composable
-fun PreviewRegisterScreen(modifier: Modifier = Modifier) {
-    RegisterScreen()
+fun PreviewAdminLoginScreen(modifier: Modifier = Modifier) {
+    AdminLoginScreen(navigateToForgotPassword = {})
 }
