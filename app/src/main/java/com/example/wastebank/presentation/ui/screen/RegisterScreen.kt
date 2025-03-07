@@ -145,6 +145,21 @@ fun RegisterScreen(navController: NavController) {
             TextFieldAuth(value = "", placeholder = "Masukkan email", onValueChange = {})
             Spacer(modifier = Modifier.height(8.dp))
 
+            // TextFields kata sandi
+            Text(
+                text = "Kata Sandi",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.Normal,
+                    color = GreyMedium,
+                    textAlign = TextAlign.Start,
+                )
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            TextFieldAuth(value = "", placeholder = "Minimal 8 karakter", onValueChange = {})
+            Spacer(modifier = Modifier.height(8.dp))
+
             // Gender Selection
             Text(
                 text = "Gender",
