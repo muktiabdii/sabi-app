@@ -6,6 +6,12 @@ import com.example.wastebank.domain.repository.AuthRepository
 class AuthUseCase(private val authRepository: AuthRepository) {
     fun registerUser(name: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
 
+        // Validasi input
+        if (name.isBlank() || email.isBlank() || password.isBlank() || phoneNumber.isBlank() || gender.isBlank()) {
+            onResult(false, "Harap isi semua data sebelum mendaftar")
+            return
+        }
+
         // Validasi email
         if (!validateEmail(email)) {
             onResult(false, "Email tidak valid")
@@ -28,6 +34,13 @@ class AuthUseCase(private val authRepository: AuthRepository) {
     }
 
     fun loginUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
+
+        // Validasi input
+        if (email.isBlank() || password.isBlank()) {
+            onResult(false, "Harap isi semua data sebelum masuk")
+            return
+        }
+
         authRepository.loginUser(email, password, onResult) // Panggil fungsi loginUser dari AuthRepository
     }
 

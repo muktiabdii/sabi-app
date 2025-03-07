@@ -37,13 +37,13 @@ class AuthRepositoryImpl : AuthRepository {
                             }
 
                             .addOnFailureListener { exception ->
-                                onResult(false, exception.message)
+                                onResult(false, null)
                             }
                     }
                 }
 
                 else {
-                    onResult(false, task.exception?.message)
+                    onResult(false, null)
                 }
             }
     }
@@ -57,7 +57,7 @@ class AuthRepositoryImpl : AuthRepository {
                 }
 
                 else {
-                    onResult(false, task.exception?.message)
+                    onResult(false, null)
                 }
             }
     }
@@ -70,5 +70,12 @@ class AuthRepositoryImpl : AuthRepository {
     // Fungsi untuk melakukan reset password
     override fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
         auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onResult(true, null) // Berhasil
+                } else {
+                    onResult(false, null) // Gagal, kirim pesan error
+                }
+            }
     }
 }
