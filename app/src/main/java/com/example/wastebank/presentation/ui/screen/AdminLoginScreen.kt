@@ -21,6 +21,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
@@ -30,7 +32,7 @@ import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
-fun AdminLoginScreen(navigateToForgotPassword: () -> Unit) {
+fun AdminLoginScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -132,8 +134,8 @@ fun AdminLoginScreen(navigateToForgotPassword: () -> Unit) {
             Text(
                 text = "Lupa kata sandi?",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { navigateToForgotPassword() },
+                    .fillMaxWidth(),
+//                    .clickable { // navigate },
                 style = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = manrope,
@@ -149,7 +151,7 @@ fun AdminLoginScreen(navigateToForgotPassword: () -> Unit) {
             Spacer(modifier = Modifier.height(8.dp))
 
             // Sudah Punya Akun
-            LoginText { }
+            LoginText(navController)
             Spacer(modifier = Modifier.weight(0.7f))
         }
     }
@@ -157,6 +159,7 @@ fun AdminLoginScreen(navigateToForgotPassword: () -> Unit) {
 
 @Preview
 @Composable
-fun PreviewAdminLoginScreen(modifier: Modifier = Modifier) {
-    AdminLoginScreen(navigateToForgotPassword = {})
+fun PreviewAdminLoginScreen() {
+    val navController = rememberNavController()
+    AdminLoginScreen(navController)
 }

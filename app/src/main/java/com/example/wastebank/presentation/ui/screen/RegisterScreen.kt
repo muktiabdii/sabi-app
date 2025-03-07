@@ -22,6 +22,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
@@ -32,7 +34,7 @@ import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -216,6 +218,7 @@ fun LoginText(navigateToLogin: () -> Unit) {
 
 @Preview
 @Composable
-fun PreviewRegisterScreen(modifier: Modifier = Modifier) {
-    RegisterScreen()
+fun PreviewRegisterScreen() {
+    val navController = rememberNavController()
+    RegisterScreen(navController)
 }

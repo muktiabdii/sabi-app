@@ -21,6 +21,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
@@ -30,7 +32,7 @@ import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
-fun UserLoginScreen(navigateToForgotPassword: () -> Unit) {
+fun UserLoginScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -118,8 +120,8 @@ fun UserLoginScreen(navigateToForgotPassword: () -> Unit) {
             Text(
                 text = "Lupa kata sandi?",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { navigateToForgotPassword() },
+                    .fillMaxWidth(),
+//                    .clickable { // navigate },
                 style = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = manrope,
@@ -135,7 +137,7 @@ fun UserLoginScreen(navigateToForgotPassword: () -> Unit) {
             Spacer(modifier = Modifier.height(8.dp))
 
             // Sudah Punya Akun
-            LoginText { }
+            LoginText(navController)
             Spacer(modifier = Modifier.weight(0.7f))
         }
     }
@@ -143,7 +145,7 @@ fun UserLoginScreen(navigateToForgotPassword: () -> Unit) {
 
 // Button Daftar
 @Composable
-fun LoginText(navigateToLogin: () -> Unit) {
+fun LoginText(navController: NavController) {
     val annotatedText = buildAnnotatedString {
         append("Tidak punya akun? ")
 
@@ -164,7 +166,7 @@ fun LoginText(navigateToLogin: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                navigateToLogin()
+                navController.navigate("register_screen")
             }
     )
 }
@@ -172,5 +174,6 @@ fun LoginText(navigateToLogin: () -> Unit) {
 @Preview
 @Composable
 fun PreviewRegisterScreen(modifier: Modifier = Modifier) {
-    UserLoginScreen(navigateToForgotPassword = {})
+    val navController = rememberNavController()
+    UserLoginScreen(navController)
 }
