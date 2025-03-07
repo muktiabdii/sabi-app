@@ -17,7 +17,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,13 +25,17 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
+import com.example.wastebank.presentation.ui.component.TextFieldPassword
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
-import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
 fun AdminLoginScreen(navController: NavController) {
+    var emailState by remember { mutableStateOf("") }
+    var idState by remember { mutableStateOf("") }
+    var sandiState by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -40,7 +43,7 @@ fun AdminLoginScreen(navController: NavController) {
     ) {
         // Tombol Back
         IconButton(
-            onClick = { },
+            onClick = { navController.navigate("splash_screen") },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(30.dp)
@@ -74,7 +77,7 @@ fun AdminLoginScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(100.dp))
             Text(
                 text = "Masuk Sebagai Admin",
                 style = TextStyle(
@@ -98,7 +101,12 @@ fun AdminLoginScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan alamat email", onValueChange = {})
+            TextFieldAuth(
+                value = emailState,
+                placeholder = "Masukkan alamat email",
+                onValueChange = {
+                    emailState = it
+                })
             Spacer(modifier = Modifier.height(8.dp))
 
             // TextFields ID Admin
@@ -112,7 +120,11 @@ fun AdminLoginScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan ID email", onValueChange = {})
+            TextFieldAuth(value = idState,
+                placeholder = "Masukkan ID email",
+                onValueChange = {
+                    idState = it
+                })
             Spacer(modifier = Modifier.height(8.dp))
 
             // TextFields Kata Sandi
@@ -127,15 +139,21 @@ fun AdminLoginScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan kata sandi", onValueChange = {})
+            TextFieldPassword(
+                value = sandiState,
+                placeholder = "Masukkan kata sandi",
+                onValueChange = {
+                    sandiState = it
+                },
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
             // Lupa Sandi
             Text(
                 text = "Lupa kata sandi?",
                 modifier = Modifier
-                    .fillMaxWidth(),
-//                    .clickable { // navigate },
+                    .fillMaxWidth()
+                    .clickable { navController.navigate("forgot_password_screen") },
                 style = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = manrope,
@@ -144,10 +162,13 @@ fun AdminLoginScreen(navController: NavController) {
                     textAlign = TextAlign.End,
                 )
             )
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(90.dp))
 
             // Button Masuk
-            ButtonAuth(text = "MASUK", onClick = {})
+            ButtonAuth(
+                text = "MASUK",
+                onClick = { navController.navigate("home_screen") }
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
             // Sudah Punya Akun

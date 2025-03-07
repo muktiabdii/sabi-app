@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
+import com.example.wastebank.presentation.ui.component.TextFieldPassword
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
@@ -33,6 +34,9 @@ import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
 fun UserLoginScreen(navController: NavController) {
+    var emailState by remember { mutableStateOf("") }
+    var sandiState by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -40,7 +44,7 @@ fun UserLoginScreen(navController: NavController) {
     ) {
         // Tombol Back
         IconButton(
-            onClick = { },
+            onClick = { navController.navigate("splash_screen") },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(30.dp)
@@ -74,7 +78,7 @@ fun UserLoginScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(100.dp))
             Text(
                 text = "Masuk Sebagai Pengguna",
                 style = TextStyle(
@@ -98,7 +102,12 @@ fun UserLoginScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan alamat email", onValueChange = {})
+            TextFieldAuth(
+                value = emailState,
+                placeholder = "Masukkan alamat email",
+                onValueChange = {
+                    emailState = it
+                })
             Spacer(modifier = Modifier.height(8.dp))
 
             // TextFields Kata Sandi
@@ -113,15 +122,21 @@ fun UserLoginScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan kata sandi", onValueChange = {})
+            TextFieldPassword(
+                value = sandiState,
+                placeholder = "Masukkan kata sandi",
+                onValueChange = {
+                    sandiState = it
+                },
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
             // Lupa Sandi
             Text(
                 text = "Lupa kata sandi?",
                 modifier = Modifier
-                    .fillMaxWidth(),
-//                    .clickable { // navigate },
+                    .fillMaxWidth()
+                    .clickable { navController.navigate("forgot_password_screen") },
                 style = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = manrope,
@@ -130,10 +145,13 @@ fun UserLoginScreen(navController: NavController) {
                     textAlign = TextAlign.End,
                 )
             )
-            Spacer(modifier = Modifier.height(90.dp))
+            Spacer(modifier = Modifier.height(155.dp))
 
             // Button Masuk
-            ButtonAuth(text = "MASUK", onClick = {})
+            ButtonAuth(
+                text = "MASUK",
+                onClick = { navController.navigate("home_screen") }
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
             // Sudah Punya Akun
@@ -164,9 +182,7 @@ fun RegisterText(navController: NavController) {
         textAlign = TextAlign.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                navController.navigate("register_screen")
-            }
+            .clickable { navController.navigate("register_screen") }
     )
 }
 

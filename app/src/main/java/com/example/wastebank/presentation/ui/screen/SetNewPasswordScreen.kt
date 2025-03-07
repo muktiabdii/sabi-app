@@ -21,13 +21,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
-import com.example.wastebank.presentation.ui.component.TextFieldAuth
+import com.example.wastebank.presentation.ui.component.TextFieldPassword
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
 fun SetNewPasswordScreen(navController: NavController) {
+    var sandiState by remember { mutableStateOf("") }
+    var ulangSandiState by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -35,7 +38,7 @@ fun SetNewPasswordScreen(navController: NavController) {
     ) {
         // Tombol Back
         IconButton(
-            onClick = { },
+            onClick = { navController.navigate("splash_screen") },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(30.dp)
@@ -69,7 +72,7 @@ fun SetNewPasswordScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(115.dp))
 
             Text(
                 text = "Setel ulang kata sandi",
@@ -106,7 +109,13 @@ fun SetNewPasswordScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Minimal 8 karakter", onValueChange = {})
+            TextFieldPassword(
+                value = sandiState,
+                placeholder = "Masukkan kata sandi",
+                onValueChange = {
+                    sandiState = it
+                },
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
             // TextFields konfirmasi kata sandi
@@ -121,11 +130,20 @@ fun SetNewPasswordScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Ulang kata sandi", onValueChange = {})
-            Spacer(modifier = Modifier.height(70.dp))
+            TextFieldPassword(
+                value = ulangSandiState,
+                placeholder = "Masukkan kata sandi",
+                onValueChange = {
+                    ulangSandiState = it
+                },
+            )
+            Spacer(modifier = Modifier.height(130.dp))
 
             // Button atur ulang
-            ButtonAuth(text = "ATUR ULANG KATA SANDI", onClick = {})
+            ButtonAuth(
+                text = "ATUR ULANG KATA SANDI",
+                onClick = { navController.navigate("user_login_screen") }
+            )
         }
     }
 }

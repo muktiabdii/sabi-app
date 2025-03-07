@@ -14,6 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.data.repository.AuthRepositoryImpl
 import com.example.wastebank.domain.usecase.AuthUseCase
 import com.example.wastebank.presentation.ui.screen.AdminLoginScreen
+import com.example.wastebank.presentation.ui.screen.ForgotPasswordScreen
+import com.example.wastebank.presentation.ui.screen.HomeScreen
+import com.example.wastebank.presentation.ui.screen.SetNewPasswordScreen
 import com.example.wastebank.presentation.ui.screen.SplashScreen
 import com.example.wastebank.presentation.ui.screen.UserLoginScreen
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
@@ -74,17 +77,23 @@ class MainActivity : ComponentActivity() {
                         composable(route = "splash_screen") {
                             SplashScreen(navController)
                         }
-
                         composable(route = "admin_login_screen") {
                             AdminLoginScreen(navController)
                         }
-
                         composable(route = "user_login_screen") {
                             UserLoginScreen(navController)
                         }
-
                         composable(route = "register_screen") {
                             RegisterScreen(navController)
+                        }
+                        composable(route = "forgot_password_screen") {
+                            ForgotPasswordScreen(navController)
+                        }
+                        composable(route = "set_new_password_screen") {
+                            SetNewPasswordScreen(navController)
+                        }
+                        composable(route = "home_screen") {
+                            HomeScreen(navController)
                         }
                     }
                 }

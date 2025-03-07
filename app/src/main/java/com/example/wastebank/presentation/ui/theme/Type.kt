@@ -34,6 +34,11 @@ val Typography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 14.sp,
     ),
+    bodyLarge = TextStyle(
+        fontFamily = manrope,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+    ),
     bodyMedium = TextStyle(
         fontFamily = manrope,
         fontWeight = FontWeight.Normal,

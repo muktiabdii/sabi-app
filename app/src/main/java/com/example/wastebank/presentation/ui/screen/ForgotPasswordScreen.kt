@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
+import com.example.wastebank.presentation.ui.component.PopUpNotif
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
@@ -33,6 +34,9 @@ import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
 fun ForgotPasswordScreen(navController: NavController) {
+    var emailState by remember { mutableStateOf("") }
+    var showPopUp by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -40,7 +44,7 @@ fun ForgotPasswordScreen(navController: NavController) {
     ) {
         // Tombol Back
         IconButton(
-            onClick = { },
+            onClick = { navController.popBackStack() },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(30.dp)
@@ -74,7 +78,7 @@ fun ForgotPasswordScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(100.dp))
             Text(
                 text = "Lupa kata sandi?",
                 style = TextStyle(
@@ -110,15 +114,37 @@ fun ForgotPasswordScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan alamat email", onValueChange = {})
-            Spacer(modifier = Modifier.height(120.dp))
+            TextFieldAuth(
+                value = emailState,
+                placeholder = "Masukkan alamat email",
+                onValueChange = {
+                    emailState = it
+                })
+            Spacer(modifier = Modifier.height(190.dp))
 
             // Button kirim kode
-            ButtonAuth(text = "KIRIM KODE", onClick = {})
+            ButtonAuth(
+                text = "KIRIM KODE",
+                onClick = {
+                    showPopUp = true
+                }
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
             // Ingat kata sandi
             LoginText(navController)
+        }
+
+        if (showPopUp) {
+            PopUpNotif(
+                iconResId = R.drawable.ic_success,
+                message = "Permintaan terkirim!",
+                buttonText = "KEMBALI MASUK",
+                onDismiss = {
+                    showPopUp = false
+                    navController.navigate("user_login_screen")
+                }
+            )
         }
     }
 }
@@ -145,9 +171,7 @@ fun LoginText(navController: NavController) {
         textAlign = TextAlign.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-
-            }
+            .clickable { navController.navigate("user_login_screen") }
     )
 }
 
