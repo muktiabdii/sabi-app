@@ -14,7 +14,7 @@ class AuthRepositoryImpl : AuthRepository {
     private val db = FirebaseDatabase.getInstance("https://waste-bank-3db5d-default-rtdb.asia-southeast1.firebasedatabase.app")
 
     // Fungsi untuk melakukan registrasi pengguna
-    override fun registerUser(nama: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
+    override fun registerUser(name: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -25,7 +25,7 @@ class AuthRepositoryImpl : AuthRepository {
 
                         // Menyimpan data pengguna ke Firebase Database
                         val userData = mapOf(
-                            "nama" to nama,
+                            "name" to name,
                             "email" to email,
                             "phoneNumber" to phoneNumber,
                             "gender" to gender
