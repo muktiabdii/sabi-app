@@ -1,12 +1,10 @@
-package com.example.wastebank.ui.splash
+package com.example.wastebank.presentation.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,14 +26,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
-import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun ForgotPasswordScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -79,7 +76,7 @@ fun RegisterScreen(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.weight(0.2f))
             Text(
-                text = "Bergabung dengan SABI",
+                text = "Lupa kata sandi?",
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontFamily = manrope,
@@ -90,7 +87,7 @@ fun RegisterScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                text = "Jadilah bagian dari gerakan SABI dalam mengelola sampah organik, berkolaborasi dengan sesama peduli lingkungan, dan raih berbagai reward menarik dari kontribusimu.",
+                text = "Jangan khawatir! Itu bisa saja terjadi. Silakan masukkan email yang terkait dengan akun Anda.",
                 style = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = manrope,
@@ -100,35 +97,6 @@ fun RegisterScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(24.dp))
-
-            // TextFields Nama
-            Text(
-                text = "Nama",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                )
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan nama Anda", onValueChange = {})
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // TextFields No. Telepon
-            Text(
-                text = "No. Telepon",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
-                )
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan nomor telepon", onValueChange = {})
-            Spacer(modifier = Modifier.height(8.dp))
 
             // TextFields Email
             Text(
@@ -142,63 +110,17 @@ fun RegisterScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan email", onValueChange = {})
+            TextFieldAuth(value = "", placeholder = "Masukkan alamat email", onValueChange = {})
+            Spacer(modifier = Modifier.weight(0.2f))
+
+            // Button kirim kode
+            ButtonAuth(text = "KIRIM KODE", onClick = {})
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Gender Selection
-            Text(
-                text = "Gender",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                )
-            )
-            Row {
-                var selectedGender by remember {
-                    mutableStateOf("")
-                }
-                GenderRadioButton("Wanita", selectedGender) {
-                    selectedGender = it
-                }
-                Spacer(modifier = Modifier.width(5.dp))
-                GenderRadioButton("Pria", selectedGender) {
-                    selectedGender = it
-                }
-            }
-            Spacer(modifier = Modifier.weight(0.1f))
-
-            // Button Daftar
-            ButtonAuth(text = "DAFTAR", onClick = {})
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Sudah Punya Akun
+            // Ingat kata sandi
             LoginText(navController)
             Spacer(modifier = Modifier.weight(0.7f))
         }
-    }
-}
-
-// Radio Button Gender
-@Composable
-fun GenderRadioButton(label: String, selected: String, onSelect: (String) -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        RadioButton(
-            selected = selected == label,
-            onClick = { onSelect(label) },
-            colors = RadioButtonDefaults.colors(
-                selectedColor = BrownMain,
-                unselectedColor = GreyMedium
-            )
-        )
-        Text(
-            text = label,
-            fontSize = 14.sp,
-            color = Color.Black
-        )
     }
 }
 
@@ -206,7 +128,7 @@ fun GenderRadioButton(label: String, selected: String, onSelect: (String) -> Uni
 @Composable
 fun LoginText(navController: NavController) {
     val annotatedText = buildAnnotatedString {
-        append("Sudah Punya Akun? ")
+        append("Ingat Kata Sandi? ")
 
         pushStringAnnotation(tag = "login", annotation = "login")
         withStyle(
@@ -232,7 +154,7 @@ fun LoginText(navController: NavController) {
 
 @Preview
 @Composable
-fun PreviewRegisterScreen() {
+fun PreviewForgotPasswordScreen() {
     val navController = rememberNavController()
-    RegisterScreen(navController)
+    ForgotPasswordScreen(navController)
 }

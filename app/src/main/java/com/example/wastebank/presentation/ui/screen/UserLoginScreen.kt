@@ -137,7 +137,7 @@ fun UserLoginScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
 
             // Sudah Punya Akun
-            LoginText(navController)
+            RegisterText(navController)
             Spacer(modifier = Modifier.weight(0.7f))
         }
     }
@@ -145,7 +145,7 @@ fun UserLoginScreen(navController: NavController) {
 
 // Button Daftar
 @Composable
-fun LoginText(navController: NavController) {
+fun RegisterText(navController: NavController) {
     val annotatedText = buildAnnotatedString {
         append("Tidak punya akun? ")
 

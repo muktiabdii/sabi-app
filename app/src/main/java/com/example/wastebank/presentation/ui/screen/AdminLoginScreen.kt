@@ -151,7 +151,7 @@ fun AdminLoginScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
 
             // Sudah Punya Akun
-            LoginText(navController)
+            RegisterText(navController)
             Spacer(modifier = Modifier.weight(0.7f))
         }
     }
