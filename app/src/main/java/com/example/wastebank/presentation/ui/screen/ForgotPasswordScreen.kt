@@ -25,17 +25,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
+import com.example.wastebank.presentation.ui.component.PopUpNotif
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
-import com.example.wastebank.presentation.ui.component.TextFieldPassword
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
 
 @Composable
-fun UserLoginScreen(navController: NavController) {
+fun ForgotPasswordScreen(navController: NavController) {
     var emailState by remember { mutableStateOf("") }
-    var sandiState by remember { mutableStateOf("") }
+    var showPopUp by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -44,7 +44,7 @@ fun UserLoginScreen(navController: NavController) {
     ) {
         // Tombol Back
         IconButton(
-            onClick = { navController.navigate("splash_screen") },
+            onClick = { navController.popBackStack() },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(30.dp)
@@ -80,7 +80,7 @@ fun UserLoginScreen(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.height(100.dp))
             Text(
-                text = "Masuk Sebagai Pengguna",
+                text = "Lupa kata sandi?",
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontFamily = manrope,
@@ -89,30 +89,22 @@ fun UserLoginScreen(navController: NavController) {
                     textAlign = TextAlign.Start
                 )
             )
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Jangan khawatir! Itu bisa saja terjadi. Silakan masukkan email yang terkait dengan akun Anda.",
+                style = TextStyle(
+                    fontSize = 12.sp,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.Normal,
+                    color = GreyMedium,
+                    textAlign = TextAlign.Justify,
+                )
+            )
             Spacer(modifier = Modifier.height(24.dp))
 
             // TextFields Email
             Text(
-                text = "Email atau No. Telepon",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                )
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(
-                value = emailState,
-                placeholder = "Masukkan alamat email",
-                onValueChange = {
-                    emailState = it
-                })
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // TextFields Kata Sandi
-            Text(
-                text = "Kata Sandi",
+                text = "Email",
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontFamily = manrope,
@@ -122,55 +114,52 @@ fun UserLoginScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldPassword(
-                value = sandiState,
-                placeholder = "Masukkan kata sandi",
+            TextFieldAuth(
+                value = emailState,
+                placeholder = "Masukkan alamat email",
                 onValueChange = {
-                    sandiState = it
-                },
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+                    emailState = it
+                })
+            Spacer(modifier = Modifier.height(190.dp))
 
-            // Lupa Sandi
-            Text(
-                text = "Lupa kata sandi?",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { navController.navigate("forgot_password_screen") },
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.End,
-                )
-            )
-            Spacer(modifier = Modifier.height(155.dp))
-
-            // Button Masuk
+            // Button kirim kode
             ButtonAuth(
-                text = "MASUK",
-                onClick = { navController.navigate("home_screen") }
+                text = "KIRIM KODE",
+                onClick = {
+                    showPopUp = true
+                }
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Sudah Punya Akun
-            RegisterText(navController)
+            // Ingat kata sandi
+            LoginText(navController)
+        }
+
+        if (showPopUp) {
+            PopUpNotif(
+                iconResId = R.drawable.ic_success,
+                message = "Permintaan terkirim!",
+                buttonText = "KEMBALI MASUK",
+                onDismiss = {
+                    showPopUp = false
+                    navController.navigate("user_login_screen")
+                }
+            )
         }
     }
 }
 
-// Button Daftar
+// Button Masuk
 @Composable
-fun RegisterText(navController: NavController) {
+fun LoginText(navController: NavController) {
     val annotatedText = buildAnnotatedString {
-        append("Tidak punya akun? ")
+        append("Ingat Kata Sandi? ")
 
-        pushStringAnnotation(tag = "register", annotation = "register")
+        pushStringAnnotation(tag = "login", annotation = "login")
         withStyle(
             style = SpanStyle(color = TextRed)
         ) {
-            append("Daftar")
+            append("Masuk")
         }
         pop()
     }
@@ -182,13 +171,13 @@ fun RegisterText(navController: NavController) {
         textAlign = TextAlign.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { navController.navigate("register_screen") }
+            .clickable { navController.navigate("user_login_screen") }
     )
 }
 
 @Preview
 @Composable
-fun PreviewRegisterScreen(modifier: Modifier = Modifier) {
+fun PreviewForgotPasswordScreen() {
     val navController = rememberNavController()
-    UserLoginScreen(navController)
+    ForgotPasswordScreen(navController)
 }

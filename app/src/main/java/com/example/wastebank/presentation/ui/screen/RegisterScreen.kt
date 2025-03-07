@@ -2,11 +2,14 @@ package com.example.wastebank.ui.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,27 +20,51 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
+import com.example.wastebank.presentation.ui.component.TextFieldPassword
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(navController: NavController) {
+    var namaState by remember { mutableStateOf("") }
+    var teleponState by remember { mutableStateOf("") }
+    var emailState by remember { mutableStateOf("") }
+    var sandiState by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(GreenBg)
     ) {
+        // Tombol Back
+        IconButton(
+            onClick = { navController.popBackStack() },
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(30.dp)
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_back),
+                contentDescription = "back"
+            )
+        }
+
         // Dekorasi atas
         Image(
             painter = painterResource(id = R.drawable.decor_top),
@@ -61,7 +88,7 @@ fun RegisterScreen() {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.weight(0.2f))
+            Spacer(modifier = Modifier.height(50.dp))
             Text(
                 text = "Bergabung dengan SABI",
                 style = TextStyle(
@@ -83,7 +110,7 @@ fun RegisterScreen() {
                     textAlign = TextAlign.Justify,
                 )
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // TextFields Nama
             Text(
@@ -96,7 +123,12 @@ fun RegisterScreen() {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan nama Anda", onValueChange = {})
+            TextFieldAuth(
+                value = namaState,
+                placeholder = "Masukkan nama Anda",
+                onValueChange = {
+                    namaState = it
+                })
             Spacer(modifier = Modifier.height(8.dp))
 
             // TextFields No. Telepon
@@ -111,7 +143,15 @@ fun RegisterScreen() {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan nomor telepon", onValueChange = {})
+            TextFieldAuth(
+                value = teleponState,
+                placeholder = "Masukkan nomor telepon",
+                onValueChange = {
+                    val regex = Regex("^\\+?\\d{0,15}$")
+                    if (regex.matches(it)) {
+                        teleponState = it
+                    }
+                })
             Spacer(modifier = Modifier.height(8.dp))
 
             // TextFields Email
@@ -126,7 +166,33 @@ fun RegisterScreen() {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = "", placeholder = "Masukkan email", onValueChange = {})
+            TextFieldAuth(
+                value = emailState,
+                placeholder = "Masukkan email",
+                onValueChange = {
+                    emailState = it
+                })
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // TextFields kata sandi
+            Text(
+                text = "Kata Sandi",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.Normal,
+                    color = GreyMedium,
+                    textAlign = TextAlign.Start,
+                )
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            TextFieldPassword(
+                value = sandiState,
+                placeholder = "Minimal 8 karakter",
+                onValueChange = {
+                    sandiState = it
+                },
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
             // Gender Selection
@@ -151,15 +217,17 @@ fun RegisterScreen() {
                     selectedGender = it
                 }
             }
-            Spacer(modifier = Modifier.weight(0.1f))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Button Daftar
-            ButtonAuth(text = "DAFTAR", onClick = {})
+            ButtonAuth(
+                text = "DAFTAR",
+                onClick = { navController.navigate("user_login_screen") }
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
             // Sudah Punya Akun
-            LoginText { }
-            Spacer(modifier = Modifier.weight(0.7f))
+            LoginText(navController)
         }
     }
 }
@@ -188,7 +256,7 @@ fun GenderRadioButton(label: String, selected: String, onSelect: (String) -> Uni
 
 // Button Masuk
 @Composable
-fun LoginText(navigateToLogin: () -> Unit) {
+fun LoginText(navController: NavController) {
     val annotatedText = buildAnnotatedString {
         append("Sudah Punya Akun? ")
 
@@ -208,14 +276,13 @@ fun LoginText(navigateToLogin: () -> Unit) {
         textAlign = TextAlign.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                navigateToLogin()
-            }
+            .clickable { navController.navigate("user_login_screen") }
     )
 }
 
 @Preview
 @Composable
-fun PreviewRegisterScreen(modifier: Modifier = Modifier) {
-    RegisterScreen()
+fun PreviewRegisterScreen() {
+    val navController = rememberNavController()
+    RegisterScreen(navController)
 }
