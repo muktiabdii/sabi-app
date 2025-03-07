@@ -14,7 +14,7 @@ class AuthRepositoryImpl : AuthRepository {
     private val db = FirebaseDatabase.getInstance("https://waste-bank-3db5d-default-rtdb.asia-southeast1.firebasedatabase.app")
 
     // Fungsi untuk melakukan registrasi pengguna
-    override fun registerUser(nama: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
+    override fun registerUser(name: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -25,7 +25,7 @@ class AuthRepositoryImpl : AuthRepository {
 
                         // Menyimpan data pengguna ke Firebase Database
                         val userData = mapOf(
-                            "nama" to nama,
+                            "name" to name,
                             "email" to email,
                             "phoneNumber" to phoneNumber,
                             "gender" to gender
@@ -37,13 +37,13 @@ class AuthRepositoryImpl : AuthRepository {
                             }
 
                             .addOnFailureListener { exception ->
-                                onResult(false, exception.message)
+                                onResult(false, null)
                             }
                     }
                 }
 
                 else {
-                    onResult(false, task.exception?.message)
+                    onResult(false, null)
                 }
             }
     }
@@ -57,7 +57,7 @@ class AuthRepositoryImpl : AuthRepository {
                 }
 
                 else {
-                    onResult(false, task.exception?.message)
+                    onResult(false, null)
                 }
             }
     }
@@ -70,5 +70,12 @@ class AuthRepositoryImpl : AuthRepository {
     // Fungsi untuk melakukan reset password
     override fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
         auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onResult(true, null) // Berhasil
+                } else {
+                    onResult(false, null) // Gagal, kirim pesan error
+                }
+            }
     }
 }

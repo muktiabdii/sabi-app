@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -31,11 +33,21 @@ import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
-fun UserLoginScreen(navController: NavController) {
-    var emailState by remember { mutableStateOf("") }
-    var sandiState by remember { mutableStateOf("") }
+fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) {
+    val email by authViewModel.email.collectAsState()
+    val password by authViewModel.password.collectAsState()
+    val errorMessage by authViewModel.errorMessage.collectAsState() // Ambil error message dari ViewModel
+    val context = LocalContext.current // Context untuk Toast
+
+    // Menampilkan Toast jika ada error message
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -103,10 +115,10 @@ fun UserLoginScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
-                value = emailState,
+                value = email,
                 placeholder = "Masukkan alamat email",
                 onValueChange = {
-                    emailState = it
+                    authViewModel.updateEmail(it)
                 })
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -123,10 +135,10 @@ fun UserLoginScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldPassword(
-                value = sandiState,
+                value = password,
                 placeholder = "Masukkan kata sandi",
                 onValueChange = {
-                    sandiState = it
+                    authViewModel.updatePassword(it)
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -150,7 +162,9 @@ fun UserLoginScreen(navController: NavController) {
             // Button Masuk
             ButtonAuth(
                 text = "MASUK",
-                onClick = { navController.navigate("home_screen") }
+                onClick = {
+                    authViewModel.login()
+                }
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -186,9 +200,9 @@ fun RegisterText(navController: NavController) {
     )
 }
 
-@Preview
-@Composable
-fun PreviewRegisterScreen(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
-    UserLoginScreen(navController)
-}
+//@Preview
+//@Composable
+//fun PreviewRegisterScreen(modifier: Modifier = Modifier) {
+//    val navController = rememberNavController()
+//    UserLoginScreen(navController, authViewModel)
+//}

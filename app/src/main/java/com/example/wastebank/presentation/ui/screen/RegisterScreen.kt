@@ -1,27 +1,25 @@
 package com.example.wastebank.ui.splash
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,11 +39,22 @@ import com.example.wastebank.presentation.ui.theme.manrope
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
-fun RegisterScreen(navController: NavController) {
-    var namaState by remember { mutableStateOf("") }
-    var teleponState by remember { mutableStateOf("") }
-    var emailState by remember { mutableStateOf("") }
-    var sandiState by remember { mutableStateOf("") }
+fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
+
+    val name by authViewModel.name.collectAsState()
+    val email by authViewModel.email.collectAsState()
+    val password by authViewModel.password.collectAsState()
+    val phoneNumber by authViewModel.phoneNumber.collectAsState()
+    val gender by authViewModel.gender.collectAsState()
+    val errorMessage by authViewModel.errorMessage.collectAsState()
+    val context = LocalContext.current // Context untuk Toast
+
+    // Menampilkan Toast jika ada error message
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -124,10 +133,10 @@ fun RegisterScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
-                value = namaState,
+                value = name,
                 placeholder = "Masukkan nama Anda",
                 onValueChange = {
-                    namaState = it
+                    authViewModel.updateName(it)
                 })
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -144,12 +153,12 @@ fun RegisterScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
-                value = teleponState,
+                value = phoneNumber,
                 placeholder = "Masukkan nomor telepon",
                 onValueChange = {
                     val regex = Regex("^\\+?\\d{0,15}$")
                     if (regex.matches(it)) {
-                        teleponState = it
+                        authViewModel.updatePhoneNumber(it)
                     }
                 })
             Spacer(modifier = Modifier.height(8.dp))
@@ -167,10 +176,10 @@ fun RegisterScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
-                value = emailState,
+                value = email,
                 placeholder = "Masukkan email",
                 onValueChange = {
-                    emailState = it
+                    authViewModel.updateEmail(it)
                 })
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -187,10 +196,10 @@ fun RegisterScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldPassword(
-                value = sandiState,
+                value = password,
                 placeholder = "Minimal 8 karakter",
                 onValueChange = {
-                    sandiState = it
+                    authViewModel.updatePassword(it)
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -206,15 +215,12 @@ fun RegisterScreen(navController: NavController) {
                 )
             )
             Row {
-                var selectedGender by remember {
-                    mutableStateOf("")
-                }
-                GenderRadioButton("Wanita", selectedGender) {
-                    selectedGender = it
+                GenderRadioButton("Wanita", gender) {
+                    authViewModel.updateGender(it)
                 }
                 Spacer(modifier = Modifier.width(5.dp))
-                GenderRadioButton("Pria", selectedGender) {
-                    selectedGender = it
+                GenderRadioButton("Pria", gender) {
+                    authViewModel.updateGender(it)
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -222,8 +228,11 @@ fun RegisterScreen(navController: NavController) {
             // Button Daftar
             ButtonAuth(
                 text = "DAFTAR",
-                onClick = { navController.navigate("user_login_screen") }
+                onClick = {
+                    authViewModel.register()
+                }
             )
+
             Spacer(modifier = Modifier.height(8.dp))
 
             // Sudah Punya Akun
@@ -280,9 +289,10 @@ fun LoginText(navController: NavController) {
     )
 }
 
-@Preview
-@Composable
-fun PreviewRegisterScreen() {
-    val navController = rememberNavController()
-    RegisterScreen(navController)
-}
+//@Preview
+//@Composable
+//fun PreviewRegisterScreen() {
+//    val navController = rememberNavController()
+//    val fakeAuthViewModel = remember { AuthViewModel() } // Gunakan instance lokal
+//    RegisterScreen(authViewModel = fakeAuthViewModel, navController)
+//}

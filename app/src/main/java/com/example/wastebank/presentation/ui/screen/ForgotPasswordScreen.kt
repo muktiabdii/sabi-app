@@ -31,10 +31,11 @@ import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
 import com.example.wastebank.presentation.ui.theme.manrope
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
-fun ForgotPasswordScreen(navController: NavController) {
-    var emailState by remember { mutableStateOf("") }
+fun ForgotPasswordScreen(navController: NavController, authViewModel: AuthViewModel) {
+    val email by authViewModel.email.collectAsState()
     var showPopUp by remember { mutableStateOf(false) }
 
     Box(
@@ -115,10 +116,10 @@ fun ForgotPasswordScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
-                value = emailState,
+                value = email,
                 placeholder = "Masukkan alamat email",
                 onValueChange = {
-                    emailState = it
+                    authViewModel.updateEmail(it)
                 })
             Spacer(modifier = Modifier.height(190.dp))
 
@@ -126,7 +127,15 @@ fun ForgotPasswordScreen(navController: NavController) {
             ButtonAuth(
                 text = "KIRIM KODE",
                 onClick = {
-                    showPopUp = true
+                    authViewModel.resetPassword { success, message ->
+                        if (success) {
+                            showPopUp = true
+                        }
+
+                        else {
+                            println("Gagal mengirim kode: $message")
+                        }
+                    }
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -175,9 +184,9 @@ fun LoginText(navController: NavController) {
     )
 }
 
-@Preview
-@Composable
-fun PreviewForgotPasswordScreen() {
-    val navController = rememberNavController()
-    ForgotPasswordScreen(navController)
-}
+//@Preview
+//@Composable
+//fun PreviewForgotPasswordScreen() {
+//    val navController = rememberNavController()
+//    ForgotPasswordScreen(navController)
+//}
