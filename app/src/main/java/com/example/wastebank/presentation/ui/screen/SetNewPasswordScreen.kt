@@ -69,7 +69,8 @@ fun SetNewPasswordScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.weight(0.2f))
+            Spacer(modifier = Modifier.height(60.dp))
+
             Text(
                 text = "Setel ulang kata sandi",
                 style = TextStyle(
@@ -121,11 +122,10 @@ fun SetNewPasswordScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(value = "", placeholder = "Ulang kata sandi", onValueChange = {})
-            Spacer(modifier = Modifier.weight(0.15f))
+            Spacer(modifier = Modifier.height(70.dp))
 
             // Button atur ulang
             ButtonAuth(text = "ATUR ULANG KATA SANDI", onClick = {})
-            Spacer(modifier = Modifier.weight(0.7f))
         }
     }
 }

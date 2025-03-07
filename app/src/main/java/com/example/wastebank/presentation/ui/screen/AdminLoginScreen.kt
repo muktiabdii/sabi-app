@@ -74,7 +74,7 @@ fun AdminLoginScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.weight(0.2f))
+            Spacer(modifier = Modifier.height(60.dp))
             Text(
                 text = "Masuk Sebagai Admin",
                 style = TextStyle(
@@ -144,7 +144,7 @@ fun AdminLoginScreen(navController: NavController) {
                     textAlign = TextAlign.End,
                 )
             )
-            Spacer(modifier = Modifier.weight(0.1f))
+            Spacer(modifier = Modifier.height(50.dp))
 
             // Button Masuk
             ButtonAuth(text = "MASUK", onClick = {})
@@ -152,7 +152,6 @@ fun AdminLoginScreen(navController: NavController) {
 
             // Sudah Punya Akun
             RegisterText(navController)
-            Spacer(modifier = Modifier.weight(0.7f))
         }
     }
 }

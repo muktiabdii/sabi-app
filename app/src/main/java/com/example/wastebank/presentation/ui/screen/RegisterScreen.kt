@@ -77,7 +77,7 @@ fun RegisterScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.weight(0.2f))
+            Spacer(modifier = Modifier.height(50.dp))
             Text(
                 text = "Bergabung dengan SABI",
                 style = TextStyle(
@@ -99,7 +99,7 @@ fun RegisterScreen(navController: NavController) {
                     textAlign = TextAlign.Justify,
                 )
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // TextFields Nama
             Text(
@@ -182,7 +182,7 @@ fun RegisterScreen(navController: NavController) {
                     selectedGender = it
                 }
             }
-            Spacer(modifier = Modifier.weight(0.1f))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Button Daftar
             ButtonAuth(text = "DAFTAR", onClick = {})
@@ -190,7 +190,6 @@ fun RegisterScreen(navController: NavController) {
 
             // Sudah Punya Akun
             LoginText(navController)
-            Spacer(modifier = Modifier.weight(0.7f))
         }
     }
 }

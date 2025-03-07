@@ -74,7 +74,7 @@ fun ForgotPasswordScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.weight(0.2f))
+            Spacer(modifier = Modifier.height(60.dp))
             Text(
                 text = "Lupa kata sandi?",
                 style = TextStyle(
@@ -111,7 +111,7 @@ fun ForgotPasswordScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(value = "", placeholder = "Masukkan alamat email", onValueChange = {})
-            Spacer(modifier = Modifier.weight(0.2f))
+            Spacer(modifier = Modifier.height(120.dp))
 
             // Button kirim kode
             ButtonAuth(text = "KIRIM KODE", onClick = {})
@@ -119,7 +119,6 @@ fun ForgotPasswordScreen(navController: NavController) {
 
             // Ingat kata sandi
             LoginText(navController)
-            Spacer(modifier = Modifier.weight(0.7f))
         }
     }
 }
