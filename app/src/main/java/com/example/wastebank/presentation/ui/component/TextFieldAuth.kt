@@ -1,10 +1,13 @@
 package com.example.wastebank.presentation.ui.component
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,26 +24,30 @@ fun TextFieldAuth(
     onValueChange: (String) -> Unit,
     placeholder: String
 ) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        textStyle = Typography.bodyMedium.copy(color = Color.Black),
-        placeholder = {
-            Text(
-                text = placeholder,
-                style = Typography.bodyMedium.copy(color = GreyMedium)
-            )
-        },
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(34.dp),
-        shape = RoundedCornerShape(5.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = BrownMain,
-            unfocusedBorderColor = BrownMain
+            .height(34.dp)
+            .border(1.dp, BrownMain, RoundedCornerShape(5.dp))
+            .padding(horizontal = 10.dp, vertical = 8.dp),
+    ) {
+        BasicTextField(
+            value = value,
+            onValueChange = onValueChange,
+            textStyle = Typography.bodyMedium.copy(color = Color.Black),
+            modifier = Modifier
+                .fillMaxSize(),
+            decorationBox = { innerTextField ->
+                if (value.isEmpty()) {
+                    Text(
+                        text = placeholder,
+                        style = Typography.bodyMedium.copy(color = GreyMedium),
+                    )
+                }
+                innerTextField()
+            }
         )
-
-    )
+    }
 }
 
 @Preview(showBackground = true)
