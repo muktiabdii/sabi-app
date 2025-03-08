@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
             WasteBankTheme {
                 val navController = rememberNavController()
 
-                // Membuat ViewModel di MainActivity agar bisa diteruskan ke screen lain
+                // Inisiasi authRepo, authUseCase, dan authViewModel
                 val authRepo = AuthRepositoryImpl()
                 val authUseCase = AuthUseCase(authRepo)
                 val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory(authUseCase))
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                             SplashScreen(navController)
                         }
                         composable("admin_login_screen") {
-                            AdminLoginScreen(navController)
+                            AdminLoginScreen(navController, authViewModel)
                         }
                         composable("user_login_screen") {
                             UserLoginScreen(navController, authViewModel)

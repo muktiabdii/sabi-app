@@ -42,11 +42,15 @@ class AuthRepositoryImpl : AuthRepository {
                     }
                 }
 
+                // Jika registrasi gagal, kirim pesan error
                 else {
-                    onResult(false, null)
+                    val errorMessage = task.exception?.message
+                    val localizedMessage = getLocalizedErrorMessage(errorMessage)
+                    onResult(false, localizedMessage)
                 }
             }
     }
+
 
     // Fungsi untuk melakukan login pengguna
     override fun loginUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
@@ -56,26 +60,92 @@ class AuthRepositoryImpl : AuthRepository {
                     onResult(true, null)
                 }
 
+                // Jika login gagal, kirim pesan error
                 else {
-                    onResult(false, null)
+                    val errorMessage = task.exception?.message
+                    val localizedMessage = getLocalizedErrorMessage(errorMessage)
+                    onResult(false, localizedMessage)
                 }
             }
     }
+
+
+    override fun loginAdmin(email: String, password: String, adminId: String, onResult: (Boolean, String?) -> Unit) {
+        val adminRef = db.getReference("admins").child(adminId)
+
+        // Memeriksa apakah adminId ada di Firebase Database
+        adminRef.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val storedEmail = snapshot.child("email").value as? String
+                if (storedEmail == email) {
+
+                    // Jika adminId sesuai, lakukan login
+                    auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                onResult(true, null)
+                            }
+
+                            // Jika login gagal, kirim pesan error
+                            else {
+                                val errorMessage = task.exception?.message
+                                val localizedMessage = getLocalizedErrorMessage(errorMessage)
+                                onResult(false, localizedMessage)
+                            }
+                        }
+                }
+
+                else {
+                    onResult(false, "ID dan email tidak cocok.")
+                }
+            }
+
+            else {
+                onResult(false, "Admin ID tidak ditemukan.")
+            }
+        }.addOnFailureListener { exception ->
+            onResult(false, exception.message)
+        }
+    }
+
 
     // Fungsi untuk melakukan logout pengguna
     override fun logoutUser() {
         auth.signOut()
     }
 
+
     // Fungsi untuk melakukan reset password
     override fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    onResult(true, null) // Berhasil
-                } else {
-                    onResult(false, null) // Gagal, kirim pesan error
+                    onResult(true, null)
+                }
+
+                // Jika reset password gagal, kirim pesan error
+                else {
+                    onResult(false, "Gagal mengirim kode reset password")
                 }
             }
+    }
+
+    // Fungsi untuk mendapatkan pesan error yang sesuai
+    private fun getLocalizedErrorMessage(errorMessage: String?): String {
+        return when {
+            errorMessage?.contains("The email address is badly formatted") == true ->
+                "Format email salah"
+
+            errorMessage?.contains("There is no user record corresponding to this identifier") == true ->
+                "Email tidak terdaftar"
+
+            errorMessage?.contains("The password is invalid or the user does not have a password") == true ->
+                "Password salah"
+
+            errorMessage?.contains("A network error") == true ->
+                "Terjadi kesalahan jaringan"
+
+            else -> "Terjadi kesalahan saat login"
+        }
     }
 }
