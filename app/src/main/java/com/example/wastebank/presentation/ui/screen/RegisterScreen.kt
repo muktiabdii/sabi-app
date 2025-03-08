@@ -166,7 +166,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
                 value = phoneNumber,
                 placeholder = "Masukkan nomor telepon",
                 onValueChange = {
-                    val regex = Regex("^\\+?\\d{0,15}$")
+                    val regex = Regex("^\\+?\\d{0,15}$") // hanya input angka
                     if (regex.matches(it)) {
                         authViewModel.updatePhoneNumber(it)
                     }

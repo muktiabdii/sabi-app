@@ -120,7 +120,8 @@ fun AdminLoginScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
-            TextFieldAuth(value = idState,
+            TextFieldAuth(
+                value = idState,
                 placeholder = "Masukkan ID email",
                 onValueChange = {
                     idState = it
