@@ -14,9 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.theme.BrownMain
+import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
@@ -33,14 +35,18 @@ fun CardPoint(
         modifier = Modifier
             .border(1.dp, BrownMain, cardShape)
             .width(370.dp)
-            .height(200.dp)
-            .background(Color.White, cardShape)
+            .height(190.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .background(GreenBg, cardShape)
             .clickable { onViewPointsClick() },
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
             modifier = Modifier
-                .padding(18.dp)
+                .padding(horizontal = 20.dp, vertical = 10.dp)
         ) {
             Row(verticalAlignment = Alignment.Bottom) {
                 Text(
@@ -59,7 +65,7 @@ fun CardPoint(
                 text = "poin kamu saat ini",
                 style = Typography.bodyLarge.copy(color = GreyMedium)
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Row(
                 modifier = Modifier.clickable { onViewPointsClick() },
@@ -80,14 +86,14 @@ fun CardPoint(
             }
         }
 
-        // bagian bawah yang dapat diklik
+        // tukar poin
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(40.dp)
-                .background(YellowMain, RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
+                .height(50.dp)
+                .background(Color.White, RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
                 .clickable { onRedeemPointsClick() }
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 20.dp),
             contentAlignment = Alignment.CenterStart
         ) {
             Row(

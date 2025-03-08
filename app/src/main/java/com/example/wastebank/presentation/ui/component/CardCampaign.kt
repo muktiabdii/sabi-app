@@ -16,6 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wastebank.presentation.ui.theme.BrownMain
@@ -35,7 +37,11 @@ fun CardCampaign(
             .border(width = 1.dp, color = BrownMain, shape = RoundedCornerShape(12.dp))
             .width(370.dp)
             .height(80.dp)
-            .background(YellowBg, shape = RoundedCornerShape(12.dp))
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .background(Color.White, shape = RoundedCornerShape(12.dp))
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.Center
     ) {

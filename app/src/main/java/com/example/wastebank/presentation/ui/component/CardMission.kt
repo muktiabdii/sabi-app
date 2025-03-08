@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +26,7 @@ import com.example.wastebank.presentation.ui.theme.YellowMain
 fun CardMission(
     missionTitle: String,
     missionDescription: String,
-    xpReward: Int,
+    ptsReward: Int,
     currentProgress: Int,
     totalProgress: Int,
     progressSuffix: String
@@ -35,7 +36,11 @@ fun CardMission(
             .border(width = 1.dp, color = BrownMain, shape = RoundedCornerShape(12.dp))
             .width(370.dp)
             .height(100.dp)
-            .background(YellowBg, shape = RoundedCornerShape(12.dp))
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .background(Color.White, shape = RoundedCornerShape(12.dp))
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.Center
     ) {
@@ -64,9 +69,9 @@ fun CardMission(
                 )
             }
 
-            // 100 xp
+            // 100 pts
             Text(
-                text = "+$xpReward XP",
+                text = "+$ptsReward pts",
                 style = Typography.headlineSmall,
                 color = BrownMain
             )
@@ -113,9 +118,9 @@ fun PreviewCardMission() {
     CardMission(
         missionTitle = "Misi Harian",
         missionDescription = "Kumpulin 10 botol plastik",
-        xpReward = 100,
+        ptsReward = 100,
         currentProgress = 8,
         totalProgress = 10,
-        progressSuffix = "kg sudah terkumpul"
+        progressSuffix = "botol sudah terkumpul!"
     )
 }

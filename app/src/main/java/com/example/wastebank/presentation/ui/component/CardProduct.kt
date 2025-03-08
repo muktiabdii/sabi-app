@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,18 +24,22 @@ import com.example.wastebank.presentation.ui.theme.*
 fun CardProduct(
     productImageResId: Int,
     productName: String,
-    productCategory: ProductCategory,
+    productCategory: String,
     productPrice: String,
-    onClick: () -> Unit, // Navigasi ke detail produk
-    onAddToCart: () -> Unit // Menambahkan ke keranjang
+    onClick: () -> Unit, // navigasi ke detail produk
+    onAddToCart: () -> Unit // menambahkan ke keranjang
 ) {
     Column(
         modifier = Modifier
             .width(135.dp)
             .height(175.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(8.dp)
+            )
             .clip(RoundedCornerShape(8.dp))
-            .background(Color.White)
-            .clickable { onClick() }, // Navigasi saat diklik
+            .background(WhiteBg)
+            .clickable { onClick() }, // navigasi saat diklik
     ) {
         // gambar produk
         Box(
@@ -115,7 +120,7 @@ fun PreviewCardProduct() {
     CardProduct(
         productImageResId = R.drawable.logo,
         productName = "Pot Bunga Hewan",
-        productCategory = ProductCategory.VASE,
+        productCategory = ProductCategory.VASE.toString(),
         productPrice = "Rp20.000",
         onClick = { },
         onAddToCart = { }

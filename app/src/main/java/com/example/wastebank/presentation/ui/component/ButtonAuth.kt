@@ -14,14 +14,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wastebank.presentation.ui.theme.BrownMain
-import com.example.wastebank.presentation.ui.theme.TextWhite
 import com.example.wastebank.presentation.ui.theme.Typography
 
 @Composable
 fun ButtonAuth(
     text: String,
     backgroundColor: Color = BrownMain,
-    textColor: Color = TextWhite,
+    textColor: Color = Color.White,
     onClick: () -> Unit
 ) {
     Box(
