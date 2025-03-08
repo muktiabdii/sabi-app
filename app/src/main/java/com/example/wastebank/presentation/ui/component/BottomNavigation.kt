@@ -40,14 +40,14 @@ fun BottomNavigation(navController: NavController) {
             .border(
                 width = 1.dp,
                 color = YellowMain,
-                shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
+                shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
             )
             .padding(1.dp)
             .background(
                 color = Color.White,
-                shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
+                shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
             ),
-        shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
+        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         color = Color.White,
         shadowElevation = 10.dp
 

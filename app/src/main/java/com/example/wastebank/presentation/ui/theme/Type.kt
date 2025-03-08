@@ -43,5 +43,10 @@ val Typography = Typography(
         fontFamily = manrope,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
+    ),
+    bodySmall = TextStyle(
+        fontFamily = manrope,
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
     )
 )

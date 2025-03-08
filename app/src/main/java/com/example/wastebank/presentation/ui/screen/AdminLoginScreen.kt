@@ -29,9 +29,10 @@ import com.example.wastebank.presentation.ui.component.TextFieldPassword
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.manrope
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
-fun AdminLoginScreen(navController: NavController) {
+fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     var emailState by remember { mutableStateOf("") }
     var idState by remember { mutableStateOf("") }
     var sandiState by remember { mutableStateOf("") }
@@ -178,9 +179,9 @@ fun AdminLoginScreen(navController: NavController) {
     }
 }
 
-@Preview
-@Composable
-fun PreviewAdminLoginScreen() {
-    val navController = rememberNavController()
-    AdminLoginScreen(navController)
-}
+//@Preview
+//@Composable
+//fun PreviewAdminLoginScreen() {
+//    val navController = rememberNavController()
+//    AdminLoginScreen(navController)
+//}
