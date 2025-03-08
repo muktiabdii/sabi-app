@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -36,7 +38,24 @@ import com.example.wastebank.presentation.viewmodel.AuthViewModel
 @Composable
 fun ForgotPasswordScreen(navController: NavController, authViewModel: AuthViewModel) {
     val email by authViewModel.email.collectAsState()
+    val errorMessage by authViewModel.errorMessage.collectAsState()
+    val isResetPassword by authViewModel.isResetPassword.collectAsState()
+    val context = LocalContext.current
     var showPopUp by remember { mutableStateOf(false) }
+
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            authViewModel.resetErrorMessage()
+        }
+    }
+
+    LaunchedEffect(isResetPassword) {
+        if (isResetPassword) {
+            showPopUp = true
+            authViewModel.resetIsResetPassword()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -127,15 +146,7 @@ fun ForgotPasswordScreen(navController: NavController, authViewModel: AuthViewMo
             ButtonAuth(
                 text = "KIRIM KODE",
                 onClick = {
-                    authViewModel.resetPassword { success, message ->
-                        if (success) {
-                            showPopUp = true
-                        }
-
-                        else {
-                            println("Gagal mengirim kode: $message")
-                        }
-                    }
+                    authViewModel.resetPassword()
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))

@@ -47,12 +47,22 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
     val phoneNumber by authViewModel.phoneNumber.collectAsState()
     val gender by authViewModel.gender.collectAsState()
     val errorMessage by authViewModel.errorMessage.collectAsState()
-    val context = LocalContext.current // Context untuk Toast
+    val isRegistered by authViewModel.isRegistered.collectAsState()
+    val context = LocalContext.current
 
     // Menampilkan Toast jika ada error message
     LaunchedEffect(errorMessage) {
         errorMessage?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            authViewModel.resetErrorMessage()
+        }
+    }
+
+    // Berpindah halaman ke halaman login jika registrasi berhasil
+    LaunchedEffect(isRegistered) {
+        if (isRegistered) {
+            navController.navigate("user_login_screen")
+            authViewModel.resetIsRegistered()
         }
     }
 
