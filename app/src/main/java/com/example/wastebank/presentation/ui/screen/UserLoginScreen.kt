@@ -172,7 +172,7 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
             ButtonAuth(
                 text = "MASUK",
                 onClick = {
-                    authViewModel.login()
+                    authViewModel.loginUser()
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))

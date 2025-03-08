@@ -25,6 +25,9 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
     private val _gender = MutableStateFlow("")
     val gender: StateFlow<String> = _gender
 
+    private val _adminId = MutableStateFlow("")
+    val adminId: StateFlow<String> = _adminId
+
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
@@ -37,16 +40,19 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
     private val _isResetPassword = MutableStateFlow(false)
     val isResetPassword: StateFlow<Boolean> = _isResetPassword
 
+
     // Fungsi untuk memperbarui data pengguna
     fun updateName(value: String) { _name.value = value }
     fun updateEmail(value: String) { _email.value = value }
     fun updatePassword(value: String) { _password.value = value }
     fun updatePhoneNumber(value: String) { _phoneNumber.value = value }
     fun updateGender(value: String) { _gender.value = value }
+    fun updateAdminId(value: String) { _adminId.value = value }
     fun resetErrorMessage() { _errorMessage.value = null }
     fun resetIsRegistered() { _isRegistered.value = false }
     fun resetIsLoggedIn() { _isLoggedIn.value = false }
     fun resetIsResetPassword() { _isResetPassword.value = false }
+
 
     fun register() {
         authUseCase.registerUser(
@@ -62,7 +68,8 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
         }
     }
 
-    fun login() {
+
+    fun loginUser() {
         authUseCase.loginUser(
             email.value, password.value
         ) { success, message ->
@@ -76,9 +83,26 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
         }
     }
 
+
+    fun loginAdmin() {
+        authUseCase.loginAdmin(
+            email.value, password.value, adminId.value
+        ) { success, message ->
+            if (success) {
+                _isLoggedIn.value = true // Simpan status login ke state
+            }
+
+            else {
+                _errorMessage.value = message // Simpan message error ke state
+            }
+        }
+    }
+
+
     fun logout() {
         authUseCase.logoutUser() // Panggil fungsi logoutUser dari AuthUseCase
     }
+
 
     fun resetPassword() {
         authUseCase.resetPassword(
@@ -93,6 +117,7 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
             }
         }
     }
+
 
     class Factory(private val authUseCase: AuthUseCase) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
