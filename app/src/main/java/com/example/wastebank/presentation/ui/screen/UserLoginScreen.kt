@@ -39,13 +39,22 @@ import com.example.wastebank.presentation.viewmodel.AuthViewModel
 fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     val email by authViewModel.email.collectAsState()
     val password by authViewModel.password.collectAsState()
-    val errorMessage by authViewModel.errorMessage.collectAsState() // Ambil error message dari ViewModel
-    val context = LocalContext.current // Context untuk Toast
+    val errorMessage by authViewModel.errorMessage.collectAsState()
+    val isLoggedIn by authViewModel.isLoggedIn.collectAsState()
+    val context = LocalContext.current
 
     // Menampilkan Toast jika ada error message
     LaunchedEffect(errorMessage) {
         errorMessage?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            authViewModel.resetErrorMessage()
+        }
+    }
+
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn) {
+            navController.navigate("home_screen")
+            authViewModel.resetIsLoggedIn()
         }
     }
 

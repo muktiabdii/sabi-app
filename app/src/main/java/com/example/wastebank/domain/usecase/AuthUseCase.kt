@@ -20,7 +20,7 @@ class AuthUseCase(private val authRepository: AuthRepository) {
 
         // Validasi password
         if (!validatePass(password)) {
-            onResult(false, "Password harus terdiri dari minimal 6 karakter dan mengandung angka")
+            onResult(false, "Password harus terdiri dari minimal 8 karakter dan mengandung angka")
             return
         }
 
@@ -59,7 +59,7 @@ class AuthUseCase(private val authRepository: AuthRepository) {
 
     // Fungsi untuk melakukan validasi password
     private fun validatePass(password: String): Boolean {
-        return password.length >= 6 && password.any { it.isDigit() }
+        return password.length >= 8 && password.any { it.isDigit() }
     }
 
     // Fungsi untuk melakukan validasi nomor HP
