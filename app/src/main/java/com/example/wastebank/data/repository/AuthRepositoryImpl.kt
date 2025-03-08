@@ -1,5 +1,6 @@
 package com.example.wastebank.data.repository
 
+import android.util.Log
 import com.example.wastebank.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -63,6 +64,7 @@ class AuthRepositoryImpl : AuthRepository {
                 // Jika login gagal, kirim pesan error
                 else {
                     val errorMessage = task.exception?.message
+                    Log.e("LoginError", "Login gagal: $errorMessage") // Logging error ke Logcat
                     val localizedMessage = getLocalizedErrorMessage(errorMessage)
                     onResult(false, localizedMessage)
                 }
@@ -136,11 +138,8 @@ class AuthRepositoryImpl : AuthRepository {
             errorMessage?.contains("The email address is badly formatted") == true ->
                 "Format email salah"
 
-            errorMessage?.contains("There is no user record corresponding to this identifier") == true ->
-                "Email tidak terdaftar"
-
-            errorMessage?.contains("The password is invalid or the user does not have a password") == true ->
-                "Password salah"
+            errorMessage?.contains("The supplied auth credential is incorrect, malformed or has expired.") == true ->
+                "Silahkan periksa kembali email dan password Anda"
 
             errorMessage?.contains("A network error") == true ->
                 "Terjadi kesalahan jaringan"
