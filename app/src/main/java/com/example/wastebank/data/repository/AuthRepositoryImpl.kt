@@ -1,18 +1,15 @@
 package com.example.wastebank.data.repository
 
 import android.util.Log
+import com.example.wastebank.data.source.firebase.FirebaseService
 import com.example.wastebank.domain.repository.AuthRepository
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 // Implementasi dari AuthRepository
 class AuthRepositoryImpl : AuthRepository {
 
-    // Inisialisasi FirebaseAuth
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
-    // Inisialisasi Firebase Realtime Database
-    private val db = FirebaseDatabase.getInstance("https://waste-bank-3db5d-default-rtdb.asia-southeast1.firebasedatabase.app")
+    // Inisialisasi Firebase Auth dan Firebase Realtime Database
+    private val auth = FirebaseService.auth
+    private val db = FirebaseService.db
 
     // Fungsi untuk melakukan registrasi pengguna
     override fun registerUser(name: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
