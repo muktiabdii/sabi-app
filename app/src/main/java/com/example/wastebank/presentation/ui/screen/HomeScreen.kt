@@ -7,6 +7,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,16 +24,26 @@ import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
+import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
+
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, userProfileViewModel: UserProfileViewModel) {
+    val name by userProfileViewModel.name.collectAsState()
+    val points by userProfileViewModel.userPoint.collectAsState()
+
+    LaunchedEffect(Unit) {
+        userProfileViewModel.getUserName()
+        userProfileViewModel.getUserPoint()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(YellowMain)
     ) {
         // topbar
-        TopBar(username = "Raion", points = 2450)
+        TopBar(username = name, points = points)
 
         Box(
             modifier = Modifier
@@ -48,7 +61,7 @@ fun HomeScreen(navController: NavController) {
                 // card poin
                 Box(modifier = Modifier.padding(horizontal = 20.dp)) {
                     CardPoint(
-                        points = 2540,
+                        points = points,
                         onViewPointsClick = { },
                         onRedeemPointsClick = { }
                     )
@@ -137,9 +150,9 @@ fun HomeScreen(navController: NavController) {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomeScreen() {
-    val navController = rememberNavController()
-    HomeScreen(navController = navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewHomeScreen() {
+//    val navController = rememberNavController()
+//    HomeScreen(navController = navController)
+//}

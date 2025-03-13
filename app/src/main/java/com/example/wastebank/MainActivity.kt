@@ -13,10 +13,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.data.repository.AuthRepositoryImpl
+import com.example.wastebank.data.repository.UserProfileRepositoryImpl
 import com.example.wastebank.domain.usecase.AuthUseCase
+import com.example.wastebank.domain.usecase.UserProfileUseCase
 import com.example.wastebank.presentation.ui.screen.*
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
+import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 import com.example.wastebank.ui.splash.RegisterScreen
 
 class MainActivity : ComponentActivity() {
@@ -32,6 +35,11 @@ class MainActivity : ComponentActivity() {
                 val authRepo = AuthRepositoryImpl()
                 val authUseCase = AuthUseCase(authRepo)
                 val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory(authUseCase))
+
+                // Inisiasi userProfilRepo, userProfileUseCase, dan userProfileViewModel
+                 val userProfileRepo = UserProfileRepositoryImpl()
+                 val userProfileUseCase = UserProfileUseCase(userProfileRepo)
+                 val userProfileViewModel: UserProfileViewModel = viewModel(factory = UserProfileViewModel.Factory(userProfileUseCase))
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
@@ -59,7 +67,7 @@ class MainActivity : ComponentActivity() {
                             SetNewPasswordScreen(navController)
                         }
                         composable("home_screen") {
-                            HomeScreen(navController)
+                            HomeScreen(navController, userProfileViewModel)
                         }
                     }
                 }
