@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.wastebank.data.model.WasteItem
-import com.example.wastebank.domain.usecase.AuthUseCase
 import com.example.wastebank.domain.usecase.WasteDonateUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,11 +36,14 @@ class WasteDonateViewModel (private val wasteDonateUseCase: WasteDonateUseCase, 
         _errorMessage.value = null
     }
 
-    class Factory(private val authUseCase: AuthUseCase) : ViewModelProvider.Factory {
+    class Factory(
+        private val wasteDonateUseCase: WasteDonateUseCase,
+        private val authViewModel: AuthViewModel
+    ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(WasteDonateViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(authUseCase) as T
+                return WasteDonateViewModel(wasteDonateUseCase, authViewModel) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
