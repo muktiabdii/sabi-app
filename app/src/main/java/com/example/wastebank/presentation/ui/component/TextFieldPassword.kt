@@ -38,7 +38,7 @@ fun TextFieldPassword(
         BasicTextField(
             value = value,
             onValueChange = { onValueChange(it) },
-            textStyle = Typography.bodyMedium.copy(
+            textStyle = Typography.bodyLarge.copy(
                 color = Color.Black,
                 textDecoration = TextDecoration.None
             ),
@@ -58,7 +58,7 @@ fun TextFieldPassword(
                         if (value.isEmpty()) {
                             androidx.compose.material3.Text(
                                 text = placeholder,
-                                style = Typography.bodyMedium.copy(
+                                style = Typography.bodySmall.copy(
                                     color = GreyMedium,
                                     textDecoration = TextDecoration.None
                                 ),
