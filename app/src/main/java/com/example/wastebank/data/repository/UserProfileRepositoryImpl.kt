@@ -9,14 +9,14 @@ class UserProfileRepositoryImpl : UserProfileRepository{
     // Inisialisasi Firebase Auth dan Firebase Realtime Database
     private val auth = FirebaseService.auth
     private val db = FirebaseService.db
-    private val usreRef = db.getReference("users")
+    private val userRef = db.getReference("users")
 
-    override fun getUserPoin(onResult: (Int?) -> Unit) {
+    override fun getUserPoint(onResult: (Int?) -> Unit) {
 
         // Ambil userId dari user yang sedang login
         val userId = auth.currentUser?.uid
         if (userId != null) {
-            usreRef.child(userId).get().addOnSuccessListener { snapshot ->
+            userRef.child(userId).get().addOnSuccessListener { snapshot ->
                 val user = UserMapper.mapToDomain(snapshot)
 
                 // Mengambil data point user
@@ -28,6 +28,26 @@ class UserProfileRepositoryImpl : UserProfileRepository{
 
         else {
             onResult(null)
+        }
+    }
+
+    override fun getUserProfile(onResult: (String?, String?, String?, String?, Int?) -> Unit) {
+
+        // Ambil userId dari user yang sedang login
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            userRef.child(userId).get().addOnSuccessListener { snapshot ->
+                val user = UserMapper.mapToDomain(snapshot)
+
+                // Mengambil data user
+                onResult(user?.name, user?.email, user?.phoneNumber, user?.gender, user?.points)
+            }.addOnFailureListener {
+                onResult(null, null, null, null, null)
+            }
+        }
+
+        else{
+            onResult(null, null, null, null, null)
         }
     }
 }
