@@ -8,8 +8,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,17 +27,26 @@ import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
-import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
+import kotlinx.coroutines.launch
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, userProfileViewModel: UserProfileViewModel) {
-    val name by userProfileViewModel.name.collectAsState()
-    val points by userProfileViewModel.userPoint.collectAsState()
+fun HomeScreen(navController: NavController) {
+    // kelola state bottom sheet tukar poin
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var isSheetOpen by remember { mutableStateOf(false) }
+    var currentStep by remember { mutableStateOf(1) }
+    val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
-        userProfileViewModel.getUserName()
-        userProfileViewModel.getUserPoint()
+    // state pop up
+    var showPopup by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isSheetOpen) {
+        if (isSheetOpen && !sheetState.isVisible) {
+            coroutineScope.launch {
+                sheetState.show()
+            }
+        }
     }
 
     Column(
@@ -43,7 +55,7 @@ fun HomeScreen(navController: NavController, userProfileViewModel: UserProfileVi
             .background(YellowMain)
     ) {
         // topbar
-        TopBar(username = name, points = points)
+        TopBar(username = "Raion", points = 2450)
 
         Box(
             modifier = Modifier
@@ -61,9 +73,9 @@ fun HomeScreen(navController: NavController, userProfileViewModel: UserProfileVi
                 // card poin
                 Box(modifier = Modifier.padding(horizontal = 20.dp)) {
                     CardPoint(
-                        points = points,
+                        points = 2540,
                         onViewPointsClick = { },
-                        onRedeemPointsClick = { }
+                        onRedeemPointsClick = { isSheetOpen = true } // buka bottom sheet
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
@@ -146,13 +158,69 @@ fun HomeScreen(navController: NavController, userProfileViewModel: UserProfileVi
             BottomNavigation(navController = navController)
         }
 
+        // Bottom sheet exchange
+        if (isSheetOpen) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    coroutineScope.launch {
+                        sheetState.hide()
+                    }.invokeOnCompletion {
+                        isSheetOpen = false
+                        currentStep = 1
+                    }
+                },
+                sheetState = sheetState,
+                dragHandle = null
+            ) {
+                BtmSheetExchange(
+                    currentStep = currentStep,
+                    points = "2540",
+                    selectedBank = "",
+                    amount = "Rp25.400,00",
+                    adminFee = "Rp2.500,00",
+                    totalAmount = "Rp27.900,00",
+                    onPointsChange = { },
+                    onBankSelected = { },
+                    onExchangeClick = {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                        }.invokeOnCompletion {
+                            isSheetOpen = false
+                            currentStep = 1
+                            showPopup = true
+                        }
+                    },
+                    onNext = { currentStep = 2 },
+                    onDismiss = {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                        }.invokeOnCompletion {
+                            isSheetOpen = false
+                            currentStep = 1
+                            showPopup = true
+                        }
+                    }
+                )
+            }
+        }
+
+        // tampilkan pop up
+        if (showPopup) {
+            PopUpNotif(
+                iconResId = R.drawable.ic_success,
+                message = "Permintaan tukar poin berhasil!",
+                buttonText = "Tutup",
+                navController = navController,
+                destination = null,
+                onDismiss = { showPopup = false }
+            )
+        }
     }
 }
 
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewHomeScreen() {
-//    val navController = rememberNavController()
-//    HomeScreen(navController = navController)
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreviewHomeScreen() {
+    val navController = rememberNavController()
+    HomeScreen(navController = navController)
+}

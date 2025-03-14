@@ -52,7 +52,7 @@ fun CardCampaign(
             // kampanye bulan maret
             Text(
                 text = "Kampanye Bulan $monthName",
-                style = Typography.headlineMedium
+                style = Typography.headlineSmall
             )
             // 25 hari lagi
             Text(
