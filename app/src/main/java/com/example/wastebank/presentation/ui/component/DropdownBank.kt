@@ -1,9 +1,12 @@
 package com.example.wastebank.presentation.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,6 +31,7 @@ fun DropdownBank(
     onBankSelected: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
+    var selectedBankState by remember { mutableStateOf(selectedBank) }
     val coroutineScope = rememberCoroutineScope()
 
     Column {
@@ -45,7 +49,7 @@ fun DropdownBank(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = if (selectedBank.isEmpty()) "Cari bank" else selectedBank,
+                    text = if (selectedBankState.isBlank()) "Cari bank" else selectedBankState,
                     color = if (selectedBank.isEmpty()) Color.Gray else Color.Black
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -61,29 +65,36 @@ fun DropdownBank(
         if (expanded) {
             Popup(
                 alignment = Alignment.TopStart,
-                offset = with(LocalDensity.current) { IntOffset(0, 40.dp.roundToPx()) },
+                offset = with(LocalDensity.current) { IntOffset(10.dp.roundToPx(), 40.dp.roundToPx()) },
                 properties = PopupProperties(focusable = true),
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
             ) {
                 Column(
                     modifier = Modifier
                         .border(1.dp, BrownMain, RoundedCornerShape(8.dp))
-                        .fillMaxWidth()
-                        .heightIn(max = 231.dp)
-                        .padding(vertical = 4.dp)
+                        .background(Color.White)
+                        .width(335.dp)
+                        .heightIn(min = 100.dp, max = 290.dp)
+                        .verticalScroll(rememberScrollState())
+                        .padding(vertical = 4.dp, horizontal = 12.dp)
                 ) {
-                    bankList.forEach { bank ->
+                    bankList.forEachIndexed { index, bank ->
                         DropdownMenuItem(
                             text = { Text(bank) },
                             onClick = {
                                 coroutineScope.launch {
                                     delay(100)
+                                    // simpan bank dipilih
+                                    selectedBankState = bank
+                                    // perbarui ke parent
                                     onBankSelected(bank)
                                     expanded = false
                                 }
                             }
                         )
-                        HorizontalDivider()
+                        if (index != bankList.lastIndex) {
+                            HorizontalDivider()
+                        }
                     }
                 }
             }

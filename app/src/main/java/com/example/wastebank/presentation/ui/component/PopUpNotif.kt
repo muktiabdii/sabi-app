@@ -69,7 +69,7 @@ fun PopUpNotif(
                 ) {
                     Text(
                         text = buttonText,
-                        style = Typography.bodyMedium,
+                        style = Typography.headlineMedium,
                         color = BrownBg
                     )
                 }

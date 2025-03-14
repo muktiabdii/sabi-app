@@ -30,11 +30,13 @@ fun BtmSheetExchange(
     onBankSelected: (String) -> Unit,
     onExchangeClick: (String) -> Unit,
     onNext: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     var accountNumber by remember { mutableStateOf("") }
-
     // perubahan nilai nomor rekening
     val onAccountNumberChange: (String) -> Unit = { newValue -> accountNumber = newValue }
+    // tampilkan masukkan password
+    var showDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -72,7 +74,7 @@ fun BtmSheetExchange(
                         amount = amount,
                         adminFee = adminFee,
                         totalAmount = totalAmount,
-                        onConfirm = { onExchangeClick(accountNumber) }
+                        onConfirm = { showDialog = true }
                     )
                 }
             }
@@ -81,10 +83,27 @@ fun BtmSheetExchange(
                 text = if (currentStep == 1) "LANJUT" else "TUKAR POIN SEKARANG",
                 backgroundColor = BrownMain,
                 textColor = Color.White,
-                onClick = { if (currentStep == 1) onNext() else onExchangeClick(accountNumber) },
+                onClick = {
+                    if (currentStep == 1) {
+                        onNext()
+                    } else {
+                        showDialog = true // menampilkan dialog
+                    }
+                }
             )
             Spacer(modifier = Modifier.height(24.dp))
         }
+    }
+
+    // tampilkan dialog masukkan password
+    if (showDialog) {
+        RedeemPointDialog(
+            onDismiss = { showDialog = false },
+            onConfirm = {
+                showDialog = false
+                onDismiss()
+            }
+        )
     }
 }
 
@@ -176,7 +195,10 @@ fun SecondContent(
 
         // dropdown pilih bank
         DropdownBank(
-            bankList = listOf("BANK BRI", "BANK MANDIRI", "BANK BNI", "BANK BCA"),
+            bankList = listOf(
+                "BANK BRI", "BANK MANDIRI", "BANK BNI", "BANK BTN",
+                "BANK RAYA INDONESIA", "BANK BCA", "BANK CIMB NIAGA"
+            ),
             selectedBank = selectedBank,
             onBankSelected = onBankSelected
         )
@@ -206,8 +228,8 @@ fun SecondContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Uang", style = Typography.bodyMedium)
-            Text(text = amount, style = Typography.bodyMedium)
+            Text(text = "Uang", style = Typography.bodyLarge)
+            Text(text = amount, style = Typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(6.dp))
 
@@ -215,8 +237,8 @@ fun SecondContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Admin", style = Typography.bodyMedium)
-            Text(text = adminFee, style = Typography.bodyMedium)
+            Text(text = "Admin", style = Typography.bodyLarge)
+            Text(text = adminFee, style = Typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -229,11 +251,11 @@ fun SecondContent(
         ) {
             Text(
                 text = "Total",
-                style = Typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                style = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
             Text(
                 text = totalAmount,
-                style = Typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                style = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
     }
@@ -257,6 +279,7 @@ fun PreviewBtmSheetExchange() {
         onBankSelected = { selectedBank = it },
         onExchangeClick = { },
         onNext = { currentStep = 2 },
+        onDismiss = {}
     )
 }
 

@@ -32,7 +32,7 @@ fun TextFieldPassword(
         modifier = Modifier
             .fillMaxWidth()
             .height(34.dp)
-            .border(1.dp, BrownMain, RoundedCornerShape(5.dp))
+            .border(1.dp, BrownMain, RoundedCornerShape(8.dp))
             .padding(horizontal = 10.dp, vertical = 8.dp),
     ) {
         BasicTextField(
@@ -58,7 +58,7 @@ fun TextFieldPassword(
                         if (value.isEmpty()) {
                             androidx.compose.material3.Text(
                                 text = placeholder,
-                                style = Typography.bodySmall.copy(
+                                style = Typography.bodyLarge.copy(
                                     color = GreyMedium,
                                     textDecoration = TextDecoration.None
                                 ),
@@ -79,8 +79,8 @@ fun TextFieldPassword(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewTextFieldPassword() {
-    TextFieldPassword(value = "", onValueChange = {}, placeholder = "Minimal 8 karakter")
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewTextFieldPassword() {
+//    TextFieldPassword(value = "", onValueChange = {}, placeholder = "Minimal 8 karakter")
+//}
