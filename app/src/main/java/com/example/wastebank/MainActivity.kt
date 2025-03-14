@@ -7,13 +7,17 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.data.repository.AuthRepositoryImpl
 import com.example.wastebank.domain.usecase.AuthUseCase
+import com.example.wastebank.presentation.ui.component.BottomNavigation
 import com.example.wastebank.presentation.ui.screen.*
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
@@ -31,15 +35,17 @@ class MainActivity : ComponentActivity() {
                 // Inisiasi authRepo, authUseCase, dan authViewModel
                 val authRepo = AuthRepositoryImpl()
                 val authUseCase = AuthUseCase(authRepo)
-                val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory(authUseCase))
+                val authViewModel: AuthViewModel =
+                    viewModel(factory = AuthViewModel.Factory(authUseCase))
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     NavHost(
                         navController = navController,
-//                        startDestination = "splash_screen"
-                        startDestination = "home_screen"
+                        startDestination = "splash_screen"
+//                        startDestination = "home_screen"
+//                        startDestination = "marketplace_screen"
                     ) {
                         composable("splash_screen") {
                             SplashScreen(navController)
@@ -62,9 +68,13 @@ class MainActivity : ComponentActivity() {
                         composable("home_screen") {
                             HomeScreen(navController)
                         }
+                        composable("marketplace_screen") {
+                            MarketplaceScreen(navController)
+                        }
                     }
                 }
             }
         }
     }
 }
+

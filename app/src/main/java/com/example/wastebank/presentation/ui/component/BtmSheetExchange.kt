@@ -32,6 +32,18 @@ fun BtmSheetExchange(
     onNext: () -> Unit,
     onDismiss: () -> Unit
 ) {
+    // state input jumlah poin
+    var userPoints by remember { mutableStateOf(points) }
+    // state nominal uang
+    var nominal by remember { mutableStateOf("") }
+
+    // update nominal berdasarkan jumlah poin yang dimasukkan
+    LaunchedEffect(userPoints) {
+        val pointValue = userPoints.toIntOrNull() ?: 0
+        val calculatedNominal = pointValue * 10
+        nominal = "$calculatedNominal"
+    }
+
     var accountNumber by remember { mutableStateOf("") }
     // perubahan nilai nomor rekening
     val onAccountNumberChange: (String) -> Unit = { newValue -> accountNumber = newValue }
@@ -65,7 +77,13 @@ fun BtmSheetExchange(
                     .fillMaxWidth()
             ) {
                 when (currentStep) {
-                    1 -> FirstContent(points, onPointsChange, onNext)
+                    1 -> FirstContent(
+                        points = userPoints,
+                        onPointsChange = { userPoints = it },
+                        nominal = nominal,
+                        onNext = onNext
+                    )
+
                     2 -> SecondContent(
                         selectedBank = selectedBank,
                         onBankSelected = onBankSelected,
@@ -111,6 +129,7 @@ fun BtmSheetExchange(
 fun FirstContent(
     points: String,
     onPointsChange: (String) -> Unit,
+    nominal: String,
     onNext: () -> Unit
 ) {
     Column(
@@ -139,8 +158,14 @@ fun FirstContent(
         // input jumlah poin
         TextFieldAuth(
             value = points,
-            onValueChange = onPointsChange,
-            placeholder = "Masukkan jumlah koin yang akan ditukar"
+            onValueChange = { newValue ->
+                // hanya inputan angka
+                if (newValue.all { it.isDigit() }) {
+                    onPointsChange(newValue)
+                }
+            },
+            placeholder = "Masukkan jumlah koin yang akan ditukar",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -151,12 +176,8 @@ fun FirstContent(
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        // input nominal
-        var nominal by remember { mutableStateOf("") }
-        TextFieldNominal(
-            value = nominal,
-            onValueChange = { nominal = it }
-        )
+        // nominal
+        TextNominal(points = points)
     }
 }
 

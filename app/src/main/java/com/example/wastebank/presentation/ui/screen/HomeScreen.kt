@@ -24,7 +24,6 @@ import com.example.wastebank.R
 import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
-import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
 import kotlinx.coroutines.launch
@@ -126,9 +125,24 @@ fun HomeScreen(navController: NavController) {
 
                 // semua produk
                 val products = listOf(
-                    Product("Jeans Totebag", ProductCategory.FASHION, "Rp25.000", R.drawable.logo),
-                    Product("Pot Bunga Hewan", ProductCategory.VASE, "Rp20.000", R.drawable.logo),
-                    Product("Lampu Sendok", ProductCategory.CRAFT, "Rp15.000", R.drawable.logo)
+                    Product(
+                        "Jeans Totebag",
+                        ProductCategory.FASHION,
+                        "Rp25.000",
+                        R.drawable.product_totebag
+                    ),
+                    Product(
+                        "Pot Bunga Hewan",
+                        ProductCategory.VASE,
+                        "Rp20.000",
+                        R.drawable.product_pot
+                    ),
+                    Product(
+                        "Lampu Sendok",
+                        ProductCategory.CRAFT,
+                        "Rp15.000",
+                        R.drawable.product_lampu
+                    )
                 )
 
                 // looping list produk
@@ -141,6 +155,10 @@ fun HomeScreen(navController: NavController) {
                             productName = product.name,
                             productCategory = product.category.toString(),
                             productPrice = product.price,
+                            modifier = Modifier
+                                .width(135.dp)
+                                .height(175.dp),
+                            imageHeight = 100,
                             onClick = { },
                             onAddToCart = { }
                         )
