@@ -54,8 +54,8 @@ fun TextFieldAuth(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewTextFieldAuth() {
-//    TextFieldAuth(value = "", onValueChange = {}, placeholder = "Masukkan alamat email")
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreviewTextFieldAuth() {
+    TextFieldAuth(value = "", onValueChange = {}, placeholder = "Masukkan alamat email")
+}

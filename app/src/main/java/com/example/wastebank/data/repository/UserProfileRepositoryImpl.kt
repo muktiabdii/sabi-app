@@ -3,6 +3,9 @@ package com.example.wastebank.data.repository
 import com.example.wastebank.data.mapper.UserMapper
 import com.example.wastebank.data.source.firebase.FirebaseService
 import com.example.wastebank.domain.repository.UserProfileRepository
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class UserProfileRepositoryImpl : UserProfileRepository{
 
@@ -52,17 +55,21 @@ class UserProfileRepositoryImpl : UserProfileRepository{
     override fun getUserPoint(onResult: (Int?) -> Unit) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
-            userRef.child(userId).child("points").get().addOnSuccessListener { snapshot ->
-                val points = snapshot.getValue(Int::class.java) ?: 0
-                onResult(points)
-            }.addOnFailureListener {
-                onResult(0)
-            }
-        }
+            userRef.child(userId).child("points").addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val point = snapshot.getValue(Int::class.java) ?: 0
+                    onResult(point)
+                }
 
-        else {
-            onResult(0)
+                override fun onCancelled(error: DatabaseError) {
+                    onResult(null)
+                }
+            })
+        } else {
+            onResult(null)
         }
     }
+
 
 }

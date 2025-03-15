@@ -102,6 +102,20 @@ class AuthRepositoryImpl : AuthRepository {
         }
     }
 
+    // Fungsi untuk memeriksa password user
+    override fun checkPassword(password: String, onResult: (Boolean) -> Unit) {
+        val email = auth.currentUser?.email
+        if (email != null) {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    onResult(task.isSuccessful)
+                }
+        }
+
+        else {
+            onResult(false)
+        }
+    }
 
     // Fungsi untuk melakukan logout pengguna
     override fun logoutUser() {

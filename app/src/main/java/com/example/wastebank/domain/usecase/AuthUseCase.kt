@@ -57,6 +57,9 @@ class AuthUseCase(private val authRepository: AuthRepository) {
         authRepository.loginAdmin(email, password, adminId, onResult) // Panggil fungsi loginAdmin dari AuthRepository
     }
 
+    fun checkPassword(password: String, onResult: (Boolean) -> Unit) {
+        authRepository.checkPassword(password, onResult) // Panggil fungsi checkPassword dari AuthRepository
+    }
 
     fun logoutUser() {
         authRepository.logoutUser() // Panggil fungsi logoutUser dari AuthRepository
