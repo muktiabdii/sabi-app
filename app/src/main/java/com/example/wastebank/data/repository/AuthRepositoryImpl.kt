@@ -1,18 +1,16 @@
 package com.example.wastebank.data.repository
 
 import android.util.Log
+import com.example.wastebank.data.model.UserModel
+import com.example.wastebank.data.source.firebase.FirebaseService
 import com.example.wastebank.domain.repository.AuthRepository
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 // Implementasi dari AuthRepository
 class AuthRepositoryImpl : AuthRepository {
 
-    // Inisialisasi FirebaseAuth
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
-    // Inisialisasi Firebase Realtime Database
-    private val db = FirebaseDatabase.getInstance("https://waste-bank-3db5d-default-rtdb.asia-southeast1.firebasedatabase.app")
+    // Inisialisasi Firebase Auth dan Firebase Realtime Database
+    private val auth = FirebaseService.auth
+    private val db = FirebaseService.db
 
     // Fungsi untuk melakukan registrasi pengguna
     override fun registerUser(name: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
@@ -24,14 +22,8 @@ class AuthRepositoryImpl : AuthRepository {
                         val userId = it.uid
                         val userRef = db.getReference("users").child(userId)
 
-                        // Menyimpan data pengguna ke Firebase Database
-                        val userData = mapOf(
-                            "name" to name,
-                            "email" to email,
-                            "phoneNumber" to phoneNumber,
-                            "gender" to gender
-                        )
-
+                        // Menyimpan data pengguna ke Firebase Database menggunakan UserModel
+                        val userData = UserModel(userId, name, email, phoneNumber, gender)
                         userRef.setValue(userData)
                             .addOnSuccessListener {
                                 onResult(true, null)
@@ -110,6 +102,20 @@ class AuthRepositoryImpl : AuthRepository {
         }
     }
 
+    // Fungsi untuk memeriksa password user
+    override fun checkPassword(password: String, onResult: (Boolean) -> Unit) {
+        val email = auth.currentUser?.email
+        if (email != null) {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    onResult(task.isSuccessful)
+                }
+        }
+
+        else {
+            onResult(false)
+        }
+    }
 
     // Fungsi untuk melakukan logout pengguna
     override fun logoutUser() {

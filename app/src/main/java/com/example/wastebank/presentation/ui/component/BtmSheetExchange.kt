@@ -1,10 +1,12 @@
 package com.example.wastebank.presentation.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,36 +19,25 @@ import androidx.compose.ui.unit.dp
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreyLine
 import com.example.wastebank.presentation.ui.theme.Typography
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
+import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
 
 @Composable
 fun BtmSheetExchange(
-    currentStep: Int,
-    points: String,
+    moneyExchangeViewModel: MoneyExchangeViewModel,
+    authViewModel: AuthViewModel,
+    points: Int,
+    amount: Int,
     selectedBank: String,
-    amount: String,
-    adminFee: String,
-    totalAmount: String,
-    onPointsChange: (String) -> Unit,
-    onBankSelected: (String) -> Unit,
-    onExchangeClick: (String) -> Unit,
+    accountNumber: String,
+    adminFee: Int,
+    totalAmount: Int,
+    password: String,
+    currentStep: Int,
+    onExchangeClick: () -> Unit,
     onNext: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    // state input jumlah poin
-    var userPoints by remember { mutableStateOf(points) }
-    // state nominal uang
-    var nominal by remember { mutableStateOf("") }
-
-    // update nominal berdasarkan jumlah poin yang dimasukkan
-    LaunchedEffect(userPoints) {
-        val pointValue = userPoints.toIntOrNull() ?: 0
-        val calculatedNominal = pointValue * 10
-        nominal = "$calculatedNominal"
-    }
-
-    var accountNumber by remember { mutableStateOf("") }
-    // perubahan nilai nomor rekening
-    val onAccountNumberChange: (String) -> Unit = { newValue -> accountNumber = newValue }
     // tampilkan masukkan password
     var showDialog by remember { mutableStateOf(false) }
 
@@ -78,20 +69,18 @@ fun BtmSheetExchange(
             ) {
                 when (currentStep) {
                     1 -> FirstContent(
-                        points = userPoints,
-                        onPointsChange = { userPoints = it },
-                        nominal = nominal,
-                        onNext = onNext
+                        points = points,
+                        amount = amount,
+                        onPointsChange = { moneyExchangeViewModel.updatePointAndAmount(it) }
                     )
-
                     2 -> SecondContent(
                         selectedBank = selectedBank,
-                        onBankSelected = onBankSelected,
                         accountNumber = accountNumber,
-                        onAccountNumberChange = { accountNumber = it },
                         amount = amount,
                         adminFee = adminFee,
                         totalAmount = totalAmount,
+                        onBankSelected = { moneyExchangeViewModel.updateBankName(it) },
+                        onAccountNumberChange = { moneyExchangeViewModel.updateAccountNumber(it) },
                         onConfirm = { showDialog = true }
                     )
                 }
@@ -99,8 +88,6 @@ fun BtmSheetExchange(
 
             ButtonAuth(
                 text = if (currentStep == 1) "LANJUT" else "TUKAR POIN SEKARANG",
-                backgroundColor = BrownMain,
-                textColor = Color.White,
                 onClick = {
                     if (currentStep == 1) {
                         onNext()
@@ -116,6 +103,8 @@ fun BtmSheetExchange(
     // tampilkan dialog masukkan password
     if (showDialog) {
         RedeemPointDialog(
+            password,
+            onPasswordChange = { authViewModel.updatePassword(it) },
             onDismiss = { showDialog = false },
             onConfirm = {
                 showDialog = false
@@ -123,14 +112,15 @@ fun BtmSheetExchange(
             }
         )
     }
+
+
 }
 
 @Composable
 fun FirstContent(
-    points: String,
-    onPointsChange: (String) -> Unit,
-    nominal: String,
-    onNext: () -> Unit
+    points: Int,
+    amount: Int,
+    onPointsChange: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -156,16 +146,10 @@ fun FirstContent(
         Spacer(modifier = Modifier.height(8.dp))
 
         // input jumlah poin
-        TextFieldAuth(
-            value = points,
-            onValueChange = { newValue ->
-                // hanya inputan angka
-                if (newValue.all { it.isDigit() }) {
-                    onPointsChange(newValue)
-                }
-            },
-            placeholder = "Masukkan jumlah koin yang akan ditukar",
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        NumberTextFieldAuth(
+            value = points, // Int dari ViewModel
+            onValueChange = onPointsChange,
+            placeholder = "Masukkan jumlah poin yang ingin ditukar"
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -175,21 +159,19 @@ fun FirstContent(
             style = Typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(8.dp))
-
-        // nominal
-        TextNominal(points = points)
+        TextNominal(amount)
     }
 }
 
 @Composable
 fun SecondContent(
-    selectedBank: String, // bank dipilih
+    selectedBank: String,
+    accountNumber: String,
+    amount: Int,
+    adminFee: Int,
+    totalAmount: Int,
     onBankSelected: (String) -> Unit,
-    accountNumber: String, // nomor rekening
     onAccountNumberChange: (String) -> Unit,
-    amount: String, // uang diterima
-    adminFee: String, // biaya admin
-    totalAmount: String, // total biaya
     onConfirm: () -> Unit,
 ) {
     Column(
@@ -233,12 +215,35 @@ fun SecondContent(
         Spacer(modifier = Modifier.height(8.dp))
 
         // input nomor rekening
+        var errorMessage by remember { mutableStateOf("") }
+
         TextFieldAuth(
             value = accountNumber,
-            onValueChange = onAccountNumberChange,
+            onValueChange = { newValue ->
+                val filteredValue = newValue.filter { it.isDigit() } // Hanya angka
+                onAccountNumberChange(filteredValue) // Update state
+
+                errorMessage = when (selectedBank) {
+                    "BANK BRI" -> if (filteredValue.length != 15) "Nomor rekening BANK BRI harus 15 digit" else ""
+                    "BANK MANDIRI", "BANK BTN", "BANK RAYA INDONESIA" -> if (filteredValue.length < 10) "Nomor rekening $selectedBank minimal 10 digit" else ""
+                    "BANK BNI", "BANK BCA" -> if (filteredValue.length != 10) "Nomor rekening $selectedBank harus 10 digit" else ""
+                    "BANK CIMB NIAGA" -> if (filteredValue.length != 13) "Nomor rekening BANK CIMB NIAGA harus 13 digit" else ""
+                    else -> ""
+                }
+            },
             placeholder = "Masukkan nomor rekening",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
+
+// Menampilkan pesan error jika ada
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                style = Typography.bodyMedium
+            )
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
         // info biaya
@@ -250,7 +255,7 @@ fun SecondContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Uang", style = Typography.bodyLarge)
-            Text(text = amount, style = Typography.bodyLarge)
+            Text(text = "$amount", style = Typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(6.dp))
 
@@ -259,7 +264,7 @@ fun SecondContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Admin", style = Typography.bodyLarge)
-            Text(text = adminFee, style = Typography.bodyLarge)
+            Text(text = "$adminFee", style = Typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -275,34 +280,79 @@ fun SecondContent(
                 style = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
             Text(
-                text = totalAmount,
+                text = "$totalAmount",
                 style = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
     }
 }
 
-@Preview(showBackground = false)
 @Composable
-fun PreviewBtmSheetExchange() {
-    var currentStep by remember { mutableStateOf(1) }
-    var points by remember { mutableStateOf("") }
-    var selectedBank by remember { mutableStateOf("") }
+fun NumberTextFieldAuth(
+    value: Int,
+    onValueChange: (Int) -> Unit,
+    placeholder: String
+) {
+    var errorMessage by remember { mutableStateOf("") }
+    var textValue by remember { mutableStateOf(value.toString()) } // Simpan input teks
 
-    BtmSheetExchange(
-        currentStep = currentStep,
-        points = points,
-        selectedBank = selectedBank,
-        amount = "Rp60.000,00",
-        adminFee = "Rp2.500,00",
-        totalAmount = "Rp62.500,00",
-        onPointsChange = { points = it },
-        onBankSelected = { selectedBank = it },
-        onExchangeClick = { },
-        onNext = { currentStep = 2 },
-        onDismiss = {}
-    )
+    Column {
+        TextFieldAuth(
+            value = textValue,
+            onValueChange = { newValue ->
+                val filteredValue = newValue.filter { it.isDigit() } // Hanya angka
+                textValue = filteredValue // Update teks field
+
+                val intValue = filteredValue.toIntOrNull()
+
+                if (intValue != null) {
+                    if (intValue < 1000) {
+                        onValueChange(intValue)
+                        errorMessage = "Minimal 1000 poin"
+                    } else {
+                        onValueChange(intValue) // Update state jika valid
+                        errorMessage = ""
+                    }
+                }
+            },
+            placeholder = placeholder,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
+        )
+
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                style = Typography.bodyMedium
+            )
+        }
+    }
 }
+
+
+
+
+//@Preview(showBackground = false)
+//@Composable
+//fun PreviewBtmSheetExchange() {
+//    var currentStep by remember { mutableStateOf(1) }
+//    var points by remember { mutableStateOf("") }
+//    var selectedBank by remember { mutableStateOf("") }
+//
+//    BtmSheetExchange(
+//        currentStep = currentStep,
+//        points = points,
+//        selectedBank = selectedBank,
+//        amount = "Rp60.000,00",
+//        adminFee = "Rp2.500,00",
+//        totalAmount = "Rp62.500,00",
+//        onPointsChange = { points = it },
+//        onBankSelected = { selectedBank = it },
+//        onExchangeClick = { },
+//        onNext = { currentStep = 2 },
+//        onDismiss = {}
+//    )
+//}
 
 //@Preview(showBackground = false)
 //@Composable
@@ -322,9 +372,9 @@ fun PreviewBtmSheetExchange() {
 //    var selectedBank by remember { mutableStateOf("") }
 //    var accountNumber by remember { mutableStateOf("") }
 //
-//    val amount = "Rp60.000,00"
-//    val adminFee = "Rp2.500,00"
-//    val totalAmount = "Rp62.500,00"
+//    val amount = 60000
+//    val adminFee = 2500
+//    val totalAmount = 62500
 //
 //    SecondContent(
 //        selectedBank = selectedBank,

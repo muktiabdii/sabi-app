@@ -55,6 +55,7 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
         if (isLoggedIn) {
             navController.navigate("home_screen")
             authViewModel.resetIsLoggedIn()
+            authViewModel.clearPasswordInput()
         }
     }
 

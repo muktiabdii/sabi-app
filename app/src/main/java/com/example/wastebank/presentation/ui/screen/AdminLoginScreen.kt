@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -33,9 +35,27 @@ import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
 fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel) {
-    var emailState by remember { mutableStateOf("") }
-    var idState by remember { mutableStateOf("") }
-    var sandiState by remember { mutableStateOf("") }
+    val email by authViewModel.email.collectAsState()
+    val adminId by authViewModel.adminId.collectAsState()
+    val password by authViewModel.password.collectAsState()
+    val errorMessage by authViewModel.errorMessage.collectAsState()
+    val isLoggedIn by authViewModel.isLoggedIn.collectAsState()
+    val context = LocalContext.current
+
+    // Menampilkan Toast jika ada error message
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            authViewModel.resetErrorMessage()
+        }
+    }
+
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn) {
+            navController.navigate("home_screen")
+            authViewModel.resetIsLoggedIn()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -103,10 +123,10 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
-                value = emailState,
+                value = email,
                 placeholder = "Masukkan alamat email",
                 onValueChange = {
-                    emailState = it
+                    authViewModel.updateEmail(it)
                 })
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -122,10 +142,10 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
-                value = idState,
+                value = adminId,
                 placeholder = "Masukkan ID email",
                 onValueChange = {
-                    idState = it
+                    authViewModel.updateAdminId(it)
                 })
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -142,10 +162,10 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldPassword(
-                value = sandiState,
+                value = password,
                 placeholder = "Masukkan kata sandi",
                 onValueChange = {
-                    sandiState = it
+                    authViewModel.updatePassword(it)
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -169,7 +189,9 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
             // Button Masuk
             ButtonAuth(
                 text = "MASUK",
-                onClick = { navController.navigate("home_screen") }
+                onClick = {
+                    authViewModel.loginAdmin()
+                }
             )
             Spacer(modifier = Modifier.height(8.dp))
 

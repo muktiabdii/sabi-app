@@ -40,7 +40,6 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
     private val _isResetPassword = MutableStateFlow(false)
     val isResetPassword: StateFlow<Boolean> = _isResetPassword
 
-
     // Fungsi untuk memperbarui data pengguna
     fun updateName(value: String) { _name.value = value }
     fun updateEmail(value: String) { _email.value = value }
@@ -48,6 +47,9 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
     fun updatePhoneNumber(value: String) { _phoneNumber.value = value }
     fun updateGender(value: String) { _gender.value = value }
     fun updateAdminId(value: String) { _adminId.value = value }
+
+    // Fungsi untuk mereset status registrasi
+    fun clearPasswordInput() { _password.value = "" }
     fun resetErrorMessage() { _errorMessage.value = null }
     fun resetIsRegistered() { _isRegistered.value = false }
     fun resetIsLoggedIn() { _isLoggedIn.value = false }
@@ -94,6 +96,16 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
 
             else {
                 _errorMessage.value = message // Simpan message error ke state
+            }
+        }
+    }
+
+    fun checkPassword(onResult: (Boolean, String) -> Unit) {
+        authUseCase.checkPassword(password.value) { success ->
+            if (success) {
+                onResult(true, "") // Kirim hasil sukses dengan pesan kosong
+            } else {
+                onResult(false, "") // Kirim hasil gagal dengan pesan error
             }
         }
     }

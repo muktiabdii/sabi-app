@@ -17,11 +17,11 @@ import com.example.wastebank.presentation.ui.theme.YellowMain
 
 @Composable
 fun RedeemPointDialog(
+    password: String,
+    onPasswordChange: (String) -> Unit,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    var password by remember { mutableStateOf("") }
-
     Dialog(onDismissRequest = { onDismiss() }) {
         Box(
             modifier = Modifier
@@ -51,7 +51,7 @@ fun RedeemPointDialog(
                     Spacer(modifier = Modifier.height(10.dp))
                     TextFieldPassword(
                         value = password,
-                        onValueChange = { password = it },
+                        onValueChange = { onPasswordChange(it) },
                         placeholder = "Masukkan kata sandi"
                     )
                 }
@@ -69,8 +69,8 @@ fun RedeemPointDialog(
     }
 }
 
-@Preview(showBackground = false)
-@Composable
-fun PreviewRedeemPointDialog() {
-    RedeemPointDialog(onDismiss = {}, onConfirm = {})
-}
+//@Preview(showBackground = false)
+//@Composable
+//fun PreviewRedeemPointDialog() {
+//    RedeemPointDialog(onDismiss = {}, onConfirm = {})
+//}
