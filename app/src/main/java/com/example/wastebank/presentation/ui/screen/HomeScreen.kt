@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -26,11 +28,35 @@ import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
+import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
+import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController,
+    userProfileViewModel: UserProfileViewModel,
+    moneyExchangeViewModel: MoneyExchangeViewModel,
+    authViewModel: AuthViewModel
+) {
+    // state user profile
+    val name by userProfileViewModel.name.collectAsState()
+    val pointsAmount by userProfileViewModel.userPoint.collectAsState()
+
+    // state money exchange
+    val points by moneyExchangeViewModel.points.collectAsState()
+    val amount by moneyExchangeViewModel.amount.collectAsState()
+    val selectedBank by moneyExchangeViewModel.bankName.collectAsState()
+    val accountNumber by moneyExchangeViewModel.accountNumber.collectAsState()
+    val adminFee by moneyExchangeViewModel.adminFee.collectAsState()
+    val totalAmount by moneyExchangeViewModel.totalAmount.collectAsState()
+    val errorMessageMoneyExchange by moneyExchangeViewModel.errorMessage.collectAsState()
+
+    // state auth
+    val password by authViewModel.password.collectAsState()
+
     // kelola state bottom sheet tukar poin
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isSheetOpen by remember { mutableStateOf(false) }
@@ -39,6 +65,8 @@ fun HomeScreen(navController: NavController) {
 
     // state pop up
     var showPopup by remember { mutableStateOf(false) }
+    var errorPopupPoint by remember { mutableStateOf(false) }
+    var errorPopupPassword by remember { mutableStateOf(false) }
 
     LaunchedEffect(isSheetOpen) {
         if (isSheetOpen && !sheetState.isVisible) {
@@ -48,13 +76,18 @@ fun HomeScreen(navController: NavController) {
         }
     }
 
+    LaunchedEffect(Unit) {
+        userProfileViewModel.getUserProfile()
+        userProfileViewModel.getUserPoint()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(YellowMain)
     ) {
         // topbar
-        TopBar(username = "Raion", points = 2450)
+        TopBar(username = name, points = pointsAmount)
 
         Box(
             modifier = Modifier
@@ -72,7 +105,7 @@ fun HomeScreen(navController: NavController) {
                 // card poin
                 Box(modifier = Modifier.padding(horizontal = 20.dp)) {
                     CardPoint(
-                        points = 2540,
+                        points = pointsAmount,
                         onViewPointsClick = { },
                         onRedeemPointsClick = { isSheetOpen = true } // buka bottom sheet
                     )
@@ -191,14 +224,16 @@ fun HomeScreen(navController: NavController) {
                 dragHandle = null
             ) {
                 BtmSheetExchange(
+                    moneyExchangeViewModel,
+                    authViewModel,
+                    points,
+                    amount,
+                    selectedBank,
+                    accountNumber,
+                    adminFee,
+                    totalAmount,
+                    password,
                     currentStep = currentStep,
-                    points = "2540",
-                    selectedBank = "",
-                    amount = "Rp25.400,00",
-                    adminFee = "Rp2.500,00",
-                    totalAmount = "Rp27.900,00",
-                    onPointsChange = { },
-                    onBankSelected = { },
                     onExchangeClick = {
                         coroutineScope.launch {
                             sheetState.hide()
@@ -215,7 +250,22 @@ fun HomeScreen(navController: NavController) {
                         }.invokeOnCompletion {
                             isSheetOpen = false
                             currentStep = 1
-                            showPopup = true
+                            authViewModel.checkPassword { success, message ->
+                                if(success) {
+                                    moneyExchangeViewModel.exchangeMoney { success, message ->
+                                        if (success) {
+                                            showPopup = true
+                                        } else {
+                                            showPopup = true
+                                            errorPopupPoint = true
+                                        }
+                                    }
+
+                                } else {
+                                    showPopup = true
+                                    errorPopupPassword = true
+                                }
+                            }
                         }
                     }
                 )
@@ -225,12 +275,21 @@ fun HomeScreen(navController: NavController) {
         // tampilkan pop up
         if (showPopup) {
             PopUpNotif(
-                iconResId = R.drawable.ic_success,
-                message = "Permintaan tukar poin berhasil!",
+                iconResId = if (errorPopupPoint || errorPopupPassword) R.drawable.ic_alert else R.drawable.ic_success,
+                message = when {
+                    errorPopupPoint -> errorMessageMoneyExchange ?: "Maaf, poin Anda tidak mencukupi" // Pesan error terkait poin
+                    errorPopupPassword -> errorMessageMoneyExchange ?: "Maaf, password Anda salah" // Pesan error password
+                    else -> "Permintaan tukar poin berhasil!" // Pesan sukses
+                },
                 buttonText = "Tutup",
                 navController = navController,
                 destination = null,
-                onDismiss = { showPopup = false }
+                onDismiss = {
+                    showPopup = false
+                    errorPopupPoint = false
+                    errorPopupPassword = false
+                    moneyExchangeViewModel.resetErrorMessage()
+                }
             )
         }
         // jika password salah
@@ -245,9 +304,9 @@ fun HomeScreen(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomeScreen() {
-    val navController = rememberNavController()
-    HomeScreen(navController = navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewHomeScreen() {
+//    val navController = rememberNavController()
+//    HomeScreen(navController = navController)
+//}

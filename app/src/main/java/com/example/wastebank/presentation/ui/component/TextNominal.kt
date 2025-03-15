@@ -9,17 +9,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.wastebank.presentation.ui.theme.BrownMain
+import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.Typography
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun TextNominal(
-    points: String
+    value: Int?,
+    placeholder: String = ""
 ) {
-    // hitung nominal berdasarkan jumlah poin
-    val nominal = if (points.isNotEmpty()) "${points.toInt() * 10},00" else "0,00"
+    val formattedValue = value?.let {
+        NumberFormat.getNumberInstance(Locale.US).format(it)
+    } ?: placeholder
 
     Row(
         modifier = Modifier
@@ -28,7 +33,6 @@ fun TextNominal(
             .border(1.dp, BrownMain, RoundedCornerShape(8.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // prefix Rp
         Box(
             modifier = Modifier
                 .background(BrownMain, RoundedCornerShape(8.dp))
@@ -43,16 +47,15 @@ fun TextNominal(
         }
         Spacer(modifier = Modifier.width(8.dp))
 
-        // nominal
+        // output nominal
         Box(
             modifier = Modifier
                 .weight(1f)
-                .padding(end = 10.dp),
-            contentAlignment = Alignment.CenterStart
+                .padding(end = 10.dp)
         ) {
             Text(
-                text = nominal,
-                style = Typography.bodyLarge.copy(color = Color.Black)
+                text = formattedValue,
+                style = Typography.bodyLarge.copy(color = if (value == null) GreyMedium else Color.Black)
             )
         }
     }
@@ -60,6 +63,5 @@ fun TextNominal(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewTextNominal() {
-    TextNominal(points = "")
-}
+fun PreviewTextDisplayNominal() {
+    TextNominal(value = 100000)
