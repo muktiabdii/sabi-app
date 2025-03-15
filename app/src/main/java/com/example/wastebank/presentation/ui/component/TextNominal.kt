@@ -65,3 +65,4 @@ fun TextNominal(
 @Composable
 fun PreviewTextDisplayNominal() {
     TextNominal(value = 100000)
+}
