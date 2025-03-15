@@ -85,6 +85,7 @@ fun SetNewPasswordScreen(navController: NavController) {
                 )
             )
             Spacer(modifier = Modifier.height(5.dp))
+
             Text(
                 text = "Silakan ketik sesuatu yang dapat Anda ingat.",
                 style = TextStyle(

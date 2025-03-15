@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.donation.presentation.ui.screen.DonateScreen
 import com.example.wastebank.data.repository.AuthRepositoryImpl
 import com.example.wastebank.domain.usecase.AuthUseCase
 import com.example.wastebank.presentation.ui.component.BottomNavigation
@@ -82,7 +83,9 @@ class MainActivity : ComponentActivity() {
                         composable("profile_screen") {
                             ProfileScreen(navController)
                         }
-
+                        composable("donate_screen") {
+                            DonateScreen(navController)
+                        }
                     }
                 }
             }
