@@ -51,8 +51,6 @@ fun HomeScreen(
     val amount by moneyExchangeViewModel.amount.collectAsState()
     val selectedBank by moneyExchangeViewModel.bankName.collectAsState()
     val accountNumber by moneyExchangeViewModel.accountNumber.collectAsState()
-    val adminFee by moneyExchangeViewModel.adminFee.collectAsState()
-    val totalAmount by moneyExchangeViewModel.totalAmount.collectAsState()
     val errorMessageMoneyExchange by moneyExchangeViewModel.errorMessage.collectAsState()
 
     // state auth
@@ -212,8 +210,6 @@ fun HomeScreen(
                     amount,
                     selectedBank,
                     accountNumber,
-                    adminFee,
-                    totalAmount,
                     password,
                     currentStep = currentStep,
                     onExchangeClick = {

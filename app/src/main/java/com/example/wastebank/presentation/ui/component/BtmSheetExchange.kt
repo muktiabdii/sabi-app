@@ -30,8 +30,6 @@ fun BtmSheetExchange(
     amount: Int,
     selectedBank: String,
     accountNumber: String,
-    adminFee: Int,
-    totalAmount: Int,
     password: String,
     currentStep: Int,
     onExchangeClick: () -> Unit,
@@ -77,8 +75,6 @@ fun BtmSheetExchange(
                         selectedBank = selectedBank,
                         accountNumber = accountNumber,
                         amount = amount,
-                        adminFee = adminFee,
-                        totalAmount = totalAmount,
                         onBankSelected = { moneyExchangeViewModel.updateBankName(it) },
                         onAccountNumberChange = { moneyExchangeViewModel.updateAccountNumber(it) },
                         onConfirm = { showDialog = true }
@@ -169,8 +165,6 @@ fun SecondContent(
     selectedBank: String,
     accountNumber: String,
     amount: Int,
-    adminFee: Int,
-    totalAmount: Int,
     onBankSelected: (String) -> Unit,
     onAccountNumberChange: (String) -> Unit,
     onConfirm: () -> Unit,
@@ -249,28 +243,10 @@ fun SecondContent(
 
         // info biaya
         Text(text = "Nominal", style = Typography.headlineMedium)
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Uang", style = Typography.bodyLarge)
-            Text(text = "$amount", style = Typography.bodyLarge)
-        }
-        Spacer(modifier = Modifier.height(6.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Admin", style = Typography.bodyLarge)
-            Text(text = "$adminFee", style = Typography.bodyLarge)
-        }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         HorizontalDivider(thickness = 1.dp, color = GreyLine)
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -281,7 +257,7 @@ fun SecondContent(
                 style = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
             Text(
-                text = "$totalAmount",
+                text = "$amount",
                 style = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
