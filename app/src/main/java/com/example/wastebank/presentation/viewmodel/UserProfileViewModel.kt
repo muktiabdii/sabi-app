@@ -45,6 +45,9 @@ class UserProfileViewModel(private val userProfileUseCase: UserProfileUseCase) :
         }
     }
 
+    fun deleteAccount(onResult: (Boolean, String?) -> Unit) {
+        userProfileUseCase.deleteAccount(onResult)
+    }
 
     class Factory(private val userProfileUseCase: UserProfileUseCase) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

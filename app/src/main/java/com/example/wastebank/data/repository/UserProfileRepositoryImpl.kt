@@ -71,5 +71,25 @@ class UserProfileRepositoryImpl : UserProfileRepository{
         }
     }
 
+    override fun deleteAccount(onResult: (Boolean, String?) -> Unit) {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            try {
+                userRef.child(userId).removeValue().addOnSuccessListener {
+                    // Logout setelah penghapusan akun
+                    auth.signOut()
+                    onResult(true, null)
+                }.addOnFailureListener { exception ->
+                    // Memberikan pesan error yang lebih spesifik
+                    onResult(false, exception.localizedMessage)
+                }
+            } catch (e: Exception) {
+                // Menangani kesalahan umum yang mungkin terjadi
+                onResult(false, e.localizedMessage)
+            }
+        } else {
+            onResult(false, "User not authenticated")
+        }
+    }
 
 }
