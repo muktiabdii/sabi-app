@@ -52,7 +52,7 @@ fun CardDestination(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.headlineSmall,
                 color = Color.White,
                 modifier = Modifier.padding(bottom = 12.dp)
             )

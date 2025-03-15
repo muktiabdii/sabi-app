@@ -58,7 +58,7 @@ fun MarketplaceScreen(navController: NavController) {
 
             item {
                 // slideshow donasi
-                BannerDonation()
+                BannerDonation(navController)
             }
 
             item {
@@ -73,11 +73,12 @@ fun MarketplaceScreen(navController: NavController) {
                         // 2 cell per baris
                         columns = GridCells.Fixed(2),
                         // jarak antar cell
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(14.dp),
+                        verticalArrangement = Arrangement.spacedBy(14.dp),
+                        contentPadding = PaddingValues(top = 10.dp, bottom = 20.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .heightIn(min = 100.dp, max = 800.dp)
+                            .heightIn(min = 100.dp, max = 1600.dp)
 
                     ) {
                         items(getProductList()) { product ->
@@ -111,7 +112,16 @@ fun getProductList(): List<Product> {
         Product("Lampu Sendok", ProductCategory.DECOR, "Rp 30.000", R.drawable.product_lampu),
         Product("Mainan Mobil", ProductCategory.TOY, "Rp 25.000", R.drawable.product_mobil),
         Product("Tempat Pensil", ProductCategory.CRAFT, "Rp 30.000", R.drawable.product_pensil),
-        Product("Pot Bunga Hewan", ProductCategory.VASE, "Rp 20.000", R.drawable.product_pot)
+        Product("Pot Bunga Hewan", ProductCategory.VASE, "Rp 20.000", R.drawable.product_pot),
+        Product(
+            "Tas Totebag Jeans",
+            ProductCategory.FASHION,
+            "Rp 15.000",
+            R.drawable.product_totebag
+        ),
+        Product("Lampu Sendok", ProductCategory.DECOR, "Rp 30.000", R.drawable.product_lampu),
+        Product("Mainan Mobil", ProductCategory.TOY, "Rp 25.000", R.drawable.product_mobil),
+        Product("Tempat Pensil", ProductCategory.CRAFT, "Rp 30.000", R.drawable.product_pensil),
     )
 }
 

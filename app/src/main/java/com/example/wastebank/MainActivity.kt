@@ -63,8 +63,8 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
 //                        ganti halaman start pertama
 //                        startDestination = "splash_screen"
-                        startDestination = "home_screen"
-//                        startDestination = "marketplace_screen"
+//                        startDestination = "home_screen"
+                        startDestination = "donate_screen"
                     ) {
                         composable("splash_screen") {
                             SplashScreen(navController)
@@ -101,6 +101,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("donate_screen") {
                             DonateScreen(navController)
+                        }
+                        composable("donation_detail_screen") {
+                            DonationDetailScreen(navController)
                         }
                     }
                 }
