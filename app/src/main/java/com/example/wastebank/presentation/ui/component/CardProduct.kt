@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,31 +27,32 @@ fun CardProduct(
     productName: String,
     productCategory: String,
     productPrice: String,
+    modifier: Modifier = Modifier,
+    imageHeight: Int = 100,
     onClick: () -> Unit, // navigasi ke detail produk
     onAddToCart: () -> Unit // menambahkan ke keranjang
 ) {
     Column(
-        modifier = Modifier
-            .width(135.dp)
-            .height(175.dp)
+        modifier = modifier
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(8.dp)
             )
             .clip(RoundedCornerShape(8.dp))
             .background(WhiteBg)
-            .clickable { onClick() }, // navigasi saat diklik
+            .clickable { onClick() },
     ) {
         // gambar produk
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp),
+                .height(imageHeight.dp),
             contentAlignment = Alignment.Center
         ) {
             androidx.compose.foundation.Image(
                 painter = painterResource(id = productImageResId),
                 contentDescription = "gambar produk",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -79,7 +81,7 @@ fun CardProduct(
                 ) {
                     // kategori produk
                     Text(
-                        text = productCategory.toString(),
+                        text = productCategory,
                         style = Typography.bodySmall,
                         color = GreyMedium,
                         modifier = Modifier.fillMaxWidth()
@@ -104,6 +106,7 @@ fun CardProduct(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
+                        modifier = Modifier.clip(RoundedCornerShape(50)),
                         painter = painterResource(id = R.drawable.ic_bag),
                         contentDescription = "tambah ke keranjang",
                         tint = Color.White
@@ -118,10 +121,14 @@ fun CardProduct(
 @Composable
 fun PreviewCardProduct() {
     CardProduct(
-        productImageResId = R.drawable.logo,
+        productImageResId = R.drawable.product_pot,
         productName = "Pot Bunga Hewan",
         productCategory = ProductCategory.VASE.toString(),
         productPrice = "Rp20.000",
+        modifier = Modifier
+            .width(135.dp)
+            .height(175.dp),
+        imageHeight = 100,
         onClick = { },
         onAddToCart = { }
     )

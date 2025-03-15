@@ -33,7 +33,6 @@ fun TextNominal(
             .border(1.dp, BrownMain, RoundedCornerShape(8.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // prefix rp
         Box(
             modifier = Modifier
                 .background(BrownMain, RoundedCornerShape(8.dp))
@@ -46,7 +45,6 @@ fun TextNominal(
                 style = Typography.headlineSmall.copy(color = Color.White)
             )
         }
-
         Spacer(modifier = Modifier.width(8.dp))
 
         // output nominal
@@ -67,4 +65,3 @@ fun TextNominal(
 @Composable
 fun PreviewTextDisplayNominal() {
     TextNominal(value = 100000)
-}

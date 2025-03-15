@@ -160,7 +160,6 @@ fun FirstContent(
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextNominal(amount)
-
     }
 }
 
