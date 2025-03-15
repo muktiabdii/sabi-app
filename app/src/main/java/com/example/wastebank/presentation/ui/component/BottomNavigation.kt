@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.presentation.ui.theme.YellowMain
 import kotlinx.coroutines.delay
@@ -31,7 +32,8 @@ fun BottomNavigation(navController: NavController) {
         BottomNavItem.Profile
     )
 
-    val currentRoute = remember { mutableStateOf("home") }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Surface(
         modifier = Modifier
@@ -59,7 +61,7 @@ fun BottomNavigation(navController: NavController) {
         ) {
             items.forEach { item ->
                 // animasi ketika menu dipilih
-                val isSelected = currentRoute.value == item.route
+                val isSelected = currentRoute == item.route
                 var alpha by remember { mutableStateOf(0f) }
                 val animatedAlpha by animateFloatAsState(
                     targetValue = alpha,
@@ -74,8 +76,7 @@ fun BottomNavigation(navController: NavController) {
                 }
 
                 Box(
-                    modifier = Modifier
-                        .size(50.dp),
+                    modifier = Modifier.size(50.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     // efek abu-abu dengan animasi
@@ -89,7 +90,11 @@ fun BottomNavigation(navController: NavController) {
                         onClick = {
                             if (!isSelected) {
                                 alpha = 0.3f // munculkan efek abu-abu
-                                currentRoute.value = item.route
+                                navController.navigate(item.route) {
+                                    popUpTo(item.route)
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
                         },
                         modifier = Modifier.fillMaxSize()

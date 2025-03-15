@@ -39,12 +39,14 @@ class MainActivity : ComponentActivity() {
                     viewModel(factory = AuthViewModel.Factory(authUseCase))
 
                 Scaffold(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = { BottomNavigation(navController) }
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = "splash_screen"
-//                        startDestination = "home_screen"
+//                        ganti halaman start pertama
+//                        startDestination = "splash_screen"
+                        startDestination = "home_screen"
 //                        startDestination = "marketplace_screen"
                     ) {
                         composable("splash_screen") {
@@ -68,9 +70,19 @@ class MainActivity : ComponentActivity() {
                         composable("home_screen") {
                             HomeScreen(navController)
                         }
+                        composable("maps_screen") {
+                            MapsScreen(navController)
+                        }
                         composable("marketplace_screen") {
                             MarketplaceScreen(navController)
                         }
+                        composable("article_screen") {
+                            ArticleScreen(navController)
+                        }
+                        composable("profile_screen") {
+                            ProfileScreen(navController)
+                        }
+
                     }
                 }
             }

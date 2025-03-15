@@ -233,6 +233,15 @@ fun HomeScreen(navController: NavController) {
                 onDismiss = { showPopup = false }
             )
         }
+        // jika password salah
+//        PopUpNotif(
+//            iconResId = R.drawable.ic_alert,
+//            message = "Maaf, password yang dimasukkan salah!",
+//            buttonText = "Tutup",
+//            navController = navController,
+//            destination = null,
+//            onDismiss = { showPopup = false }
+//        )
     }
 }
 
