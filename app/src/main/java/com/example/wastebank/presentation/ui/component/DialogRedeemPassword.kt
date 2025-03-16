@@ -16,7 +16,7 @@ import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
 
 @Composable
-fun RedeemPointDialog(
+fun DialogRedeemPassword(
     password: String,
     onPasswordChange: (String) -> Unit,
     onDismiss: () -> Unit,

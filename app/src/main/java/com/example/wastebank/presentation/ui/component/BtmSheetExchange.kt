@@ -98,7 +98,7 @@ fun BtmSheetExchange(
 
     // tampilkan dialog masukkan password
     if (showDialog) {
-        RedeemPointDialog(
+        DialogRedeemPassword(
             password,
             onPasswordChange = { authViewModel.updatePassword(it) },
             onDismiss = { showDialog = false },
@@ -156,7 +156,6 @@ fun FirstContent(
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextNominal(amount)
-
     }
 }
 

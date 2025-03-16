@@ -1,6 +1,7 @@
 package com.example.wastebank.presentation.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,13 +23,18 @@ fun ButtonAuth(
     text: String,
     backgroundColor: Color = BrownMain,
     textColor: Color = Color.White,
-    onClick: () -> Unit,
+    borderColor: Color? = null,
+    onClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(34.dp)
-            .background(color = backgroundColor, shape = RoundedCornerShape(size = 8.dp))
+            .background(color = backgroundColor, shape = RoundedCornerShape(size = 20.dp))
+            .then(
+                if (borderColor != null) Modifier.border(1.dp, borderColor, RoundedCornerShape(20.dp))
+                else Modifier
+            )
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -38,6 +44,7 @@ fun ButtonAuth(
         )
     }
 }
+
 
 //@Preview
 //@Composable

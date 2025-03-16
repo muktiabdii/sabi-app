@@ -72,6 +72,10 @@ dependencies {
 
     // Firebase authentication
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+
+    // Pager Slideshow
+    implementation("com.google.accompanist:accompanist-pager:0.31.3-beta")
+
 }
 
 apply(plugin = "com.google.gms.google-services")

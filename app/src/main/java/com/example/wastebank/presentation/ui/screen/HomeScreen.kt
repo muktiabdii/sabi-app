@@ -26,7 +26,6 @@ import com.example.wastebank.R
 import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
-import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
@@ -157,9 +156,24 @@ fun HomeScreen(
 
                 // semua produk
                 val products = listOf(
-                    Product("Jeans Totebag", ProductCategory.FASHION, "Rp25.000", R.drawable.logo),
-                    Product("Pot Bunga Hewan", ProductCategory.VASE, "Rp20.000", R.drawable.logo),
-                    Product("Lampu Sendok", ProductCategory.CRAFT, "Rp15.000", R.drawable.logo)
+                    Product(
+                        "Jeans Totebag",
+                        ProductCategory.FASHION,
+                        "Rp25.000",
+                        R.drawable.product_totebag
+                    ),
+                    Product(
+                        "Pot Bunga Hewan",
+                        ProductCategory.VASE,
+                        "Rp20.000",
+                        R.drawable.product_pot
+                    ),
+                    Product(
+                        "Lampu Sendok",
+                        ProductCategory.CRAFT,
+                        "Rp15.000",
+                        R.drawable.product_lampu
+                    )
                 )
 
                 // looping list produk
@@ -172,6 +186,10 @@ fun HomeScreen(
                             productName = product.name,
                             productCategory = product.category.toString(),
                             productPrice = product.price,
+                            modifier = Modifier
+                                .width(135.dp)
+                                .height(175.dp),
+                            imageHeight = 100,
                             onClick = { },
                             onAddToCart = { }
                         )
@@ -271,6 +289,15 @@ fun HomeScreen(
                 }
             )
         }
+        // jika password salah
+//        PopUpNotif(
+//            iconResId = R.drawable.ic_alert,
+//            message = "Maaf, password yang dimasukkan salah!",
+//            buttonText = "Tutup",
+//            navController = navController,
+//            destination = null,
+//            onDismiss = { showPopup = false }
+//        )
     }
 }
 

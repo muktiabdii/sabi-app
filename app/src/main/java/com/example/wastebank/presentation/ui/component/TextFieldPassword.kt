@@ -5,11 +5,13 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
@@ -41,6 +43,10 @@ fun TextFieldPassword(
             textStyle = Typography.bodyLarge.copy(
                 color = Color.Black,
                 textDecoration = TextDecoration.None
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                // nonaktifkan enter
+                imeAction = ImeAction.Done
             ),
 
             // sembunyikan isi password

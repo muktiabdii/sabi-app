@@ -2,12 +2,9 @@ package com.example.wastebank.presentation.ui.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,9 +14,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.presentation.ui.theme.YellowMain
-import kotlinx.coroutines.delay
 
 @Composable
 fun BottomNavigation(navController: NavController) {
@@ -31,7 +28,16 @@ fun BottomNavigation(navController: NavController) {
         BottomNavItem.Profile
     )
 
-    val currentRoute = remember { mutableStateOf("home") }
+    val sectionRoutes = mapOf(
+        "marketplace_screen" to listOf("marketplace_screen", "donate_screen"),  // Marketplace & Donasi
+        "home_screen" to listOf("home_screen"),
+        "maps_screen" to listOf("maps_screen"),
+        "article_screen" to listOf("article_screen"),
+        "profile_screen" to listOf("profile_screen")
+    )
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Surface(
         modifier = Modifier
@@ -58,38 +64,20 @@ fun BottomNavigation(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             items.forEach { item ->
-                // animasi ketika menu dipilih
-                val isSelected = currentRoute.value == item.route
-                var alpha by remember { mutableStateOf(0f) }
-                val animatedAlpha by animateFloatAsState(
-                    targetValue = alpha,
-                    animationSpec = tween(300), label = ""
-                )
-
-                LaunchedEffect(alpha) {
-                    if (alpha > 0) {
-                        delay(200)
-                        alpha = 0f
-                    }
-                }
+                val isSelected = sectionRoutes[item.route]?.contains(currentRoute) == true
 
                 Box(
-                    modifier = Modifier
-                        .size(50.dp),
+                    modifier = Modifier.size(50.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    // efek abu-abu dengan animasi
-                    Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .background(Color.LightGray.copy(alpha = animatedAlpha), CircleShape)
-                    )
-
                     IconButton(
                         onClick = {
                             if (!isSelected) {
-                                alpha = 0.3f // munculkan efek abu-abu
-                                currentRoute.value = item.route
+                                navController.navigate(item.route) {
+                                    popUpTo(item.route)
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
                         },
                         modifier = Modifier.fillMaxSize()
@@ -105,6 +93,7 @@ fun BottomNavigation(navController: NavController) {
         }
     }
 }
+
 
 @Preview(showBackground = false)
 @Composable
