@@ -7,6 +7,10 @@ class UserProfileUseCase(private val userProfilerepository: UserProfileRepositor
         userProfilerepository.getUserProfile(onResult)
     }
 
+    fun editUserProfile(name: String, phoneNumber: String, email: String, password: String, gender: String, onResult: (Boolean, String?) -> Unit) {
+        userProfilerepository.editUserProfile(name, phoneNumber, email, password, gender, onResult)
+    }
+
     fun getUserPoint(onResult: (Int?) -> Unit) {
         userProfilerepository.getUserPoint(onResult)
     }

@@ -34,6 +34,20 @@ class UserProfileRepositoryImpl : UserProfileRepository{
         }
     }
 
+    override fun editUserProfile(name: String, phoneNumber: String, email: String, password: String, gender: String, onResult: (Boolean, String?) -> Unit) {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            userRef.child(userId).child("name").setValue(name)
+            userRef.child(userId).child("phoneNumber").setValue(phoneNumber)
+            userRef.child(userId).child("email").setValue(email)
+            userRef.child(userId).child("password").setValue(password)
+            userRef.child(userId).child("gender").setValue(gender)
+            onResult(true, null)
+        } else {
+            onResult(false, "User not authenticated")
+        }
+    }
+
     override fun getUserName(onResult: (String?) -> Unit) {
         val userId = auth.currentUser?.uid
         if (userId != null) {

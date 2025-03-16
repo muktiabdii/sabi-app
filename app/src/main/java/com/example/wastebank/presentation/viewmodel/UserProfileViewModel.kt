@@ -14,6 +14,9 @@ class UserProfileViewModel(private val userProfileUseCase: UserProfileUseCase) :
     private val _email = MutableStateFlow("")
     val email: StateFlow<String> = _email
 
+    private val _password = MutableStateFlow("")
+    val password: StateFlow<String> = _password
+
     private val _phoneNumber = MutableStateFlow("")
     val phoneNumber: StateFlow<String> = _phoneNumber
 
@@ -31,6 +34,18 @@ class UserProfileViewModel(private val userProfileUseCase: UserProfileUseCase) :
             _gender.value = gender ?: ""
             _point.value = point ?: 0
         }
+    }
+
+    fun editUserProfile() {
+        userProfileUseCase.editUserProfile(
+            name.value, phoneNumber.value, email.value, password.value, gender.value, onResult = { success, message ->
+                if (success) {
+                    // Handle success
+                } else {
+                    // Handle error
+                }
+            }
+        )
     }
 
     fun getUserPoint() {
