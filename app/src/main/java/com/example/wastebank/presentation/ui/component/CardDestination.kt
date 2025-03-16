@@ -44,7 +44,7 @@ fun CardDestination(
                 .fillMaxSize()
                 .background(
                     Brush.verticalGradient(
-                        colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.8f))
+                        colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f))
                     )
                 )
                 .clip(RoundedCornerShape(24.dp)),

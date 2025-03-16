@@ -2,6 +2,7 @@ package com.example.donation.presentation.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -81,7 +82,12 @@ fun DonateScreen(navController: NavController) {
                             Spacer(modifier = Modifier.weight(1f))
 
                             // teks di bawah gambar
-                            Column {
+                            Column(
+                                // pindah ke donation detail
+                                modifier = Modifier.clickable {
+                                    navController.navigate("donation_detail_screen")
+                                }
+                            ) {
                                 Text(
                                     text = "Papua Dengan Kita",
                                     style = Typography.headlineLarge,
@@ -114,21 +120,30 @@ fun DonateScreen(navController: NavController) {
                             CardDonate(
                                 imageResId = R.drawable.donate_rumah_portrait,
                                 title = "Rumah Dhuafa Ayna",
-                                description = "Bantu anak-anak untuk beli peralatan sekolah"
-                            )
-                        }
-                        item {
-                            CardDonate(
-                                imageResId = R.drawable.donate_papua_portrait,
-                                title = "Papua Dengan Kita",
-                                description = "Beri subsidi untuk mereka yang berada di Timur!"
+                                description = "Bantu anak-anak untuk beli peralatan sekolah",
+                                modifier = Modifier.clickable {
+                                    navController.navigate("donation_detail_screen")
+                                }
                             )
                         }
                         item {
                             CardDonate(
                                 imageResId = R.drawable.donate_mengajar_portrait,
                                 title = "Mengajar Pelosok",
-                                description = "Dukung para relawan untuk membeli kebutuhan"
+                                description = "Dukung para relawan untuk membeli kebutuhan",
+                                modifier = Modifier.clickable {
+                                    navController.navigate("donation_detail_screen")
+                                }
+                            )
+                        }
+                        item {
+                            CardDonate(
+                                imageResId = R.drawable.donate_papua_portrait,
+                                title = "Papua Dengan Kita",
+                                description = "Beri subsidi untuk mereka yang berada di Timur!",
+                                modifier = Modifier.clickable {
+                                    navController.navigate("donation_detail_screen")
+                                }
                             )
                         }
                     }
@@ -145,13 +160,21 @@ fun DonateScreen(navController: NavController) {
                 item {
                     LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 0.dp, bottom = 70.dp)
+                        contentPadding = PaddingValues(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = 0.dp,
+                            bottom = 70.dp
+                        )
                     ) {
                         item {
                             CardDestination(imageResId = R.drawable.dest_bali, title = "Bali")
                         }
                         item {
-                            CardDestination(imageResId = R.drawable.dest_labuan, title = "Labuan Bajo")
+                            CardDestination(
+                                imageResId = R.drawable.dest_labuan,
+                                title = "Labuan Bajo"
+                            )
                         }
                         item {
                             CardDestination(imageResId = R.drawable.dest_lombok, title = "Lombok")
@@ -171,7 +194,12 @@ fun DonateScreen(navController: NavController) {
                     text = "KEMBALI KE MARKETPLACE",
                     backgroundColor = BrownMain,
                     textColor = Color.White,
-                    onClick = { }
+                    // pindah ke marketplace
+                    onClick = {
+                        navController.navigate("marketplace_screen") {
+                            popUpTo("donate_screen") { inclusive = true }
+                        }
+                    }
                 )
             }
         }

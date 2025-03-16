@@ -102,7 +102,7 @@ fun BtmSheetExchange(
 
     // tampilkan dialog masukkan password
     if (showDialog) {
-        RedeemPointDialog(
+        DialogRedeemPassword(
             password,
             onPasswordChange = { authViewModel.updatePassword(it) },
             onDismiss = { showDialog = false },

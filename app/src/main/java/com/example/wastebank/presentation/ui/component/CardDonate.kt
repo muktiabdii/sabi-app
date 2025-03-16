@@ -47,7 +47,7 @@ fun CardDonate(
                 .fillMaxSize()
                 .background(
                     Brush.verticalGradient(
-                        colors = listOf(Color.Transparent, Color.Black)
+                        colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f))
                     )
                 )
                 .clip(RoundedCornerShape(16.dp)),

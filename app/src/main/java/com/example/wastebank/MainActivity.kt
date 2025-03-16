@@ -61,10 +61,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-//                        ganti halaman start pertama
+//                        ganti halaman start pertama di sini
 //                        startDestination = "splash_screen"
-//                        startDestination = "home_screen"
-                        startDestination = "donate_screen"
+                        startDestination = "home_screen"
+//                        startDestination = "marketplace_screen"
                     ) {
                         composable("splash_screen") {
                             SplashScreen(navController)

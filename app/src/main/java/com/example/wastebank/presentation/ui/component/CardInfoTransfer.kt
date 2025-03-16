@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -50,10 +51,10 @@ fun CardInfoTransfer(
                 style = Typography.bodyMedium,
                 color = Color.Black
             )
-            Divider(
-                color = Color.Black,
+            HorizontalDivider(
+                modifier = Modifier.fillMaxWidth(),
                 thickness = 1.dp,
-                modifier = Modifier.fillMaxWidth()
+                color = Color.Black
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
