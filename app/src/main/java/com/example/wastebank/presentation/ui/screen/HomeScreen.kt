@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
+import com.example.wastebank.data.ProductDataSource
 import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
@@ -156,44 +157,22 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // semua produk
-                val products = listOf(
-                    Product(
-                        "Jeans Totebag",
-                        ProductCategory.FASHION,
-                        "Rp25.000",
-                        R.drawable.product_totebag
-                    ),
-                    Product(
-                        "Pot Bunga Hewan",
-                        ProductCategory.VASE,
-                        "Rp20.000",
-                        R.drawable.product_pot
-                    ),
-                    Product(
-                        "Lampu Sendok",
-                        ProductCategory.CRAFT,
-                        "Rp15.000",
-                        R.drawable.product_lampu
-                    )
-                )
+                // ambil data produk dari ProductDataSource
+                val products = ProductDataSource.productList
 
-                // looping list produk
+                // looping daftar produk
                 LazyRow(
                     contentPadding = PaddingValues(start = 20.dp, end = 20.dp)
                 ) {
                     items(products) { product ->
                         CardProduct(
-                            productImageResId = product.imageRes,
-                            productName = product.name,
-                            productCategory = product.category.toString(),
-                            productPrice = product.price,
+                            product = product,
                             modifier = Modifier
                                 .width(135.dp)
                                 .height(175.dp),
                             imageHeight = 100,
-                            onClick = { },
-                            onAddToCart = { }
+                            onClick = { navController.navigate("product_detail_screen") },
+                            onAddToCart = { /* tambahkan ke keranjang */ }
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                     }
@@ -251,7 +230,7 @@ fun HomeScreen(
                             isSheetOpen = false
                             currentStep = 1
                             authViewModel.checkPassword { success, message ->
-                                if(success) {
+                                if (success) {
                                     moneyExchangeViewModel.exchangeMoney { success, message ->
                                         if (success) {
                                             showPopup = true
@@ -277,8 +256,10 @@ fun HomeScreen(
             PopUpNotif(
                 iconResId = if (errorPopupPoint || errorPopupPassword) R.drawable.ic_alert else R.drawable.ic_success,
                 message = when {
-                    errorPopupPoint -> errorMessageMoneyExchange ?: "Maaf, poin Anda tidak mencukupi" // Pesan error terkait poin
-                    errorPopupPassword -> errorMessageMoneyExchange ?: "Maaf, password Anda salah" // Pesan error password
+                    errorPopupPoint -> errorMessageMoneyExchange
+                        ?: "Maaf, poin Anda tidak mencukupi" // Pesan error terkait poin
+                    errorPopupPassword -> errorMessageMoneyExchange
+                        ?: "Maaf, password Anda salah" // Pesan error password
                     else -> "Permintaan tukar poin berhasil!" // Pesan sukses
                 },
                 buttonText = "Tutup",

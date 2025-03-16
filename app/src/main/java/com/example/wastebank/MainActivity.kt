@@ -6,16 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.presentation.ui.screen.DonateScreen
+import com.example.wastebank.data.ProductDataSource
 import com.example.wastebank.data.repository.AuthRepositoryImpl
 import com.example.wastebank.data.repository.MoneyExchangeRepositoryImpl
 import com.example.wastebank.data.repository.UserProfileRepositoryImpl
@@ -46,14 +43,16 @@ class MainActivity : ComponentActivity() {
                     viewModel(factory = AuthViewModel.Factory(authUseCase))
 
                 // Inisiasi userProfilRepo, userProfileUseCase, dan userProfileViewModel
-                 val userProfileRepo = UserProfileRepositoryImpl()
-                 val userProfileUseCase = UserProfileUseCase(userProfileRepo)
-                 val userProfileViewModel: UserProfileViewModel = viewModel(factory = UserProfileViewModel.Factory(userProfileUseCase))
+                val userProfileRepo = UserProfileRepositoryImpl()
+                val userProfileUseCase = UserProfileUseCase(userProfileRepo)
+                val userProfileViewModel: UserProfileViewModel =
+                    viewModel(factory = UserProfileViewModel.Factory(userProfileUseCase))
 
                 // Inisiasi moneyExchangeRepo, moneyExchangeUseCase, dan moneyExchangeViewModel
-                 val moneyExchangeRepo = MoneyExchangeRepositoryImpl()
-                 val moneyExchangeUseCase = MoneyExchangeUseCase(moneyExchangeRepo)
-                 val moneyExchangeViewModel: MoneyExchangeViewModel = viewModel(factory = MoneyExchangeViewModel.Factory(moneyExchangeUseCase))
+                val moneyExchangeRepo = MoneyExchangeRepositoryImpl()
+                val moneyExchangeUseCase = MoneyExchangeUseCase(moneyExchangeRepo)
+                val moneyExchangeViewModel: MoneyExchangeViewModel =
+                    viewModel(factory = MoneyExchangeViewModel.Factory(moneyExchangeUseCase))
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -85,7 +84,12 @@ class MainActivity : ComponentActivity() {
                             SetNewPasswordScreen(navController)
                         }
                         composable("home_screen") {
-                            HomeScreen(navController, userProfileViewModel, moneyExchangeViewModel, authViewModel)
+                            HomeScreen(
+                                navController,
+                                userProfileViewModel,
+                                moneyExchangeViewModel,
+                                authViewModel
+                            )
                         }
                         composable("maps_screen") {
                             MapsScreen(navController)
@@ -104,6 +108,12 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("donation_detail_screen") {
                             DonationDetailScreen(navController)
+                        }
+                        composable("product_detail_screen") {
+                            ProductDetailScreen(
+                                navController = navController,
+                                product = ProductDataSource.productList[0]
+                            )
                         }
                     }
                 }

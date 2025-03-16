@@ -3,7 +3,7 @@ package com.example.wastebank.domain.model
 // kategori produk marketplace
 enum class ProductCategory(val displayName: String) {
     VASE("Vas Bunga"),
-    FASHION("Fashion Wear"),
+    FASHION("Fashion Pakaian"),
     CRAFT("Prakarya"),
     TOY("Mainan"),
     DECOR("Hiasan/Dekorasi");

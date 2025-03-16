@@ -18,31 +18,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wastebank.R
+import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.theme.*
 
 @Composable
 fun CardProduct(
-    productImageResId: Int,
-    productName: String,
-    productCategory: String,
-    productPrice: String,
+    product: Product,
     modifier: Modifier = Modifier,
     imageHeight: Int = 100,
-    onClick: () -> Unit, // navigasi ke detail produk
-    onAddToCart: () -> Unit // menambahkan ke keranjang
+    onClick: () -> Unit,
+    onAddToCart: () -> Unit
 ) {
     Column(
         modifier = modifier
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
-            )
+            .shadow(elevation = 4.dp, shape = RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
             .background(WhiteBg)
             .clickable { onClick() },
     ) {
-        // gambar produk
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -50,8 +44,8 @@ fun CardProduct(
             contentAlignment = Alignment.Center
         ) {
             androidx.compose.foundation.Image(
-                painter = painterResource(id = productImageResId),
-                contentDescription = "gambar produk",
+                painter = painterResource(id = product.imageRes),
+                contentDescription = "Gambar produk",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
@@ -63,15 +57,13 @@ fun CardProduct(
                 .fillMaxSize()
                 .padding(6.dp)
         ) {
-            // nama produk
             Text(
-                text = productName,
+                text = product.name,
                 style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(4.dp))
 
-            // row untuk kategori, harga, dan ikon
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -79,36 +71,33 @@ fun CardProduct(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    // kategori produk
                     Text(
-                        text = productCategory,
+                        text = product.category.displayName,
                         style = Typography.bodySmall,
                         color = GreyMedium,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    // harga produk
                     Text(
-                        text = productPrice,
+                        text = product.formattedPrice,
                         style = Typography.bodySmall,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
 
-                // ikon tas untuk menambah ke keranjang
                 Box(
                     modifier = Modifier
                         .size(28.dp)
                         .clip(RoundedCornerShape(50))
                         .background(YellowMain)
-                        .clickable { onAddToCart() }, // event saat tombol diklik
+                        .clickable { onAddToCart() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         modifier = Modifier.clip(RoundedCornerShape(50)),
                         painter = painterResource(id = R.drawable.ic_bag),
-                        contentDescription = "tambah ke keranjang",
+                        contentDescription = "Tambah ke keranjang",
                         tint = Color.White
                     )
                 }
@@ -121,10 +110,13 @@ fun CardProduct(
 @Composable
 fun PreviewCardProduct() {
     CardProduct(
-        productImageResId = R.drawable.product_pot,
-        productName = "Pot Bunga Hewan",
-        productCategory = ProductCategory.VASE.toString(),
-        productPrice = "Rp20.000",
+        product = Product(
+            name = "Pot Bunga Hewan",
+            category = ProductCategory.VASE,
+            price = 20000,
+            imageRes = R.drawable.product_pot,
+            description = "Pot bunga lucu berbentuk hewan yang dibuat dari botol plastik bekas. Desainnya menarik dengan berbagai karakter seperti kucing, panda, dan kelinci."
+        ),
         modifier = Modifier
             .width(135.dp)
             .height(175.dp),
