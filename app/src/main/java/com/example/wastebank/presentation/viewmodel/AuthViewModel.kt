@@ -2,9 +2,12 @@ package com.example.wastebank.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wastebank.domain.usecase.AuthUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 // ViewModel untuk Auth
 class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
@@ -57,78 +60,96 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
 
 
     fun register() {
-        authUseCase.registerUser(
-            name.value, email.value, password.value, phoneNumber.value, gender.value
-        ) { success, message ->
-            if (success) {
-                _isRegistered.value = true // Simpan status registrasi ke state
-            }
+        viewModelScope.launch {
+            authUseCase.registerUser(
+                name.value, email.value, password.value, phoneNumber.value, gender.value
+            ) { success, message ->
+                if (success) {
+                    _isRegistered.value = true // Simpan status registrasi ke state
+                }
 
-            else {
-                _errorMessage.value = message // Simpan message error ke state
+                else {
+                    _errorMessage.value = message // Simpan message error ke state
+                }
             }
         }
     }
+
 
 
     fun loginUser() {
-        authUseCase.loginUser(
-            email.value, password.value
-        ) { success, message ->
-            if (success) {
-                _isLoggedIn.value = true // Simpan status login ke state
-            }
+        viewModelScope.launch {
+            authUseCase.loginUser(
+                email.value, password.value
+            ) { success, message ->
+                if (success) {
+                    _isLoggedIn.value = true // Simpan status login ke state
+                }
 
-            else {
-                _errorMessage.value = message // Simpan message error ke state
+                else {
+                    _errorMessage.value = message // Simpan message error ke state
+                }
             }
         }
     }
+
 
 
     fun loginAdmin() {
-        authUseCase.loginAdmin(
-            email.value, password.value, adminId.value
-        ) { success, message ->
-            if (success) {
-                _isLoggedIn.value = true // Simpan status login ke state
-            }
+        viewModelScope.launch {
+            authUseCase.loginAdmin(
+                email.value, password.value, adminId.value
+            ) { success, message ->
+                if (success) {
+                    _isLoggedIn.value = true // Simpan status login ke state
+                }
 
-            else {
-                _errorMessage.value = message // Simpan message error ke state
+                else {
+                    _errorMessage.value = message // Simpan message error ke state
+                }
             }
         }
     }
+
 
     fun checkPassword(onResult: (Boolean, String) -> Unit) {
-        authUseCase.checkPassword(password.value) { success ->
-            if (success) {
-                onResult(true, "") // Kirim hasil sukses dengan pesan kosong
-            } else {
-                onResult(false, "") // Kirim hasil gagal dengan pesan error
+        viewModelScope.launch {
+            authUseCase.checkPassword(password.value) { success ->
+                if (success) {
+                    onResult(true, "") // Kirim hasil sukses dengan pesan kosong
+                } else {
+                    onResult(false, "") // Kirim hasil gagal dengan pesan error
+                }
             }
         }
     }
+
 
 
     fun logout() {
-        authUseCase.logoutUser() // Panggil fungsi logoutUser dari AuthUseCase
+        viewModelScope.launch {
+            authUseCase.logoutUser() // Panggil fungsi logoutUser dari AuthUseCase
+        }
     }
+
 
 
     fun resetPassword() {
-        authUseCase.resetPassword(
-            email.value
-        ) { success, message ->
-            if (success) {
-                _isResetPassword.value = true // Simpan status reset password ke state
-            }
+        viewModelScope.launch {
+            authUseCase.resetPassword(
+                email.value
+            ) { success, message ->
+                if (success) {
+                    _isResetPassword.value = true // Simpan status reset password ke state
+                }
 
-            else {
-                _errorMessage.value = message // Simpan message error ke state
+                else {
+                    _errorMessage.value = message // Simpan message error ke state
+                }
             }
         }
     }
+
 
 
     class Factory(private val authUseCase: AuthUseCase) : ViewModelProvider.Factory {

@@ -14,7 +14,7 @@ class UserProfileRepositoryImpl : UserProfileRepository{
     private val db = FirebaseService.db
     private val userRef = db.getReference("users")
 
-    override fun getUserProfile(onResult: (String?, String?, String?, String?, Int?) -> Unit) {
+    override suspend fun getUserProfile(onResult: (String?, String?, String?, String?, Int?) -> Unit) {
 
         // Ambil userId dari user yang sedang login
         val userId = auth.currentUser?.uid
@@ -34,7 +34,7 @@ class UserProfileRepositoryImpl : UserProfileRepository{
         }
     }
 
-    override fun editUserProfile(name: String, phoneNumber: String, email: String, password: String, gender: String, onResult: (Boolean, String?) -> Unit) {
+    override suspend fun editUserProfile(name: String, phoneNumber: String, email: String, password: String, gender: String, onResult: (Boolean, String?) -> Unit) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
             userRef.child(userId).child("name").setValue(name)
@@ -48,7 +48,7 @@ class UserProfileRepositoryImpl : UserProfileRepository{
         }
     }
 
-    override fun getUserName(onResult: (String?) -> Unit) {
+    override suspend fun getUserName(onResult: (String?) -> Unit) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
             userRef.child(userId).child("name").get().addOnSuccessListener { snapshot ->
@@ -66,7 +66,7 @@ class UserProfileRepositoryImpl : UserProfileRepository{
     }
 
 
-    override fun getUserPoint(onResult: (Int?) -> Unit) {
+    override suspend fun getUserPoint(onResult: (Int?) -> Unit) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
             userRef.child(userId).child("points").addValueEventListener(object :
@@ -85,7 +85,7 @@ class UserProfileRepositoryImpl : UserProfileRepository{
         }
     }
 
-    override fun deleteAccount(onResult: (Boolean, String?) -> Unit) {
+    override suspend fun deleteAccount(onResult: (Boolean, String?) -> Unit) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
             try {

@@ -13,7 +13,7 @@ class CharityExchangeRepositoryImpl : CharityExchangeRepository {
     private val auth = FirebaseService.auth
     private val db = FirebaseService.db
 
-    override fun exchangeCharity(point: Int, charityName: String, onResult: (Boolean, String?) -> Unit) {
+    override suspend fun exchangeCharity(point: Int, charityName: String, onResult: (Boolean, String?) -> Unit) {
         val userId = auth.currentUser?.uid
         if(userId != null) {
             val id = UUID.randomUUID().toString()

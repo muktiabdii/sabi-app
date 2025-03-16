@@ -17,7 +17,7 @@ class WasteDonateRepositoryImpl : WasteDonateRepository{
     private val db = FirebaseService.db
 
     // Fungsi untuk melakukan donasi sampah
-    override fun donateWaste(email: String, items: List<WasteItem>, onResult: (Boolean, String?) -> Unit) {
+    override suspend fun donateWaste(email: String, items: List<WasteItem>, onResult: (Boolean, String?) -> Unit) {
 
         val userRef = db.getReference("users")
 

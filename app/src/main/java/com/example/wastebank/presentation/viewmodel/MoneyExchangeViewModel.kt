@@ -2,9 +2,11 @@ package com.example.wastebank.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.wastebank.domain.usecase.MoneyExchangeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class MoneyExchangeViewModel(private val moneyExchangeUseCase: MoneyExchangeUseCase) : ViewModel() {
 
@@ -47,17 +49,20 @@ class MoneyExchangeViewModel(private val moneyExchangeUseCase: MoneyExchangeUseC
     // Fungsi untuk memproses penukaran uang dengan menggunakan use case
     // Mengirimkan hasil ke onResult callback
     fun exchangeMoney(onResult: (Boolean, String) -> Unit) {
-        moneyExchangeUseCase.exchangeMoney(
-            points.value, bankName.value, accountNumber.value
-        ) { success, message ->
-            if (success) {
-                onResult(true, "") // Penukaran berhasil
-            } else {
-                onResult(false, "") // Penukaran gagal
-                _errorMessage.value = message // Menyimpan pesan error untuk ditampilkan
+        viewModelScope.launch {
+            moneyExchangeUseCase.exchangeMoney(
+                points.value, bankName.value, accountNumber.value
+            ) { success, message ->
+                if (success) {
+                    onResult(true, "") // Penukaran berhasil
+                } else {
+                    onResult(false, "") // Penukaran gagal
+                    _errorMessage.value = message // Menyimpan pesan error untuk ditampilkan
+                }
             }
         }
     }
+
 
     // Factory class untuk membuat instance ViewModel dengan dependensi
     class Factory(
