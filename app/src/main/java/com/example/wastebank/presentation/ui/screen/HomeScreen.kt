@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -86,14 +88,15 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(YellowMain)
+            .verticalScroll(rememberScrollState())
     ) {
         // topbar
         TopBar(username = name, points = pointsAmount)
 
         Box(
             modifier = Modifier
-                .weight(1f)
                 .fillMaxSize()
+                .fillMaxHeight()
                 .background(
                     Color.White,
                     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
@@ -111,6 +114,9 @@ fun HomeScreen(
                         onRedeemPointsClick = { isSheetOpen = true } // buka bottom sheet
                     )
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                BannerDonation(navController)
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // misi kamu hari ini
@@ -162,22 +168,24 @@ fun HomeScreen(
 
                 // looping daftar produk
                 LazyRow(
-                    contentPadding = PaddingValues(start = 20.dp, end = 20.dp)
+                    contentPadding = PaddingValues(start = 20.dp, end = 10.dp)
                 ) {
                     items(products) { product ->
                         CardProduct(
                             product = product,
                             modifier = Modifier
-                                .width(135.dp)
-                                .height(175.dp),
-                            imageHeight = 100,
+                                .width(160.dp)
+                                .height(195.dp),
+                            imageHeight = 110,
                             onClick = { navController.navigate("product_detail_screen") },
                             onAddToCart = { /* tambahkan ke keranjang */ }
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                     }
                 }
+                Spacer(modifier = Modifier.height(24.dp))
             }
+
         }
 
         Box(

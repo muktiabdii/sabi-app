@@ -54,6 +54,7 @@ fun DonationDetailScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.width(16.dp))
 
+            // detail donasi
             Text(
                 text = "Detail Donasi",
                 style = Typography.headlineSmall.copy(
@@ -64,6 +65,7 @@ fun DonationDetailScreen(navController: NavController) {
         }
         Spacer(modifier = Modifier.height(16.dp))
 
+        // papua dengan kita
         CardDonationDetail(
             title = "Papua Dengan Kita",
             description = "Beri Subsidi untuk mereka yang berada di Timur!",
@@ -83,6 +85,7 @@ fun DonationDetailScreen(navController: NavController) {
 
         val nominalList = listOf(10000, 25000, 50000, 100000, 250000, 500000)
 
+        // pilihan nominal
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = Modifier
@@ -112,7 +115,6 @@ fun DonationDetailScreen(navController: NavController) {
                 fontWeight = FontWeight.SemiBold
             )
         )
-
         Spacer(modifier = Modifier.height(12.dp))
 
         TextFieldNominal(
@@ -142,7 +144,7 @@ fun DonationDetailScreen(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        // buttons
+        // button salin nomor rekening
         ButtonAuth(
             text = "SALIN NOMOR REKENING",
             backgroundColor = Color.White,
@@ -152,25 +154,28 @@ fun DonationDetailScreen(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(12.dp))
 
+        // button upload bukti transfer
         ButtonAuth(
             text = "UPLOAD BUKTI TRANSFER",
             backgroundColor = BrownMain,
             textColor = Color.White,
-            onClick = { showDialogUpload = true }
+            onClick = { showDialogUpload = true } // tampilkan dialog
         )
     }
 
     // Dialog Upload Bukti Transfer
     if (showDialogUpload) {
         DialogUpload(
+            // ambil subtotal
             subtotal = selectedNominal ?: customNominal.toIntOrNull() ?: 0,
             pengiriman = 0,
             onDismiss = { showDialogUpload = false },
+            // tampilkan pop up notif setelah diklik
             onUploadClick = { showPopUpNotif = true }
         )
     }
 
-    // PopUp Notifikasi Pembayaran Berhasil
+    // PopUp Notifikasi Pembayaran akan Diproses
     if (showPopUpNotif) {
         PopUpNotif(
             iconResId = R.drawable.ic_success,
@@ -178,8 +183,10 @@ fun DonationDetailScreen(navController: NavController) {
             buttonText = "KEMBALI",
             navController = navController,
             onDismiss = {
+                // tutup pop up notif dan dialog
                 showPopUpNotif = false
                 showDialogUpload = false
+                // kembali ke halaman donate
                 navController.navigate("donate_screen") {
                     popUpTo(navController.graph.startDestinationId) { inclusive = false }
                 }

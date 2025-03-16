@@ -71,8 +71,8 @@ fun MarketplaceScreen(navController: NavController) {
                         items(ProductDataSource.productList) { product ->
                             CardProduct(
                                 product = product,
-                                modifier = Modifier.height(200.dp),
-                                imageHeight = 120,
+                                modifier = Modifier.height(210.dp),
+                                imageHeight = 125,
                                 onClick = { navController.navigate("product_detail_screen") },
                                 onAddToCart = { }
                             )
@@ -80,8 +80,8 @@ fun MarketplaceScreen(navController: NavController) {
                         items(ProductDataSource.productList) { product ->
                             CardProduct(
                                 product = product,
-                                modifier = Modifier.height(200.dp),
-                                imageHeight = 120,
+                                modifier = Modifier.height(210.dp),
+                                imageHeight = 125,
                                 onClick = { navController.navigate("product_detail_screen") },
                                 onAddToCart = { }
                             )

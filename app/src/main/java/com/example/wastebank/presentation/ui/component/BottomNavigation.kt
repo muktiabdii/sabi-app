@@ -29,11 +29,18 @@ fun BottomNavigation(navController: NavController) {
     )
 
     val sectionRoutes = mapOf(
-        "marketplace_screen" to listOf("marketplace_screen", "donate_screen"),  // Marketplace & Donasi
+        "marketplace_screen" to listOf(
+            "marketplace_screen",
+            "cart_screen",
+            "donate_screen",
+            "donation_detail_screen",
+            "payment_screen",
+            "product_detail_screen"
+        ),
         "home_screen" to listOf("home_screen"),
         "maps_screen" to listOf("maps_screen"),
         "article_screen" to listOf("article_screen"),
-        "profile_screen" to listOf("profile_screen")
+        "profile_screen" to listOf("profile_screen", "edit_profile_screen")
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

@@ -63,7 +63,6 @@ class MainActivity : ComponentActivity() {
 //                        ganti halaman start pertama di sini
 //                        startDestination = "splash_screen"
                         startDestination = "home_screen"
-//                        startDestination = "marketplace_screen"
                     ) {
                         composable("splash_screen") {
                             SplashScreen(navController)
@@ -114,6 +113,15 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 product = ProductDataSource.productList[0]
                             )
+                        }
+                        composable("cart_screen") {
+                            CartScreen(navController = navController)
+                        }
+                        composable("payment_screen") {
+                            PaymentScreen(navController = navController)
+                        }
+                        composable("edit_profile_screen") {
+                            EditProfileScreen(navController = navController)
                         }
                     }
                 }

@@ -55,14 +55,14 @@ fun CardProduct(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(6.dp)
+                .padding(horizontal = 10.dp, vertical = 5.dp)
         ) {
             Text(
                 text = product.name,
-                style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                style = Typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -73,29 +73,34 @@ fun CardProduct(
                 ) {
                     Text(
                         text = product.category.displayName,
-                        style = Typography.bodySmall,
+                        style = Typography.bodyMedium.copy(
+                            color = GreyMedium,
+                            fontWeight = FontWeight.SemiBold
+                        ),
                         color = GreyMedium,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(5.dp))
 
                     Text(
                         text = product.formattedPrice,
-                        style = Typography.bodySmall,
+                        style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
 
                 Box(
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(35.dp)
                         .clip(RoundedCornerShape(50))
                         .background(YellowMain)
                         .clickable { onAddToCart() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        modifier = Modifier.clip(RoundedCornerShape(50)),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clip(RoundedCornerShape(50)),
                         painter = painterResource(id = R.drawable.ic_bag),
                         contentDescription = "Tambah ke keranjang",
                         tint = Color.White
@@ -118,9 +123,9 @@ fun PreviewCardProduct() {
             description = "Pot bunga lucu berbentuk hewan yang dibuat dari botol plastik bekas. Desainnya menarik dengan berbagai karakter seperti kucing, panda, dan kelinci."
         ),
         modifier = Modifier
-            .width(135.dp)
-            .height(175.dp),
-        imageHeight = 100,
+            .width(160.dp)
+            .height(195.dp),
+        imageHeight = 110,
         onClick = { },
         onAddToCart = { }
     )

@@ -113,7 +113,10 @@ fun ProductDetailScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             // button masukkan keranjang
-            ButtonAuth(text = "MASUKKAN KERANJANG", onClick = { })
+            ButtonAuth(
+                text = "MASUKKAN KERANJANG",
+                onClick = { navController.navigate("cart_screen") }
+            )
         }
         Spacer(modifier = Modifier.height(90.dp))
     }

@@ -24,7 +24,7 @@ object ProductDataSource {
             name = "Lampu Sendok",
             category = ProductCategory.DECOR,
             price = 30000,
-            imageRes = R.drawable.product_lampu,
+            imageRes = R.drawable.product_lampu_full,
             description = "Lampu gantung unik yang dibuat dari sendok plastik bekas, disusun menyerupai sisik ikan atau buah nanas. Saat dinyalakan, lampu ini memberikan efek cahaya yang indah dan artistik. Cocok untuk menghiasi kamar tidur, ruang tamu, atau kafe dengan konsep daur ulang dan estetika minimalis."
         ),
         Product(

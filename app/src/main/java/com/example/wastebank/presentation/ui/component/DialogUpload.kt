@@ -73,6 +73,7 @@ fun DialogUpload(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    // Upload Bukti Transfer
                     Text(
                         text = "Upload Bukti Transfer",
                         style = Typography.headlineMedium.copy(color = Color.White),
@@ -107,7 +108,7 @@ fun DialogUpload(
                         Column {
                             DetailRow(label = "Subtotal", value = subtotal)
                             DetailRow(label = "Pengiriman", value = pengiriman)
-                            DetailRow(label = "Total", value = total, isBold = true)
+                            DetailRow(label = "Total", value = total)
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
@@ -127,7 +128,7 @@ fun DialogUpload(
                             .fillMaxWidth()
                             .height(168.dp)
                             .background(color = GreenBg, shape = RoundedCornerShape(10.dp))
-                            // jalankan file picker
+                            // jalankan file picker untuk memilih gambar
                             .clickable { filePickerLauncher.launch("image/*") },
                         contentAlignment = Alignment.Center
                     ) {
@@ -176,23 +177,24 @@ fun DialogUpload(
             }
         }
     }
-
-
 }
 
+// menampilkan detail pembayaran
 @Composable
-fun DetailRow(label: String, value: Int, isBold: Boolean = false) {
+fun DetailRow(label: String, value: Int) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = label,
-            style = if (isBold) Typography.bodyMedium.copy(fontWeight = FontWeight.Bold) else Typography.bodyMedium
+            style = Typography.bodyMedium
         )
         Text(
             text = "Rp %,d".format(value),
-            style = if (isBold) Typography.bodyMedium.copy(fontWeight = FontWeight.Bold) else Typography.bodyMedium
+            style = Typography.bodyMedium.copy(
+                fontWeight = FontWeight.Bold
+            )
         )
     }
 }
