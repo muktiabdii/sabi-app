@@ -42,8 +42,7 @@ class MainActivity : ComponentActivity() {
                 // Inisiasi authRepo, authUseCase, dan authViewModel
                 val authRepo = AuthRepositoryImpl()
                 val authUseCase = AuthUseCase(authRepo)
-                val authViewModel: AuthViewModel =
-                    viewModel(factory = AuthViewModel.Factory(authUseCase))
+                val authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory(authUseCase))
 
                 // Inisiasi userProfilRepo, userProfileUseCase, dan userProfileViewModel
                  val userProfileRepo = UserProfileRepositoryImpl()
