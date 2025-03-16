@@ -174,8 +174,8 @@ fun DonationDetailScreen(navController: NavController) {
     if (showPopUpNotif) {
         PopUpNotif(
             iconResId = R.drawable.ic_success,
-            message = "Pembayaran Berhasil!",
-            buttonText = "KEMBALI MASUK",
+            message = "Pembayaran akan Diproses!",
+            buttonText = "KEMBALI",
             navController = navController,
             onDismiss = {
                 showPopUpNotif = false
