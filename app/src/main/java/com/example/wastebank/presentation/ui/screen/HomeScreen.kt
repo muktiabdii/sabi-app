@@ -3,6 +3,7 @@ package com.example.wastebank.presentation.ui.screen
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -175,10 +176,10 @@ fun HomeScreen(
                             product = product,
                             modifier = Modifier
                                 .width(160.dp)
-                                .height(195.dp),
+                                .height(215.dp),
                             imageHeight = 110,
                             onClick = { navController.navigate("product_detail_screen") },
-                            onAddToCart = { /* tambahkan ke keranjang */ }
+                            onAddToCart = { navController.navigate("cart_screen") }
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                     }

@@ -39,7 +39,7 @@ fun CardCampaign(
             .height(80.dp)
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(12.dp)
             )
             .background(Color.White, shape = RoundedCornerShape(12.dp))
             .padding(horizontal = 20.dp),

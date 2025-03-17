@@ -42,7 +42,7 @@ fun MarketplaceScreen(navController: NavController) {
                     SearchBarMarket(
                         value = searchText,
                         onValueChange = { searchText = it },
-                        placeholder = "Cari Produk Olahan Kamu",
+                        placeholder = "Cari Produk Olahan",
                         modifier = Modifier.weight(1f)
                     )
                     ButtonFilter(onClick = { })
@@ -66,15 +66,15 @@ fun MarketplaceScreen(navController: NavController) {
                         contentPadding = PaddingValues(top = 10.dp, bottom = 20.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .heightIn(min = 100.dp, max = 1600.dp)
+                            .heightIn(min = 100.dp, max = 10000.dp)
                     ) {
                         items(ProductDataSource.productList) { product ->
                             CardProduct(
                                 product = product,
-                                modifier = Modifier.height(210.dp),
+                                modifier = Modifier.height(230.dp),
                                 imageHeight = 125,
                                 onClick = { navController.navigate("product_detail_screen") },
-                                onAddToCart = { }
+                                onAddToCart = { navController.navigate("cart_screen") }
                             )
                         }
                         items(ProductDataSource.productList) { product ->

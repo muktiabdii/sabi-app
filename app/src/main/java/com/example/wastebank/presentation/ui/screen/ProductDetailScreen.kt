@@ -118,7 +118,7 @@ fun ProductDetailScreen(
                 onClick = { navController.navigate("cart_screen") }
             )
         }
-        Spacer(modifier = Modifier.height(90.dp))
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 

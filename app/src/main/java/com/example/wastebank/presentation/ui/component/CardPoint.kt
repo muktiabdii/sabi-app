@@ -38,7 +38,7 @@ fun CardPoint(
             .height(190.dp)
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(20.dp)
             )
             .background(GreenBg, cardShape)
             .clickable { onViewPointsClick() },

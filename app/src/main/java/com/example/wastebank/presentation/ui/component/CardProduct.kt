@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -43,19 +44,19 @@ fun CardProduct(
                 .height(imageHeight.dp),
             contentAlignment = Alignment.Center
         ) {
-            androidx.compose.foundation.Image(
+            Image(
                 painter = painterResource(id = product.imageRes),
                 contentDescription = "Gambar produk",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
         }
-        Spacer(modifier = Modifier.height(6.dp))
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 10.dp, vertical = 5.dp)
+                .padding(start = 10.dp, end = 10.dp, top = 0.dp, bottom = 5.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = product.name,
@@ -124,7 +125,7 @@ fun PreviewCardProduct() {
         ),
         modifier = Modifier
             .width(160.dp)
-            .height(195.dp),
+            .height(215.dp),
         imageHeight = 110,
         onClick = { },
         onAddToCart = { }

@@ -163,8 +163,7 @@ fun DonateScreen(navController: NavController) {
                         contentPadding = PaddingValues(
                             start = 20.dp,
                             end = 20.dp,
-                            top = 0.dp,
-                            bottom = 70.dp
+                            bottom = 80.dp
                         )
                     ) {
                         item {
@@ -188,7 +187,7 @@ fun DonateScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .padding(start = 16.dp, end = 16.dp, top = 0.dp, bottom = 20.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 24.dp)
             ) {
                 ButtonAuth(
                     text = "KEMBALI KE MARKETPLACE",
