@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
-import com.example.wastebank.data.ProductDataSource
 import com.example.wastebank.domain.model.Product
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.theme.*
@@ -84,12 +83,12 @@ fun ProductDetailScreen(
             )
 
             // harga produk
-            Text(text = product.formattedPrice, style = Typography.headlineLarge)
+            Text(text = "product.formattedPrice", style = Typography.headlineLarge)
             Spacer(modifier = Modifier.height(4.dp))
 
             // nilai poin
             Text(
-                text = "Setara dengan ${product.pointsEquivalent} poin",
+                text = "Setara dengan poin",
                 style = Typography.bodyLarge,
                 color = GreyMedium
             )
@@ -105,7 +104,7 @@ fun ProductDetailScreen(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = product.description,
+                text = "product.description",
                 style = Typography.bodyLarge,
                 color = GreyMedium,
                 textAlign = TextAlign.Justify
@@ -122,12 +121,12 @@ fun ProductDetailScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ProductDetailScreenPreview() {
-    val navController = rememberNavController()
-    ProductDetailScreen(
-        navController = navController,
-        product = ProductDataSource.productList[0],
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ProductDetailScreenPreview() {
+//    val navController = rememberNavController()
+//    ProductDetailScreen(
+//        navController = navController,
+//        product = ProductDataSource.productList[0],
+//    )
+//}

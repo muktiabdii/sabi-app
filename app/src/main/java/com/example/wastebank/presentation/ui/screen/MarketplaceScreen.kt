@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -22,11 +23,15 @@ import com.example.wastebank.R
 import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 
 @Composable
-fun MarketplaceScreen(navController: NavController) {
+fun MarketplaceScreen(navController: NavController, productViewModel: ProductViewModel) {
     // state input search
     var searchText by remember { mutableStateOf("") }
+
+    // state product
+    val products by productViewModel.products.collectAsState()
 
     Scaffold(
         // bottom navigation
@@ -81,11 +86,11 @@ fun MarketplaceScreen(navController: NavController) {
                             .heightIn(min = 100.dp, max = 1600.dp)
 
                     ) {
-                        items(getProductList()) { product ->
+                        items(products) { product ->
                             CardProduct(
-                                productImageResId = product.imageRes,
+                                productImageUrl = product.image,
                                 productName = product.name,
-                                productCategory = product.category.displayName,
+                                productCategory = product.category,
                                 productPrice = product.price,
                                 modifier = Modifier.height(200.dp),
                                 imageHeight = 120,
@@ -100,34 +105,34 @@ fun MarketplaceScreen(navController: NavController) {
     }
 }
 
-fun getProductList(): List<Product> {
-    return listOf(
-        Product("Pot Bunga Hewan", ProductCategory.VASE, "Rp 20.000", R.drawable.product_pot),
-        Product(
-            "Tas Totebag Jeans",
-            ProductCategory.FASHION,
-            "Rp 15.000",
-            R.drawable.product_totebag
-        ),
-        Product("Lampu Sendok", ProductCategory.DECOR, "Rp 30.000", R.drawable.product_lampu),
-        Product("Mainan Mobil", ProductCategory.TOY, "Rp 25.000", R.drawable.product_mobil),
-        Product("Tempat Pensil", ProductCategory.CRAFT, "Rp 30.000", R.drawable.product_pensil),
-        Product("Pot Bunga Hewan", ProductCategory.VASE, "Rp 20.000", R.drawable.product_pot),
-        Product(
-            "Tas Totebag Jeans",
-            ProductCategory.FASHION,
-            "Rp 15.000",
-            R.drawable.product_totebag
-        ),
-        Product("Lampu Sendok", ProductCategory.DECOR, "Rp 30.000", R.drawable.product_lampu),
-        Product("Mainan Mobil", ProductCategory.TOY, "Rp 25.000", R.drawable.product_mobil),
-        Product("Tempat Pensil", ProductCategory.CRAFT, "Rp 30.000", R.drawable.product_pensil),
-    )
-}
+//fun getProductList(): List<Product> {
+//    return listOf(
+//        Product("Pot Bunga Hewan", ProductCategory.VASE, "Rp 20.000", R.drawable.product_pot),
+//        Product(
+//            "Tas Totebag Jeans",
+//            ProductCategory.FASHION,
+//            "Rp 15.000",
+//            R.drawable.product_totebag
+//        ),
+//        Product("Lampu Sendok", ProductCategory.DECOR, "Rp 30.000", R.drawable.product_lampu),
+//        Product("Mainan Mobil", ProductCategory.TOY, "Rp 25.000", R.drawable.product_mobil),
+//        Product("Tempat Pensil", ProductCategory.CRAFT, "Rp 30.000", R.drawable.product_pensil),
+//        Product("Pot Bunga Hewan", ProductCategory.VASE, "Rp 20.000", R.drawable.product_pot),
+//        Product(
+//            "Tas Totebag Jeans",
+//            ProductCategory.FASHION,
+//            "Rp 15.000",
+//            R.drawable.product_totebag
+//        ),
+//        Product("Lampu Sendok", ProductCategory.DECOR, "Rp 30.000", R.drawable.product_lampu),
+//        Product("Mainan Mobil", ProductCategory.TOY, "Rp 25.000", R.drawable.product_mobil),
+//        Product("Tempat Pensil", ProductCategory.CRAFT, "Rp 30.000", R.drawable.product_pensil),
+//    )
+//}
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewMarketplaceScreen() {
-    val navController = rememberNavController()
-    MarketplaceScreen(navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewMarketplaceScreen() {
+//    val navController = rememberNavController()
+//    MarketplaceScreen(navController)
+//}

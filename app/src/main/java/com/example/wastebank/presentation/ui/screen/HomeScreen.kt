@@ -30,6 +30,7 @@ import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 import kotlinx.coroutines.launch
 
@@ -39,7 +40,8 @@ fun HomeScreen(
     navController: NavController,
     userProfileViewModel: UserProfileViewModel,
     moneyExchangeViewModel: MoneyExchangeViewModel,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    productViewModel: ProductViewModel
 ) {
     // state user profile
     val name by userProfileViewModel.name.collectAsState()
@@ -50,12 +52,13 @@ fun HomeScreen(
     val amount by moneyExchangeViewModel.amount.collectAsState()
     val selectedBank by moneyExchangeViewModel.bankName.collectAsState()
     val accountNumber by moneyExchangeViewModel.accountNumber.collectAsState()
-    val adminFee by moneyExchangeViewModel.adminFee.collectAsState()
-    val totalAmount by moneyExchangeViewModel.totalAmount.collectAsState()
     val errorMessageMoneyExchange by moneyExchangeViewModel.errorMessage.collectAsState()
 
     // state auth
     val password by authViewModel.password.collectAsState()
+
+    // state product
+    val products by productViewModel.products.collectAsState()
 
     // kelola state bottom sheet tukar poin
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -79,6 +82,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         userProfileViewModel.getUserProfile()
         userProfileViewModel.getUserPoint()
+        productViewModel.getProducts()
     }
 
     Column(
@@ -156,35 +160,13 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // semua produk
-                val products = listOf(
-                    Product(
-                        "Jeans Totebag",
-                        ProductCategory.FASHION,
-                        "Rp25.000",
-                        R.drawable.product_totebag
-                    ),
-                    Product(
-                        "Pot Bunga Hewan",
-                        ProductCategory.VASE,
-                        "Rp20.000",
-                        R.drawable.product_pot
-                    ),
-                    Product(
-                        "Lampu Sendok",
-                        ProductCategory.CRAFT,
-                        "Rp15.000",
-                        R.drawable.product_lampu
-                    )
-                )
-
                 // looping list produk
                 LazyRow(
                     contentPadding = PaddingValues(start = 20.dp, end = 20.dp)
                 ) {
                     items(products) { product ->
                         CardProduct(
-                            productImageResId = product.imageRes,
+                            productImageUrl = product.image,
                             productName = product.name,
                             productCategory = product.category.toString(),
                             productPrice = product.price,
@@ -230,8 +212,6 @@ fun HomeScreen(
                     amount,
                     selectedBank,
                     accountNumber,
-                    adminFee,
-                    totalAmount,
                     password,
                     currentStep = currentStep,
                     onExchangeClick = {

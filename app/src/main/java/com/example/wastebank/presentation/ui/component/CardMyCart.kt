@@ -11,7 +11,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.R
-import com.example.wastebank.data.ProductDataSource
 import com.example.wastebank.domain.model.Product
 
 @Composable
@@ -63,7 +62,7 @@ fun CardMyCart(
 
                 // harga produk
                 Text(
-                    text = product.formattedPrice,
+                    text = "product.formattedPrice",
                     style = Typography.headlineSmall
                 )
             }
@@ -78,11 +77,11 @@ fun CardMyCart(
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun PreviewCardMyCart() {
-    CardMyCart(
-        product = ProductDataSource.productList[2],
-        quantity = 1
-    )
-}
+//@Composable
+//@Preview(showBackground = true)
+//fun PreviewCardMyCart() {
+//    CardMyCart(
+//        product = ProductDataSource.productList[2],
+//        quantity = 1
+//    )
+//}
