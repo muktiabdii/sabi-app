@@ -20,14 +20,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.wastebank.R
 import com.example.wastebank.domain.model.ProductCategory
+import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.presentation.ui.theme.*
 
 @Composable
 fun CardProduct(
-    productImageUrl: String,
-    productName: String,
-    productCategory: String,
-    productPrice: Int,
+    product: ProductDomain,
     modifier: Modifier = Modifier,
     imageHeight: Int = 100,
     onClick: () -> Unit, // navigasi ke detail produk
@@ -51,7 +49,7 @@ fun CardProduct(
             contentAlignment = Alignment.Center
         ) {
             AsyncImage(
-                model = productImageUrl,
+                model = product.image,
                 contentDescription = "gambar produk",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -66,7 +64,7 @@ fun CardProduct(
         ) {
             // nama produk
             Text(
-                text = productName,
+                text = product.name,
                 style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -82,7 +80,7 @@ fun CardProduct(
                 ) {
                     // kategori produk
                     Text(
-                        text = productCategory,
+                        text = product.category,
                         style = Typography.bodySmall,
                         color = GreyMedium,
                         modifier = Modifier.fillMaxWidth()
@@ -91,7 +89,7 @@ fun CardProduct(
 
                     // harga produk
                     Text(
-                        text = "$productPrice",
+                        text = product.formatRupiah(),
                         style = Typography.bodySmall,
                         modifier = Modifier.fillMaxWidth()
                     )

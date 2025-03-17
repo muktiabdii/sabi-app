@@ -24,6 +24,8 @@ import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun MarketplaceScreen(navController: NavController, productViewModel: ProductViewModel) {
@@ -88,13 +90,13 @@ fun MarketplaceScreen(navController: NavController, productViewModel: ProductVie
                     ) {
                         items(products) { product ->
                             CardProduct(
-                                productImageUrl = product.image,
-                                productName = product.name,
-                                productCategory = product.category,
-                                productPrice = product.price,
+                                product = product,
                                 modifier = Modifier.height(200.dp),
                                 imageHeight = 120,
-                                onClick = { },
+                                onClick = {
+                                    val encodedName = URLEncoder.encode(product.name, StandardCharsets.UTF_8.toString())
+                                    navController.navigate("product_detail_screen/$encodedName")
+                                },
                                 onAddToCart = { }
                             )
                         }

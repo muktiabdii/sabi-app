@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -32,6 +33,8 @@ import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 import com.example.wastebank.ui.splash.RegisterScreen
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 class MainActivity : ComponentActivity() {
 
@@ -62,6 +65,7 @@ class MainActivity : ComponentActivity() {
                  val productRepo = ProductRepositoryImpl()
                  val productUseCase = ProductUseCase(productRepo)
                  val productViewModel: ProductViewModel = viewModel(factory = ProductViewModel.Factory(productUseCase))
+                 val products by productViewModel.products.collectAsState()
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -112,6 +116,15 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("donation_detail_screen") {
                             DonationDetailScreen(navController)
+                        }
+                        composable("product_detail_screen/{productName}") { backStackEntry ->
+                            val productName = backStackEntry.arguments?.getString("productName") ?: ""
+                            val decodedName = URLDecoder.decode(productName, StandardCharsets.UTF_8.toString())
+
+                            val product = products.find { it.name == decodedName }
+                            product?.let {
+                                ProductDetailScreen(navController = navController, product = it)
+                            } ?: navController.popBackStack()
                         }
                     }
                 }

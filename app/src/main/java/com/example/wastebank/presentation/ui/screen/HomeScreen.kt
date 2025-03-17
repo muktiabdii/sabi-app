@@ -33,6 +33,8 @@ import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -166,15 +168,15 @@ fun HomeScreen(
                 ) {
                     items(products) { product ->
                         CardProduct(
-                            productImageUrl = product.image,
-                            productName = product.name,
-                            productCategory = product.category.toString(),
-                            productPrice = product.price,
+                            product = product,
                             modifier = Modifier
                                 .width(135.dp)
                                 .height(175.dp),
                             imageHeight = 100,
-                            onClick = { },
+                            onClick = {
+                                val encodedName = URLEncoder.encode(product.name, StandardCharsets.UTF_8.toString())
+                                navController.navigate("product_detail_screen/$encodedName")
+                            },
                             onAddToCart = { }
                         )
                         Spacer(modifier = Modifier.width(12.dp))

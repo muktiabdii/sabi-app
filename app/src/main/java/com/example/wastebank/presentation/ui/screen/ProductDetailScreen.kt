@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,26 +20,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.wastebank.R
 import com.example.wastebank.domain.model.Product
+import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.theme.*
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 
 @Composable
-fun ProductDetailScreen(
-    navController: NavController,
-    product: Product
-) {
+fun ProductDetailScreen(navController: NavController, product: ProductDomain) {
+    val point = product.price / 10
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         Box {
-            Image(
-                painter = painterResource(id = product.imageRes),
-                contentDescription = "Product Image",
-                modifier = Modifier.fillMaxWidth()
+            AsyncImage(
+                model = product.image,
+                contentDescription = "gambar produk",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
 
             // tombol back
@@ -71,7 +75,7 @@ fun ProductDetailScreen(
 
             // kategori produk
             Text(
-                text = product.category.displayName,
+                text = product.category,
                 style = Typography.headlineMedium,
                 color = GreyMedium
             )
@@ -83,12 +87,12 @@ fun ProductDetailScreen(
             )
 
             // harga produk
-            Text(text = "product.formattedPrice", style = Typography.headlineLarge)
+            Text(text = product.formatRupiah(), style = Typography.headlineLarge)
             Spacer(modifier = Modifier.height(4.dp))
 
             // nilai poin
             Text(
-                text = "Setara dengan poin",
+                text = "Setara dengan $point poin",
                 style = Typography.bodyLarge,
                 color = GreyMedium
             )
@@ -104,7 +108,7 @@ fun ProductDetailScreen(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "product.description",
+                text = product.description,
                 style = Typography.bodyLarge,
                 color = GreyMedium,
                 textAlign = TextAlign.Justify
