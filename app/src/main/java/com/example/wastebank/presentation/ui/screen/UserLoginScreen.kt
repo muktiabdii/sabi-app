@@ -11,20 +11,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
@@ -32,6 +27,7 @@ import com.example.wastebank.presentation.ui.component.TextFieldPassword
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
+import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.manrope
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
@@ -103,25 +99,14 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
             Spacer(modifier = Modifier.height(100.dp))
             Text(
                 text = "Masuk Sebagai Pengguna",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    textAlign = TextAlign.Start
-                )
+                style = Typography.headlineLarge
             )
             Spacer(modifier = Modifier.height(24.dp))
 
             // TextFields Email
             Text(
                 text = "Email atau No. Telepon",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                )
+                style = Typography.bodyLarge.copy(color = GreyMedium)
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
@@ -135,13 +120,7 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
             // TextFields Kata Sandi
             Text(
                 text = "Kata Sandi",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
-                )
+                style = Typography.bodyLarge.copy(color = GreyMedium)
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldPassword(
@@ -159,13 +138,7 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { navController.navigate("forgot_password_screen") },
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.End,
-                )
+                style = Typography.bodyMedium.copy(color = GreyMedium, textAlign = TextAlign.End)
             )
             Spacer(modifier = Modifier.height(155.dp))
 
@@ -176,7 +149,7 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
                     authViewModel.loginUser()
                 }
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // Sudah Punya Akun
             RegisterText(navController)
@@ -201,8 +174,7 @@ fun RegisterText(navController: NavController) {
 
     Text(
         text = annotatedText,
-        fontSize = 12.sp,
-        color = GreyMedium,
+        style = Typography.bodyMedium.copy(color = GreyMedium),
         textAlign = TextAlign.Center,
         modifier = Modifier
             .fillMaxWidth()

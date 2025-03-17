@@ -19,6 +19,7 @@ import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.WhiteBg
 
+// Papua dengan Kita
 @Composable
 fun CardDonationDetail(
     title: String,

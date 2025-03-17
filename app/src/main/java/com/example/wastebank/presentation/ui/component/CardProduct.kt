@@ -17,17 +17,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.example.wastebank.R
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.theme.*
 
 @Composable
 fun CardProduct(
-    productImageUrl: String,
+    productImageResId: Int,
     productName: String,
     productCategory: String,
-    productPrice: Int,
+    productPrice: String,
     modifier: Modifier = Modifier,
     imageHeight: Int = 100,
     onClick: () -> Unit, // navigasi ke detail produk
@@ -50,8 +49,8 @@ fun CardProduct(
                 .height(imageHeight.dp),
             contentAlignment = Alignment.Center
         ) {
-            AsyncImage(
-                model = productImageUrl,
+            androidx.compose.foundation.Image(
+                painter = painterResource(id = productImageResId),
                 contentDescription = "gambar produk",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -91,7 +90,7 @@ fun CardProduct(
 
                     // harga produk
                     Text(
-                        text = "Rp. $productPrice",
+                        text = productPrice,
                         style = Typography.bodySmall,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -118,19 +117,19 @@ fun CardProduct(
     }
 }
 
-//@Preview(showBackground = false)
-//@Composable
-//fun PreviewCardProduct() {
-//    CardProduct(
-//        productImageResId = R.drawable.product_pot,
-//        productName = "Pot Bunga Hewan",
-//        productCategory = ProductCategory.VASE.toString(),
-//        productPrice = "Rp20.000",
-//        modifier = Modifier
-//            .width(135.dp)
-//            .height(175.dp),
-//        imageHeight = 100,
-//        onClick = { },
-//        onAddToCart = { }
-//    )
-//}
+@Preview(showBackground = false)
+@Composable
+fun PreviewCardProduct() {
+    CardProduct(
+        productImageResId = R.drawable.product_pot,
+        productName = "Pot Bunga Hewan",
+        productCategory = ProductCategory.VASE.toString(),
+        productPrice = "Rp20.000",
+        modifier = Modifier
+            .width(135.dp)
+            .height(175.dp),
+        imageHeight = 100,
+        onClick = { },
+        onAddToCart = { }
+    )
+}

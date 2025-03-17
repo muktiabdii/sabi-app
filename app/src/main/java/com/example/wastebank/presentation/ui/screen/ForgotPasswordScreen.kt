@@ -11,20 +11,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.PopUpNotif
@@ -32,7 +29,7 @@ import com.example.wastebank.presentation.ui.component.TextFieldAuth
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
-import com.example.wastebank.presentation.ui.theme.manrope
+import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
@@ -101,38 +98,21 @@ fun ForgotPasswordScreen(navController: NavController, authViewModel: AuthViewMo
             Spacer(modifier = Modifier.height(100.dp))
             Text(
                 text = "Lupa kata sandi?",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    textAlign = TextAlign.Start
+                style = Typography.headlineLarge
                 )
-            )
+
             Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = "Jangan khawatir! Itu bisa saja terjadi. Silakan masukkan email yang terkait dengan akun Anda.",
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Justify,
+                style = Typography.bodySmall.copy(textAlign = TextAlign.Justify)
                 )
-            )
             Spacer(modifier = Modifier.height(24.dp))
 
             // TextFields Email
             Text(
                 text = "Email",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
+                style = Typography.bodyLarge
                 )
-            )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
                 value = email,

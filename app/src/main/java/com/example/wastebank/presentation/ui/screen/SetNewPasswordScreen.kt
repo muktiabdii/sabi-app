@@ -9,22 +9,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.TextFieldPassword
 import com.example.wastebank.presentation.ui.theme.GreenBg
-import com.example.wastebank.presentation.ui.theme.GreyMedium
-import com.example.wastebank.presentation.ui.theme.manrope
+import com.example.wastebank.presentation.ui.theme.Typography
 
 @Composable
 fun SetNewPasswordScreen(navController: NavController) {
@@ -76,38 +70,20 @@ fun SetNewPasswordScreen(navController: NavController) {
 
             Text(
                 text = "Setel ulang kata sandi",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    textAlign = TextAlign.Start
-                )
+                style = Typography.headlineLarge
             )
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(
                 text = "Silakan ketik sesuatu yang dapat Anda ingat.",
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Justify,
-                )
+                style = Typography.bodySmall
             )
             Spacer(modifier = Modifier.height(24.dp))
 
             // TextFields kata sandi
             Text(
                 text = "Kata sandi baru",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
-                )
+                style = Typography.headlineSmall
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldPassword(
@@ -122,13 +98,7 @@ fun SetNewPasswordScreen(navController: NavController) {
             // TextFields konfirmasi kata sandi
             Text(
                 text = "Konfirmasi kata sandi baru",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
-                )
+                style = Typography.headlineSmall
             )
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldPassword(

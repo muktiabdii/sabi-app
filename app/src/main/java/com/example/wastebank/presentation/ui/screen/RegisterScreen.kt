@@ -7,20 +7,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
@@ -30,13 +25,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.ButtonAuth
+import com.example.wastebank.presentation.ui.component.RadioButtonGender
 import com.example.wastebank.presentation.ui.component.TextFieldAuth
 import com.example.wastebank.presentation.ui.component.TextFieldPassword
-import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.TextRed
-import com.example.wastebank.presentation.ui.theme.manrope
+import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
@@ -111,38 +106,22 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             Spacer(modifier = Modifier.height(50.dp))
             Text(
                 text = "Bergabung dengan SABI",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    textAlign = TextAlign.Start
-                )
+                style = Typography.headlineLarge
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = "Jadilah bagian dari gerakan SABI dalam mengelola sampah organik, berkolaborasi dengan sesama peduli lingkungan, dan raih berbagai reward menarik dari kontribusimu.",
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Justify,
-                )
+                style = Typography.bodyMedium.copy(textAlign = TextAlign.Justify)
             )
             Spacer(modifier = Modifier.height(12.dp))
 
             // TextFields Nama
             Text(
                 text = "Nama",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                )
+                style = Typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(5.dp))
+
             TextFieldAuth(
                 value = name,
                 placeholder = "Masukkan nama Anda",
@@ -154,15 +133,10 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             // TextFields No. Telepon
             Text(
                 text = "No. Telepon",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
-                )
+                style = Typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(5.dp))
+
             TextFieldAuth(
                 value = phoneNumber,
                 placeholder = "Masukkan nomor telepon",
@@ -178,15 +152,10 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             // TextFields Email
             Text(
                 text = "Email",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
-                )
+                style = Typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(5.dp))
+
             TextFieldAuth(
                 value = email,
                 placeholder = "Masukkan email",
@@ -198,15 +167,10 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             // TextFields kata sandi
             Text(
                 text = "Kata Sandi",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                    textAlign = TextAlign.Start,
-                )
+                style = Typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(5.dp))
+
             TextFieldPassword(
                 value = password,
                 placeholder = "Minimal 8 karakter",
@@ -219,19 +183,14 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             // Gender Selection
             Text(
                 text = "Gender",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = manrope,
-                    fontWeight = FontWeight.Normal,
-                    color = GreyMedium,
-                )
+                style = Typography.bodyLarge
             )
             Row {
-                GenderRadioButton("Wanita", gender) {
+                RadioButtonGender("Wanita", gender) {
                     authViewModel.updateGender(it)
                 }
                 Spacer(modifier = Modifier.width(5.dp))
-                GenderRadioButton("Pria", gender) {
+                RadioButtonGender("Pria", gender) {
                     authViewModel.updateGender(it)
                 }
             }
@@ -244,34 +203,11 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
                     authViewModel.register()
                 }
             )
-
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // Sudah Punya Akun
             LoginText(navController)
         }
-    }
-}
-
-// Radio Button Gender
-@Composable
-fun GenderRadioButton(label: String, selected: String, onSelect: (String) -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        RadioButton(
-            selected = selected == label,
-            onClick = { onSelect(label) },
-            colors = RadioButtonDefaults.colors(
-                selectedColor = BrownMain,
-                unselectedColor = GreyMedium
-            )
-        )
-        Text(
-            text = label,
-            fontSize = 14.sp,
-            color = Color.Black
-        )
     }
 }
 
