@@ -85,6 +85,7 @@ fun HomeScreen(
         userProfileViewModel.getUserProfile()
         userProfileViewModel.getUserPoint()
         productViewModel.getProducts()
+        productViewModel.getCartItems()
     }
 
     Column(
@@ -177,7 +178,7 @@ fun HomeScreen(
                                 val encodedName = URLEncoder.encode(product.name, StandardCharsets.UTF_8.toString())
                                 navController.navigate("product_detail_screen/$encodedName")
                             },
-                            onAddToCart = { }
+                            onAddToCart = { product?.let { productViewModel.addToCart(it)} }
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                     }

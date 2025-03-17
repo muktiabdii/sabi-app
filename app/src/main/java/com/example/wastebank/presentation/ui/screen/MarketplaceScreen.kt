@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,10 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
-import com.example.wastebank.R
-import com.example.wastebank.domain.model.Product
-import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import java.net.URLEncoder
@@ -34,6 +31,11 @@ fun MarketplaceScreen(navController: NavController, productViewModel: ProductVie
 
     // state product
     val products by productViewModel.products.collectAsState()
+
+    LaunchedEffect(Unit) {
+        productViewModel.getProducts()
+        productViewModel.getCartItems()
+    }
 
     Scaffold(
         // bottom navigation
@@ -97,7 +99,7 @@ fun MarketplaceScreen(navController: NavController, productViewModel: ProductVie
                                     val encodedName = URLEncoder.encode(product.name, StandardCharsets.UTF_8.toString())
                                     navController.navigate("product_detail_screen/$encodedName")
                                 },
-                                onAddToCart = { }
+                                onAddToCart = {product?.let { productViewModel.addToCart(it)}}
                             )
                         }
                     }

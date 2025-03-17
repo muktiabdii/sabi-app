@@ -29,8 +29,9 @@ import com.example.wastebank.presentation.ui.theme.*
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
 
 @Composable
-fun ProductDetailScreen(navController: NavController, product: ProductDomain) {
-    val point = product.price / 10
+fun ProductDetailScreen(navController: NavController, productViewModel: ProductViewModel) {
+    val product by productViewModel.selectedProduct.collectAsState()
+    val point = (product?.price ?: 0) / 10
 
     Column(
         modifier = Modifier
@@ -39,13 +40,13 @@ fun ProductDetailScreen(navController: NavController, product: ProductDomain) {
     ) {
         Box {
             AsyncImage(
-                model = product.image,
+                model = product?.image ?: "",
                 contentDescription = "gambar produk",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
 
-            // tombol back
+            // Tombol back
             Box(
                 modifier = Modifier
                     .padding(horizontal = 24.dp, vertical = 40.dp)
@@ -69,13 +70,12 @@ fun ProductDetailScreen(navController: NavController, product: ProductDomain) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-            // nama produk
-            Text(text = product.name, style = Typography.headlineLarge.copy(fontSize = 24.sp))
+            // Jika product null, tampilkan teks placeholder
+            Text(text = product?.name ?: "Nama Produk", style = Typography.headlineLarge.copy(fontSize = 24.sp))
             Spacer(modifier = Modifier.height(2.dp))
 
-            // kategori produk
             Text(
-                text = product.category,
+                text = product?.category ?: "Kategori",
                 style = Typography.headlineMedium,
                 color = GreyMedium
             )
@@ -86,11 +86,10 @@ fun ProductDetailScreen(navController: NavController, product: ProductDomain) {
                 color = GreyLine
             )
 
-            // harga produk
-            Text(text = product.formatRupiah(), style = Typography.headlineLarge)
+            // Harga produk
+            Text(text = product?.formatRupiah() ?: "Rp 0", style = Typography.headlineLarge)
             Spacer(modifier = Modifier.height(4.dp))
 
-            // nilai poin
             Text(
                 text = "Setara dengan $point poin",
                 style = Typography.bodyLarge,
@@ -103,27 +102,29 @@ fun ProductDetailScreen(navController: NavController, product: ProductDomain) {
                 color = GreyLine
             )
 
-            // tentang produk
             Text(text = "Tentang Produk", style = Typography.headlineLarge)
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = product.description,
+                text = product?.description ?: "Deskripsi tidak tersedia",
                 style = Typography.bodyLarge,
                 color = GreyMedium,
                 textAlign = TextAlign.Justify
             )
             Spacer(modifier = Modifier.height(32.dp))
 
-            // button masukkan keranjang
             ButtonAuth(
                 text = "MASUKKAN KERANJANG",
-                onClick = { navController.navigate("cart_screen") }
+                onClick = {
+                    product?.let { productViewModel.addToCart(it) }
+                    navController.navigate("cart_screen")
+                }
             )
         }
         Spacer(modifier = Modifier.height(90.dp))
     }
 }
+
 
 //@Preview(showBackground = true)
 //@Composable

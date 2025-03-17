@@ -63,9 +63,9 @@ class MainActivity : ComponentActivity() {
 
                 // Inisasi productRepo, productUseCase, dan productViewModel
                  val productRepo = ProductRepositoryImpl()
-                 val productUseCase = ProductUseCase(productRepo)
-                 val productViewModel: ProductViewModel = viewModel(factory = ProductViewModel.Factory(productUseCase))
-                 val products by productViewModel.products.collectAsState()
+                val productUseCase = ProductUseCase(productRepo)
+                val productViewModel: ProductViewModel = viewModel(factory = ProductViewModel.Factory(productUseCase))
+                val products by productViewModel.products.collectAsState()
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -121,10 +121,11 @@ class MainActivity : ComponentActivity() {
                             val productName = backStackEntry.arguments?.getString("productName") ?: ""
                             val decodedName = URLDecoder.decode(productName, StandardCharsets.UTF_8.toString())
 
-                            val product = products.find { it.name == decodedName }
-                            product?.let {
-                                ProductDetailScreen(navController = navController, product = it)
-                            } ?: navController.popBackStack()
+                            productViewModel.getProductByName(decodedName)
+                            ProductDetailScreen(navController = navController, productViewModel = productViewModel)
+                        }
+                        composable("cart_screen") {
+                            CartScreen(navController, productViewModel)
                         }
                     }
                 }
