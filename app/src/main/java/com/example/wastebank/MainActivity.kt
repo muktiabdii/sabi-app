@@ -18,15 +18,18 @@ import androidx.navigation.compose.rememberNavController
 import com.example.donation.presentation.ui.screen.DonateScreen
 import com.example.wastebank.data.repository.AuthRepositoryImpl
 import com.example.wastebank.data.repository.MoneyExchangeRepositoryImpl
+import com.example.wastebank.data.repository.ProductRepositoryImpl
 import com.example.wastebank.data.repository.UserProfileRepositoryImpl
 import com.example.wastebank.domain.usecase.AuthUseCase
 import com.example.wastebank.domain.usecase.MoneyExchangeUseCase
+import com.example.wastebank.domain.usecase.ProductUseCase
 import com.example.wastebank.domain.usecase.UserProfileUseCase
 import com.example.wastebank.presentation.ui.component.BottomNavigation
 import com.example.wastebank.presentation.ui.screen.*
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 import com.example.wastebank.ui.splash.RegisterScreen
 
@@ -53,6 +56,11 @@ class MainActivity : ComponentActivity() {
                  val moneyExchangeRepo = MoneyExchangeRepositoryImpl()
                  val moneyExchangeUseCase = MoneyExchangeUseCase(moneyExchangeRepo)
                  val moneyExchangeViewModel: MoneyExchangeViewModel = viewModel(factory = MoneyExchangeViewModel.Factory(moneyExchangeUseCase))
+
+                // Inisiasi productRepo, productUseCase, dan productViewModel
+                 val productRepo = ProductRepositoryImpl()
+                 val productUseCase = ProductUseCase(productRepo)
+                 val productViewModel: ProductViewModel = viewModel(factory = ProductViewModel.Factory(productUseCase))
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -84,13 +92,13 @@ class MainActivity : ComponentActivity() {
                             SetNewPasswordScreen(navController)
                         }
                         composable("home_screen") {
-                            HomeScreen(navController, userProfileViewModel, moneyExchangeViewModel, authViewModel)
+                            HomeScreen(navController, userProfileViewModel, moneyExchangeViewModel, authViewModel, productViewModel)
                         }
                         composable("maps_screen") {
                             MapsScreen(navController)
                         }
                         composable("marketplace_screen") {
-                            MarketplaceScreen(navController)
+                            MarketplaceScreen(navController, productViewModel)
                         }
                         composable("article_screen") {
                             ArticleScreen(navController)

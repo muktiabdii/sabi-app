@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -23,13 +24,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
-import com.example.wastebank.domain.model.Product
+import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 import kotlinx.coroutines.launch
 
@@ -39,7 +41,8 @@ fun HomeScreen(
     navController: NavController,
     userProfileViewModel: UserProfileViewModel,
     moneyExchangeViewModel: MoneyExchangeViewModel,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    productViewModel: ProductViewModel
 ) {
     // state user profile
     val name by userProfileViewModel.name.collectAsState()
@@ -61,6 +64,9 @@ fun HomeScreen(
     var currentStep by remember { mutableStateOf(1) }
     val coroutineScope = rememberCoroutineScope()
 
+    // state product
+    val product by productViewModel.products.collectAsState()
+
     // state pop up
     var showPopup by remember { mutableStateOf(false) }
     var errorPopupPoint by remember { mutableStateOf(false) }
@@ -77,6 +83,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         userProfileViewModel.getUserProfile()
         userProfileViewModel.getUserPoint()
+        productViewModel.getProducts()
     }
 
     Column(
@@ -154,37 +161,37 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // semua produk
-                val products = listOf(
-                    Product(
-                        "Jeans Totebag",
-                        ProductCategory.FASHION,
-                        "Rp25.000",
-                        R.drawable.product_totebag
-                    ),
-                    Product(
-                        "Pot Bunga Hewan",
-                        ProductCategory.VASE,
-                        "Rp20.000",
-                        R.drawable.product_pot
-                    ),
-                    Product(
-                        "Lampu Sendok",
-                        ProductCategory.CRAFT,
-                        "Rp15.000",
-                        R.drawable.product_lampu
-                    )
-                )
+//                // semua produk
+//                val products = listOf(
+//                    Product(
+//                        "Jeans Totebag",
+//                        ProductCategory.FASHION,
+//                        "Rp25.000",
+//                        R.drawable.product_totebag
+//                    ),
+//                    Product(
+//                        "Pot Bunga Hewan",
+//                        ProductCategory.VASE,
+//                        "Rp20.000",
+//                        R.drawable.product_pot
+//                    ),
+//                    Product(
+//                        "Lampu Sendok",
+//                        ProductCategory.CRAFT,
+//                        "Rp15.000",
+//                        R.drawable.product_lampu
+//                    )
+//                )
 
                 // looping list produk
                 LazyRow(
                     contentPadding = PaddingValues(start = 20.dp, end = 20.dp)
                 ) {
-                    items(products) { product ->
+                    items(product) { product ->
                         CardProduct(
-                            productImageResId = product.imageRes,
+                            productImageUrl = product.image,
                             productName = product.name,
-                            productCategory = product.category.toString(),
+                            productCategory = product.category,
                             productPrice = product.price,
                             modifier = Modifier
                                 .width(135.dp)
