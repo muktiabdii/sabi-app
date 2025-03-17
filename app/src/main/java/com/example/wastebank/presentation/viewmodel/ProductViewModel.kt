@@ -15,10 +15,20 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
     private val _products = MutableStateFlow<List<ProductDomain>>(emptyList())
     val products: StateFlow<List<ProductDomain>> = _products.asStateFlow()
 
+    private val _selectedProduct = MutableStateFlow<ProductDomain?>(null)
+    val selectedProduct: StateFlow<ProductDomain?> = _selectedProduct.asStateFlow()
+
     fun getProducts() {
         viewModelScope.launch {
             val result = productUseCase.getProducts()
             _products.value = result
+        }
+    }
+
+    fun getProductByName(name: String) {
+        viewModelScope.launch {
+            val result = productUseCase.getProductByName(name)
+            _selectedProduct.value = result
         }
     }
 

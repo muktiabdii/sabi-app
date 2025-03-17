@@ -23,4 +23,18 @@ class ProductRepositoryImpl : ProductRepository {
         }
     }
 
+    override suspend fun getProductByName(name: String): ProductDomain? {
+        return try {
+            val snapshot = db.getReference("product").get().await()
+            val product = snapshot.children.mapNotNull { dataSnapshot ->
+                val productData = dataSnapshot.getValue(ProductData::class.java)
+                productData?.let { ProductMapper.mapToDomain(it) }
+            }.firstOrNull { it.name == name } // Cari produk berdasarkan nama
+
+            product
+        } catch (e: Exception) {
+            null
+        }
+    }
+
 }
