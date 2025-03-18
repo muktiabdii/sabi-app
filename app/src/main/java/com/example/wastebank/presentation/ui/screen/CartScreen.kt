@@ -125,7 +125,7 @@ fun CartScreen(navController: NavController, productViewModel: ProductViewModel)
                     text = "PEMBELIAN",
                     backgroundColor = BrownMain,
                     textColor = Color.White,
-                    onClick = { navController.navigate("payment_screen") }
+                    onClick = { navController.navigate("payment_screen/$subtotal/$shippingCost/$total") }
                 )
 
             }

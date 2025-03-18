@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.wastebank.data.model.PaymentData
 import com.example.wastebank.domain.model.CartItemDomain
+import com.example.wastebank.domain.model.PaymentDomain
 import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.domain.usecase.ProductUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +28,9 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
 
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
+
+    private val _paymentState = MutableStateFlow<Result<Boolean>?>(null)
+    val paymentState: StateFlow<Result<Boolean>?> = _paymentState.asStateFlow()
 
     fun getProducts() {
         viewModelScope.launch {
@@ -72,6 +77,33 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
             }
         }
     }
+
+    fun payment() {
+        viewModelScope.launch {
+            _paymentState.value = Result.success(false) // Menandakan proses sedang berjalan
+
+            val cartItems = _cartProducts.value
+            if (cartItems.isEmpty()) {
+                _errorMessage.value = "Keranjang belanja kosong!"
+                return@launch
+            }
+
+            val paymentData = PaymentDomain(
+                items = cartItems, // Kirim semua produk yang ada di cart
+                totalAmount = cartItems.sumOf { it.price }
+            )
+
+            val result = productUseCase.payment(paymentData)
+            _paymentState.value = result
+
+            result.onSuccess {
+                _cartProducts.value = emptyList() // Kosongkan cart setelah pembayaran sukses
+            }.onFailure { exception ->
+                _errorMessage.value = exception.message
+            }
+        }
+    }
+
 
     class Factory(private val productUseCase: ProductUseCase) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

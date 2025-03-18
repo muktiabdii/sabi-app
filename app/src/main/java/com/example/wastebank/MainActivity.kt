@@ -13,10 +13,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.donation.presentation.ui.screen.DonateScreen
 import com.example.wastebank.data.repository.AuthRepositoryImpl
 import com.example.wastebank.data.repository.DonationRepositoryImpl
@@ -147,8 +149,17 @@ class MainActivity : ComponentActivity() {
                         composable("edit_profile_screen") {
                             EditProfileScreen(navController, userProfileViewModel)
                         }
-                        composable("payment_screen") {
-                            PaymentScreen(navController)
+                        composable(
+                            "payment_screen/{subtotal}/{shippingCost}/{total}",
+                            arguments = listOf(
+                                navArgument("subtotal") { type = NavType.IntType },
+                                navArgument("shippingCost") { type = NavType.IntType },
+                                navArgument("total") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            val subtotal = backStackEntry.arguments?.getInt("subtotal") ?: 0
+                            val shippingCost = backStackEntry.arguments?.getInt("shippingCost") ?: 0
+                            val total = backStackEntry.arguments?.getInt("total") ?: 0
+                            PaymentScreen(navController, subtotal, shippingCost, total, productViewModel)
                         }
                     }
                 }
