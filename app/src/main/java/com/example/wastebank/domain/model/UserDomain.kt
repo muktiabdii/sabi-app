@@ -1,7 +1,6 @@
-package com.example.wastebank.data.model
+package com.example.wastebank.domain.model
 
-// Model data pengguna
-data class UserModel(
+data class UserDomain(
     val uid: String = "",
     val name: String = "",
     val email: String = "",

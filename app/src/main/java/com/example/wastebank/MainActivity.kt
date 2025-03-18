@@ -118,7 +118,7 @@ class MainActivity : ComponentActivity() {
                             ArticleScreen(navController)
                         }
                         composable("profile_screen") {
-                            ProfileScreen(navController)
+                            ProfileScreen(navController, userProfileViewModel)
                         }
                         composable("donate_screen") {
                             DonateScreen(navController, donationViewModel)
@@ -128,7 +128,7 @@ class MainActivity : ComponentActivity() {
                             val decodedTitle = URLDecoder.decode(donationTitle, StandardCharsets.UTF_8.toString())
 
                             donationViewModel.getDonationByTitle(decodedTitle)
-                            DonationDetailScreen(navController = navController, donationViewModel = donationViewModel)
+                            DonationDetailScreen(navController, donationViewModel)
                         }
 
                         composable("product_detail_screen/{productName}") { backStackEntry ->
@@ -136,13 +136,16 @@ class MainActivity : ComponentActivity() {
                             val decodedName = URLDecoder.decode(productName, StandardCharsets.UTF_8.toString())
 
                             productViewModel.getProductByName(decodedName)
-                            ProductDetailScreen(navController = navController, productViewModel = productViewModel)
+                            ProductDetailScreen(navController, productViewModel)
                         }
                         composable("cart_screen") {
                             CartScreen(navController, productViewModel)
                         }
                         composable("request_screen") {
-                            RequestScreen(navController = navController)
+                            RequestScreen(navController)
+                        }
+                        composable("edit_profile_screen") {
+                            EditProfileScreen(navController, userProfileViewModel)
                         }
                     }
                 }
