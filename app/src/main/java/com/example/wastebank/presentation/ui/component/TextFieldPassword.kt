@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -35,7 +36,7 @@ fun TextFieldPassword(
             .fillMaxWidth()
             .height(34.dp)
             .border(1.dp, BrownMain, RoundedCornerShape(8.dp))
-            .padding(horizontal = 10.dp, vertical = 8.dp),
+            .padding(horizontal = 10.dp),
     ) {
         BasicTextField(
             value = value,
@@ -57,8 +58,9 @@ fun TextFieldPassword(
             modifier = Modifier.fillMaxSize(),
             decorationBox = { innerTextField ->
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(modifier = Modifier.weight(1f)) {
                         if (value.isEmpty()) {
@@ -85,8 +87,8 @@ fun TextFieldPassword(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewTextFieldPassword() {
-//    TextFieldPassword(value = "", onValueChange = {}, placeholder = "Minimal 8 karakter")
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreviewTextFieldPassword() {
+    TextFieldPassword(value = "", onValueChange = {}, placeholder = "Minimal 8 karakter")
+}

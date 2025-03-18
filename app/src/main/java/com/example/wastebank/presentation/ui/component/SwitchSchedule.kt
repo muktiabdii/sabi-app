@@ -37,7 +37,7 @@ fun SwitchSchedule(
 
     Box(
         modifier = modifier
-            .fillMaxWidth()
+            .width(300.dp)
             .height(45.dp)
             .border(
                 width = 1.dp,
@@ -47,7 +47,7 @@ fun SwitchSchedule(
             .padding(3.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             // tombol jadwal

@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
@@ -26,7 +25,7 @@ fun CardNominal(
     Box(
         modifier = Modifier
             .width(115.dp)
-            .height(46.dp)
+            .height(45.dp)
             .border(width = 1.dp, color = BrownMain, shape = RoundedCornerShape(10.dp))
             .background(
                 color = if (isSelected) BrownMain else Color.White,
@@ -37,9 +36,7 @@ fun CardNominal(
     ) {
         Text(
             text = "Rp %,d".format(nominal),
-            style = Typography.bodyMedium.copy(
-                fontSize = Typography.bodyLarge.fontSize,
-                fontWeight = FontWeight.Bold,
+            style = Typography.headlineSmall.copy(
                 color = if (isSelected) Color.White else Color.Black,
                 textAlign = TextAlign.Center
             )

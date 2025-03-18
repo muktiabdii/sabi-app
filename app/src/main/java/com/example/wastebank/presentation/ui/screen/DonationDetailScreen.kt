@@ -2,11 +2,10 @@ package com.example.wastebank.presentation.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,148 +28,153 @@ fun DonationDetailScreen(navController: NavController) {
     var selectedNominal by remember { mutableStateOf<Int?>(null) }
     var customNominal by remember { mutableStateOf("") }
 
-    // state untuk menampilkan dialog upload
     var showDialogUpload by remember { mutableStateOf(false) }
     var showPopUpNotif by remember { mutableStateOf(false) }
 
-    Column(
+    val nominalList = listOf(10000, 25000, 50000, 100000, 250000, 500000)
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(30.dp))
+        item {
+            Spacer(modifier = Modifier.height(30.dp))
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 5.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = "Back",
-                modifier = Modifier.clickable { navController.popBackStack() }
+            // Header dengan tombol kembali
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = "Back",
+                    modifier = Modifier.clickable { navController.popBackStack() }
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Detail Donasi",
+                    style = Typography.headlineSmall.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                )
+            }
+        }
+
+        item {
+            // Card detail donasi
+            CardDonationDetail(
+                title = "Papua Dengan Kita",
+                description = "Beri Subsidi untuk mereka yang berada di Timur!",
+                percent = 67
             )
-            Spacer(modifier = Modifier.width(16.dp))
+        }
 
-            // detail donasi
+        item {
             Text(
-                text = "Detail Donasi",
+                text = "Pilih Nominal Donasi",
                 style = Typography.headlineSmall.copy(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold
                 )
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
 
-        // papua dengan kita
-        CardDonationDetail(
-            title = "Papua Dengan Kita",
-            description = "Beri Subsidi untuk mereka yang berada di Timur!",
-            percent = 67
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // pilih nominal donasi
-        Text(
-            text = "Pilih Nominal Donasi",
-            style = Typography.headlineSmall.copy(
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-
-        val nominalList = listOf(10000, 25000, 50000, 100000, 250000, 500000)
-
-        // pilihan nominal
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 200.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(nominalList) { nominal ->
-                CardNominal(
-                    nominal = nominal,
-                    isSelected = selectedNominal == nominal,
-                    onClick = {
-                        selectedNominal = nominal
-                        customNominal = ""
-                    }
-                )
+        item {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 500.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(nominalList) { nominal ->
+                    CardNominal(
+                        nominal = nominal,
+                        isSelected = selectedNominal == nominal,
+                        onClick = {
+                            selectedNominal = nominal
+                            customNominal = ""
+                        }
+                    )
+                }
             }
         }
-        Spacer(modifier = Modifier.height(24.dp))
 
-        // input nominal lain
-        Text(
-            text = "Atau Masukkan Nominal Lain",
-            style = Typography.headlineSmall.copy(
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold
+        item {
+            Text(
+                text = "Atau Masukkan Nominal Lain",
+                style = Typography.headlineSmall.copy(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(12.dp))
+        }
 
-        TextFieldNominal(
-            value = customNominal,
-            onValueChange = {
-                customNominal = it
-                selectedNominal = null
-            }
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // informasi transfer
-        Text(
-            text = "Informasi Transfer",
-            style = Typography.headlineSmall.copy(
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold
+        item {
+            TextFieldNominal(
+                value = customNominal,
+                onValueChange = {
+                    customNominal = it
+                    selectedNominal = null
+                }
             )
-        )
-        Spacer(modifier = Modifier.height(12.dp))
+        }
 
-        CardInfoTransfer(
-            bank = "BCA",
-            accountNo = "1234567890",
-            name = "Yayasan Papua Dengan Kita",
-            total = selectedNominal ?: customNominal.toIntOrNull() ?: 0
-        )
-        Spacer(modifier = Modifier.height(24.dp))
+        item {
+            Text(
+                text = "Informasi Transfer",
+                style = Typography.headlineSmall.copy(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            )
+        }
 
-        // button salin nomor rekening
-        ButtonAuth(
-            text = "SALIN NOMOR REKENING",
-            backgroundColor = Color.White,
-            textColor = BrownMain,
-            borderColor = BrownMain,
-            onClick = { /* Handle Copy Account Number */ }
-        )
-        Spacer(modifier = Modifier.height(12.dp))
+        item {
+            CardInfoTransfer(
+                bank = "BCA",
+                accountNo = "1234567890",
+                name = "Yayasan Papua Dengan Kita",
+                total = selectedNominal ?: customNominal.toIntOrNull() ?: 0
+            )
+        }
 
-        // button upload bukti transfer
-        ButtonAuth(
-            text = "UPLOAD BUKTI TRANSFER",
-            backgroundColor = BrownMain,
-            textColor = Color.White,
-            onClick = { showDialogUpload = true } // tampilkan dialog
-        )
+        item {
+            // Button Salin Nomor Rekening
+            ButtonAuth(
+                text = "SALIN NOMOR REKENING",
+                backgroundColor = Color.White,
+                textColor = BrownMain,
+                borderColor = BrownMain,
+                onClick = { /* Handle Copy Account Number */ }
+            )
+        }
+
+        item {
+            // Button Upload Bukti Transfer
+            ButtonAuth(
+                text = "UPLOAD BUKTI TRANSFER",
+                backgroundColor = BrownMain,
+                textColor = Color.White,
+                onClick = { showDialogUpload = true }
+            )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+        }
     }
 
     // Dialog Upload Bukti Transfer
     if (showDialogUpload) {
         DialogUpload(
-            // ambil subtotal
             subtotal = selectedNominal ?: customNominal.toIntOrNull() ?: 0,
             pengiriman = 0,
             onDismiss = { showDialogUpload = false },
-            // tampilkan pop up notif setelah diklik
             onUploadClick = { showPopUpNotif = true }
         )
     }
@@ -183,10 +187,8 @@ fun DonationDetailScreen(navController: NavController) {
             buttonText = "KEMBALI",
             navController = navController,
             onDismiss = {
-                // tutup pop up notif dan dialog
                 showPopUpNotif = false
                 showDialogUpload = false
-                // kembali ke halaman donate
                 navController.navigate("donate_screen") {
                     popUpTo(navController.graph.startDestinationId) { inclusive = false }
                 }

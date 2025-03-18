@@ -35,7 +35,7 @@ fun ProfileScreen(navController: NavController) {
             .fillMaxSize()
             .padding(24.dp)
     ) {
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         // Header Profil
         Row(
             modifier = Modifier.fillMaxWidth(),

@@ -115,7 +115,7 @@ fun HomeScreen(
                         onRedeemPointsClick = { isSheetOpen = true } // buka bottom sheet
                     )
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(18.dp))
 
                 BannerDonation(navController)
                 Spacer(modifier = Modifier.height(16.dp))
@@ -128,7 +128,7 @@ fun HomeScreen(
                         .align(Alignment.Start)
                         .padding(horizontal = 20.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // card kampanye bulan maret
                 Box(modifier = Modifier.padding(horizontal = 20.dp)) {
@@ -139,7 +139,7 @@ fun HomeScreen(
                         totalMissions = 30
                     )
                 }
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // card misi harian
                 Box(modifier = Modifier.padding(horizontal = 20.dp)) {
@@ -162,7 +162,7 @@ fun HomeScreen(
                         .align(Alignment.Start)
                         .padding(horizontal = 20.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 // ambil data produk dari ProductDataSource
                 val products = ProductDataSource.productList

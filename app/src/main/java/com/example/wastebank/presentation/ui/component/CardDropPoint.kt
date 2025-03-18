@@ -50,15 +50,15 @@ fun CardDropPoint(
 
             // keterangan lokasi
             Text(text = location, style = Typography.bodyMedium, color = BrownMain)
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             // progress bar kapasitas
             val progressFraction = capacity / 100f
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(8.dp)
-                    .background(GreyLight, shape = RoundedCornerShape(4.dp))
+                    .height(10.dp)
+                    .background(GreyLight, shape = RoundedCornerShape(10.dp))
             ) {
                 Box(
                     modifier = Modifier

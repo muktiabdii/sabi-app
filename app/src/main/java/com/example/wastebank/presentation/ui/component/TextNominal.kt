@@ -37,7 +37,7 @@ fun TextNominal(
             modifier = Modifier
                 .background(BrownMain, RoundedCornerShape(8.dp))
                 .fillMaxHeight()
-                .padding(horizontal = 10.dp, vertical = 6.dp),
+                .padding(horizontal = 10.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(

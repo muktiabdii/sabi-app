@@ -123,6 +123,9 @@ class MainActivity : ComponentActivity() {
                         composable("edit_profile_screen") {
                             EditProfileScreen(navController = navController)
                         }
+                        composable("request_screen") {
+                            RequestScreen(navController = navController)
+                        }
                     }
                 }
             }
