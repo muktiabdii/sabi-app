@@ -3,6 +3,7 @@ package com.example.wastebank.presentation.ui.screen
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -98,8 +99,8 @@ fun HomeScreen(
 
         Box(
             modifier = Modifier
-                .weight(1f)
                 .fillMaxSize()
+                .fillMaxHeight()
                 .background(
                     Color.White,
                     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
@@ -117,6 +118,9 @@ fun HomeScreen(
                         onRedeemPointsClick = { isSheetOpen = true } // buka bottom sheet
                     )
                 }
+                Spacer(modifier = Modifier.height(18.dp))
+
+                BannerDonation(navController)
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // misi kamu hari ini
@@ -127,7 +131,7 @@ fun HomeScreen(
                         .align(Alignment.Start)
                         .padding(horizontal = 20.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // card kampanye bulan maret
                 Box(modifier = Modifier.padding(horizontal = 20.dp)) {
@@ -138,7 +142,7 @@ fun HomeScreen(
                         totalMissions = 30
                     )
                 }
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // card misi harian
                 Box(modifier = Modifier.padding(horizontal = 20.dp)) {
@@ -161,19 +165,19 @@ fun HomeScreen(
                         .align(Alignment.Start)
                         .padding(horizontal = 20.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 // looping list produk
                 LazyRow(
-                    contentPadding = PaddingValues(start = 20.dp, end = 20.dp)
+                    contentPadding = PaddingValues(start = 20.dp, end = 10.dp)
                 ) {
                     items(products) { product ->
                         CardProduct(
                             product = product,
                             modifier = Modifier
-                                .width(135.dp)
-                                .height(175.dp),
-                            imageHeight = 100,
+                                .width(160.dp)
+                                .height(195.dp),
+                            imageHeight = 110,
                             onClick = {
                                 val encodedName = URLEncoder.encode(product.name, StandardCharsets.UTF_8.toString())
                                 navController.navigate("product_detail_screen/$encodedName")
@@ -183,7 +187,9 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.width(12.dp))
                     }
                 }
+                Spacer(modifier = Modifier.height(24.dp))
             }
+
         }
 
         Box(
@@ -234,7 +240,7 @@ fun HomeScreen(
                             isSheetOpen = false
                             currentStep = 1
                             authViewModel.checkPassword { success, message ->
-                                if(success) {
+                                if (success) {
                                     moneyExchangeViewModel.exchangeMoney { success, message ->
                                         if (success) {
                                             showPopup = true

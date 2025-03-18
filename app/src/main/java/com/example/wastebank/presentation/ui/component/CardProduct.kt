@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.wastebank.R
+import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.presentation.ui.theme.*
@@ -28,20 +29,16 @@ fun CardProduct(
     product: ProductDomain,
     modifier: Modifier = Modifier,
     imageHeight: Int = 100,
-    onClick: () -> Unit, // navigasi ke detail produk
-    onAddToCart: () -> Unit // menambahkan ke keranjang
+    onClick: () -> Unit,
+    onAddToCart: () -> Unit
 ) {
     Column(
         modifier = modifier
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
-            )
+            .shadow(elevation = 4.dp, shape = RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
             .background(WhiteBg)
             .clickable { onClick() },
     ) {
-        // gambar produk
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -60,17 +57,16 @@ fun CardProduct(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(6.dp)
+                .padding(start = 10.dp, end = 10.dp, top = 0.dp, bottom = 5.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            // nama produk
             Text(
                 text = product.name,
-                style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                style = Typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
-            // row untuk kategori, harga, dan ikon
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -81,16 +77,19 @@ fun CardProduct(
                     // kategori produk
                     Text(
                         text = product.category,
-                        style = Typography.bodySmall,
+                        style = Typography.bodyMedium.copy(
+                            color = GreyMedium,
+                            fontWeight = FontWeight.SemiBold
+                        ),
                         color = GreyMedium,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(5.dp))
 
                     // harga produk
                     Text(
                         text = product.formatRupiah(),
-                        style = Typography.bodySmall,
+                        style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -98,16 +97,18 @@ fun CardProduct(
                 // ikon tas untuk menambah ke keranjang
                 Box(
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(35.dp)
                         .clip(RoundedCornerShape(50))
                         .background(YellowMain)
-                        .clickable { onAddToCart() }, // event saat tombol diklik
+                        .clickable { onAddToCart() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        modifier = Modifier.clip(RoundedCornerShape(50)),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clip(RoundedCornerShape(50)),
                         painter = painterResource(id = R.drawable.ic_bag),
-                        contentDescription = "tambah ke keranjang",
+                        contentDescription = "Tambah ke keranjang",
                         tint = Color.White
                     )
                 }

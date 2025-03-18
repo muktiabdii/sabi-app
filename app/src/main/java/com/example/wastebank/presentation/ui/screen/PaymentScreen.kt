@@ -44,7 +44,7 @@ fun PaymentScreen(
                 .weight(1f)
                 .padding(24.dp)
         ) {
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(20.dp))
 
             // Header
             Row(
@@ -118,7 +118,7 @@ fun PaymentScreen(
                 onClick = { showPopUpNotif = true }
             )
         }
-        Spacer(modifier = Modifier.height(90.dp))
+        Spacer(modifier = Modifier.height(40.dp))
     }
 
     // PopUp Notifikasi Pembayaran Berhasil

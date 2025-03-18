@@ -34,11 +34,11 @@ fun CardMission(
     Column(
         modifier = Modifier
             .border(width = 1.dp, color = BrownMain, shape = RoundedCornerShape(12.dp))
-            .width(370.dp)
-            .height(100.dp)
+            .fillMaxWidth()
+            .height(115.dp)
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(20.dp)
             )
             .background(Color.White, shape = RoundedCornerShape(12.dp))
             .padding(horizontal = 20.dp),
@@ -60,12 +60,12 @@ fun CardMission(
                         .size(15.dp),
                     tint = YellowMain
                 )
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(10.dp))
 
                 // misi harian
                 Text(
                     text = missionTitle,
-                    style = Typography.headlineSmall
+                    style = Typography.headlineMedium
                 )
             }
 
@@ -76,12 +76,12 @@ fun CardMission(
                 color = BrownMain
             )
         }
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         // kumpulin botol
         Text(
             text = missionDescription,
-            style = Typography.bodyMedium
+            style = Typography.bodyLarge
         )
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -90,24 +90,24 @@ fun CardMission(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(8.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .height(10.dp)
+                .clip(RoundedCornerShape(10.dp))
                 .background(GreyLight)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(progressFraction)
-                    .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp))
+                    .height(10.dp)
+                    .clip(RoundedCornerShape(10.dp))
                     .background(YellowMain)
             )
         }
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         // 8 dari 10
         Text(
             text = "$currentProgress dari $totalProgress $progressSuffix",
-            style = Typography.bodyMedium
+            style = Typography.bodyLarge
         )
     }
 }

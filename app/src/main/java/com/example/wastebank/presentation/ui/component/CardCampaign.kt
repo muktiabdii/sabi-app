@@ -35,11 +35,11 @@ fun CardCampaign(
     Column(
         modifier = Modifier
             .border(width = 1.dp, color = BrownMain, shape = RoundedCornerShape(12.dp))
-            .width(370.dp)
-            .height(80.dp)
+            .fillMaxWidth()
+            .height(90.dp)
             .shadow(
                 elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(20.dp)
             )
             .background(Color.White, shape = RoundedCornerShape(12.dp))
             .padding(horizontal = 20.dp),
@@ -52,7 +52,7 @@ fun CardCampaign(
             // kampanye bulan maret
             Text(
                 text = "Kampanye Bulan $monthName",
-                style = Typography.headlineSmall
+                style = Typography.headlineMedium
             )
             // 25 hari lagi
             Text(
@@ -61,26 +61,26 @@ fun CardCampaign(
             )
 
         }
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // progress bar
         val progressFraction = completedMissions.toFloat() / totalMissions.toFloat()
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(8.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .height(10.dp)
+                .clip(RoundedCornerShape(10.dp))
                 .background(GreyLight)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(progressFraction)
-                    .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp))
+                    .height(10.dp)
+                    .clip(RoundedCornerShape(10.dp))
                     .background(BrownMain)
             )
         }
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // 3 / 30 misi
         Text(

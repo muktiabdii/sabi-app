@@ -141,6 +141,9 @@ class MainActivity : ComponentActivity() {
                         composable("cart_screen") {
                             CartScreen(navController, productViewModel)
                         }
+                        composable("request_screen") {
+                            RequestScreen(navController = navController)
+                        }
                     }
                 }
             }

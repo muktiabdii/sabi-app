@@ -121,7 +121,7 @@ fun ProductDetailScreen(navController: NavController, productViewModel: ProductV
                 }
             )
         }
-        Spacer(modifier = Modifier.height(90.dp))
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 

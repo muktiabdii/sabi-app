@@ -28,72 +28,84 @@ fun BottomNavigation(navController: NavController) {
         BottomNavItem.Profile
     )
 
+    // daftar screen yang menampilkan BottomNav
     val sectionRoutes = mapOf(
-        "marketplace_screen" to listOf(
-            "marketplace_screen",
-            "cart_screen",
-            "donate_screen",
-            "donation_detail_screen",
-            "payment_screen",
-            "product_detail_screen"
-        ),
         "home_screen" to listOf("home_screen"),
         "maps_screen" to listOf("maps_screen"),
+        "marketplace_screen" to listOf("marketplace_screen", "donate_screen"),
         "article_screen" to listOf("article_screen"),
         "profile_screen" to listOf("profile_screen", "edit_profile_screen")
+    )
+
+    // screen yang tidak menampilkan BottomNav
+    val hiddenScreens = listOf(
+        "splash_screen",
+        "admin_login_screen",
+        "user_login_screen",
+        "register_screen",
+        "forgot_password_screen",
+        "set_new_password_screen",
+        "cart_screen",
+        "donation_detail_screen",
+        "payment_screen",
+        "product_detail_screen",
+        "edit_profile_screen"
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(66.dp)
-            .border(
-                width = 1.dp,
-                color = YellowMain,
-                shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
-            )
-            .padding(1.dp)
-            .background(
-                color = Color.White,
-                shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
-            ),
-        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        color = Color.White,
-        shadowElevation = 10.dp
+    // tampilkan BottomNav jika tidak berada di list hidden screen
+    if (currentRoute !in hiddenScreens) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(66.dp)
+                .border(
+                    width = 1.dp,
+                    color = YellowMain,
+                    shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                )
+                .padding(1.dp)
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                ),
+            shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+            color = Color.White,
+            shadowElevation = 10.dp
 
-    ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            items.forEach { item ->
-                val isSelected = sectionRoutes[item.route]?.contains(currentRoute) == true
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                items.forEach { item ->
+                    val isSelected = sectionRoutes[item.route]?.contains(currentRoute) == true
 
-                Box(
-                    modifier = Modifier.size(50.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    IconButton(
-                        onClick = {
-                            if (!isSelected) {
-                                navController.navigate(item.route) {
-                                    popUpTo(item.route)
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize()
+                    Box(
+                        modifier = Modifier.size(50.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            painter = painterResource(id = if (isSelected) item.icon else item.iconOff),
-                            contentDescription = item.title,
-                            tint = YellowMain
-                        )
+                        IconButton(
+                            onClick = {
+                                if (!isSelected) {
+                                    navController.navigate(item.route) {
+                                        popUpTo(item.route)
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Icon(
+                                painter = painterResource(id = if (isSelected) item.icon else item.iconOff),
+                                contentDescription = item.title,
+                                tint = YellowMain
+                            )
+                        }
                     }
                 }
             }

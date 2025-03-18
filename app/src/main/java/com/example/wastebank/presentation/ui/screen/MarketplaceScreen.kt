@@ -38,7 +38,6 @@ fun MarketplaceScreen(navController: NavController, productViewModel: ProductVie
     }
 
     Scaffold(
-        // bottom navigation
         bottomBar = { BottomNavigation(navController) }
     ) { paddingValues ->
         LazyColumn(
@@ -58,7 +57,7 @@ fun MarketplaceScreen(navController: NavController, productViewModel: ProductVie
                     SearchBarMarket(
                         value = searchText,
                         onValueChange = { searchText = it },
-                        placeholder = "Cari Produk Olahan Kamu",
+                        placeholder = "Cari Produk Olahan",
                         modifier = Modifier.weight(1f)
                     )
                     ButtonFilter(onClick = { })
@@ -87,14 +86,13 @@ fun MarketplaceScreen(navController: NavController, productViewModel: ProductVie
                         contentPadding = PaddingValues(top = 10.dp, bottom = 20.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .heightIn(min = 100.dp, max = 1600.dp)
-
+                            .heightIn(min = 100.dp, max = 10000.dp)
                     ) {
                         items(products) { product ->
                             CardProduct(
                                 product = product,
-                                modifier = Modifier.height(200.dp),
-                                imageHeight = 120,
+                                modifier = Modifier.height(230.dp),
+                                imageHeight = 125,
                                 onClick = {
                                     val encodedName = URLEncoder.encode(product.name, StandardCharsets.UTF_8.toString())
                                     navController.navigate("product_detail_screen/$encodedName")
@@ -104,6 +102,7 @@ fun MarketplaceScreen(navController: NavController, productViewModel: ProductVie
                         }
                     }
                 }
+
             }
         }
     }
@@ -132,11 +131,4 @@ fun MarketplaceScreen(navController: NavController, productViewModel: ProductVie
 //        Product("Mainan Mobil", ProductCategory.TOY, "Rp 25.000", R.drawable.product_mobil),
 //        Product("Tempat Pensil", ProductCategory.CRAFT, "Rp 30.000", R.drawable.product_pensil),
 //    )
-//}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewMarketplaceScreen() {
-//    val navController = rememberNavController()
-//    MarketplaceScreen(navController)
 //}

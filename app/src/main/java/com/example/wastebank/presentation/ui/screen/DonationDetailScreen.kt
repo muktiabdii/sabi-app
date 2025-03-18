@@ -47,15 +47,16 @@ fun DonationDetailScreen(navController: NavController, donationViewModel: Donati
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+
     ) {
         Spacer(modifier = Modifier.height(30.dp))
 
+        // Header dengan tombol kembali
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 5.dp)
+            modifier = Modifier.fillMaxWidth()
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_back),
@@ -63,8 +64,6 @@ fun DonationDetailScreen(navController: NavController, donationViewModel: Donati
                 modifier = Modifier.clickable { navController.popBackStack() }
             )
             Spacer(modifier = Modifier.width(16.dp))
-
-            // detail donasi
             Text(
                 text = "Detail Donasi",
                 style = Typography.headlineSmall.copy(
@@ -179,11 +178,9 @@ fun DonationDetailScreen(navController: NavController, donationViewModel: Donati
     // Dialog Upload Bukti Transfer
     if (showDialogUpload) {
         DialogUpload(
-            // ambil subtotal
             subtotal = selectedNominal ?: customNominal.toIntOrNull() ?: 0,
             pengiriman = 0,
             onDismiss = { showDialogUpload = false },
-            // tampilkan pop up notif setelah diklik
             onUploadClick = { showPopUpNotif = true }
         )
     }

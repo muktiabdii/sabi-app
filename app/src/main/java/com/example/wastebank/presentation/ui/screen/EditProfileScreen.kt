@@ -155,7 +155,7 @@ fun EditProfileScreen(navController: NavController) {
                 onClick = { navController.navigate("profile_screen") }
             )
         }
-        Spacer(modifier = Modifier.height(70.dp))
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
