@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -23,15 +24,24 @@ import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
+import com.example.wastebank.presentation.viewmodel.DonationViewModel
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 
 @Composable
-fun DonationDetailScreen(navController: NavController) {
+fun DonationDetailScreen(navController: NavController, donationViewModel: DonationViewModel) {
     var selectedNominal by remember { mutableStateOf<Int?>(null) }
     var customNominal by remember { mutableStateOf("") }
+
+    val donation by donationViewModel.selectedDonation.collectAsState()
 
     // state untuk menampilkan dialog upload
     var showDialogUpload by remember { mutableStateOf(false) }
     var showPopUpNotif by remember { mutableStateOf(false) }
+
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -67,9 +77,7 @@ fun DonationDetailScreen(navController: NavController) {
 
         // papua dengan kita
         CardDonationDetail(
-            title = "Papua Dengan Kita",
-            description = "Beri Subsidi untuk mereka yang berada di Timur!",
-            percent = 67
+            donation = donation
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -137,10 +145,8 @@ fun DonationDetailScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(12.dp))
 
         CardInfoTransfer(
-            bank = "BCA",
-            accountNo = "1234567890",
-            name = "Yayasan Papua Dengan Kita",
-            total = selectedNominal ?: customNominal.toIntOrNull() ?: 0
+            donation = donation,
+            totalAmount = selectedNominal ?: customNominal.toIntOrNull() ?: 0
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -150,7 +156,14 @@ fun DonationDetailScreen(navController: NavController) {
             backgroundColor = Color.White,
             textColor = BrownMain,
             borderColor = BrownMain,
-            onClick = { /* Handle Copy Account Number */ }
+            onClick = {
+                val accountNumber = donation?.accountNumber.orEmpty()
+                if (accountNumber.isNotEmpty()) {
+                    clipboardManager.setText(AnnotatedString(accountNumber))
+                    Toast.makeText(context, "Nomor rekening disalin!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
         )
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -195,9 +208,9 @@ fun DonationDetailScreen(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewDonationDetailScreen() {
-    val navController = rememberNavController()
-    DonationDetailScreen(navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewDonationDetailScreen() {
+//    val navController = rememberNavController()
+//    DonationDetailScreen(navController)
+//}

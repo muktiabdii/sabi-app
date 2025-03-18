@@ -76,13 +76,13 @@ fun TextFieldNominal(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewTextFieldNominal() {
-    var nominal by remember { mutableStateOf("") }
-
-    TextFieldNominal(
-        value = nominal,
-        onValueChange = { nominal = it }
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewTextFieldNominal() {
+//    var nominal by remember { mutableStateOf("") }
+//
+//    TextFieldNominal(
+//        value = nominal,
+//        onValueChange = { nominal = it }
+//    )
+//}

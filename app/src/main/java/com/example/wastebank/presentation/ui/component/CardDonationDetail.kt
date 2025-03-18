@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.wastebank.domain.model.DonationDomain
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.Typography
@@ -22,9 +23,7 @@ import com.example.wastebank.presentation.ui.theme.WhiteBg
 // Papua dengan Kita
 @Composable
 fun CardDonationDetail(
-    title: String,
-    description: String,
-    percent: Int
+    donation: DonationDomain?,
 ) {
     Box(
         modifier = Modifier
@@ -40,12 +39,12 @@ fun CardDonationDetail(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = title,
+                text = donation?.title.orEmpty(),
                 style = Typography.headlineMedium.copy(fontSize = 18.sp),
                 color = Color.Black
             )
             Text(
-                text = description,
+                text = donation?.description.orEmpty(),
                 style = Typography.bodyMedium,
                 color = Color.Black
             )
@@ -57,7 +56,7 @@ fun CardDonationDetail(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "$percent% terkumpul",
+                    text = "${donation?.totalAmount.orEmpty()} terkumpul",
                     style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = Color.Black,
                     textAlign = TextAlign.Center
@@ -67,12 +66,12 @@ fun CardDonationDetail(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewCardDonationDetail() {
-    CardDonationDetail(
-        title = "Papua Dengan Kita",
-        description = "Beri Subsidi untuk mereka yang berada di Timur!",
-        percent = 67
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewCardDonationDetail() {
+//    CardDonationDetail(
+//        title = "Papua Dengan Kita",
+//        description = "Beri Subsidi untuk mereka yang berada di Timur!",
+//        percent = 67
+//    )
+//}

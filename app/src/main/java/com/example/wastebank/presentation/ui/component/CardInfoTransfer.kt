@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
+import com.example.wastebank.domain.model.DonationDomain
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.Typography
@@ -20,10 +21,8 @@ import com.example.wastebank.presentation.ui.theme.Typography
 // Informasi Transfer
 @Composable
 fun CardInfoTransfer(
-    bank: String,
-    accountNo: String,
-    name: String,
-    total: Int
+    donation : DonationDomain?,
+    totalAmount: Int
 ) {
     Box(
         modifier = Modifier
@@ -37,17 +36,17 @@ fun CardInfoTransfer(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Bank: $bank",
+                text = donation?.bank.orEmpty(),
                 style = Typography.bodyMedium,
                 color = Color.Black
             )
             Text(
-                text = "No. Rekening: $accountNo",
+                text = donation?.accountNumber.orEmpty(),
                 style = Typography.bodyMedium,
                 color = Color.Black
             )
             Text(
-                text = "Atas Nama: $name",
+                text = donation?.accountName.orEmpty(),
                 style = Typography.bodyMedium,
                 color = Color.Black
             )
@@ -66,7 +65,7 @@ fun CardInfoTransfer(
                     color = Color.Black
                 )
                 Text(
-                    text = "Rp %,d".format(total),
+                    text = "Rp %,d".format(totalAmount),
                     style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = Color.Black,
                     textAlign = TextAlign.End
@@ -76,13 +75,13 @@ fun CardInfoTransfer(
     }
 }
 
-@Preview(showBackground = false)
-@Composable
-fun PreviewCardInfoTransfer() {
-    CardInfoTransfer(
-        bank = "BCA",
-        accountNo = "1234567890",
-        name = "Yayasan Papuan Dengan Kita",
-        total = 50000
-    )
-}
+//@Preview(showBackground = false)
+//@Composable
+//fun PreviewCardInfoTransfer() {
+//    CardInfoTransfer(
+//        bank = "BCA",
+//        accountNo = "1234567890",
+//        name = "Yayasan Papuan Dengan Kita",
+//        total = 50000
+//    )
+//}

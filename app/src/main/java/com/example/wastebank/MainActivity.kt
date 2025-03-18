@@ -2,6 +2,7 @@ package com.example.wastebank
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,10 +19,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.presentation.ui.screen.DonateScreen
 import com.example.wastebank.data.repository.AuthRepositoryImpl
+import com.example.wastebank.data.repository.DonationRepositoryImpl
 import com.example.wastebank.data.repository.MoneyExchangeRepositoryImpl
 import com.example.wastebank.data.repository.ProductRepositoryImpl
 import com.example.wastebank.data.repository.UserProfileRepositoryImpl
 import com.example.wastebank.domain.usecase.AuthUseCase
+import com.example.wastebank.domain.usecase.DonationUseCase
 import com.example.wastebank.domain.usecase.MoneyExchangeUseCase
 import com.example.wastebank.domain.usecase.ProductUseCase
 import com.example.wastebank.domain.usecase.UserProfileUseCase
@@ -29,6 +32,7 @@ import com.example.wastebank.presentation.ui.component.BottomNavigation
 import com.example.wastebank.presentation.ui.screen.*
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
+import com.example.wastebank.presentation.viewmodel.DonationViewModel
 import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
@@ -52,20 +56,25 @@ class MainActivity : ComponentActivity() {
                     viewModel(factory = AuthViewModel.Factory(authUseCase))
 
                 // Inisiasi userProfilRepo, userProfileUseCase, dan userProfileViewModel
-                 val userProfileRepo = UserProfileRepositoryImpl()
-                 val userProfileUseCase = UserProfileUseCase(userProfileRepo)
-                 val userProfileViewModel: UserProfileViewModel = viewModel(factory = UserProfileViewModel.Factory(userProfileUseCase))
+                val userProfileRepo = UserProfileRepositoryImpl()
+                val userProfileUseCase = UserProfileUseCase(userProfileRepo)
+                val userProfileViewModel: UserProfileViewModel = viewModel(factory = UserProfileViewModel.Factory(userProfileUseCase))
 
                 // Inisiasi moneyExchangeRepo, moneyExchangeUseCase, dan moneyExchangeViewModel
-                 val moneyExchangeRepo = MoneyExchangeRepositoryImpl()
-                 val moneyExchangeUseCase = MoneyExchangeUseCase(moneyExchangeRepo)
-                 val moneyExchangeViewModel: MoneyExchangeViewModel = viewModel(factory = MoneyExchangeViewModel.Factory(moneyExchangeUseCase))
+                val moneyExchangeRepo = MoneyExchangeRepositoryImpl()
+                val moneyExchangeUseCase = MoneyExchangeUseCase(moneyExchangeRepo)
+                val moneyExchangeViewModel: MoneyExchangeViewModel = viewModel(factory = MoneyExchangeViewModel.Factory(moneyExchangeUseCase))
 
                 // Inisasi productRepo, productUseCase, dan productViewModel
-                 val productRepo = ProductRepositoryImpl()
+                val productRepo = ProductRepositoryImpl()
                 val productUseCase = ProductUseCase(productRepo)
                 val productViewModel: ProductViewModel = viewModel(factory = ProductViewModel.Factory(productUseCase))
-                val products by productViewModel.products.collectAsState()
+
+                // Inisiasi donationrRepo, donationUseCase, dan donationViewModel
+                val donationRepo = DonationRepositoryImpl()
+                val donationUseCase = DonationUseCase(donationRepo)
+                val donationViewModel: DonationViewModel = viewModel(factory = DonationViewModel.Factory(donationUseCase))
+
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -112,11 +121,16 @@ class MainActivity : ComponentActivity() {
                             ProfileScreen(navController)
                         }
                         composable("donate_screen") {
-                            DonateScreen(navController)
+                            DonateScreen(navController, donationViewModel)
                         }
-                        composable("donation_detail_screen") {
-                            DonationDetailScreen(navController)
+                        composable("donation_detail_screen/{donationTitle}") { backStackEntry ->
+                            val donationTitle = backStackEntry.arguments?.getString("donationTitle") ?: ""
+                            val decodedTitle = URLDecoder.decode(donationTitle, StandardCharsets.UTF_8.toString())
+
+                            donationViewModel.getDonationByTitle(decodedTitle)
+                            DonationDetailScreen(navController = navController, donationViewModel = donationViewModel)
                         }
+
                         composable("product_detail_screen/{productName}") { backStackEntry ->
                             val productName = backStackEntry.arguments?.getString("productName") ?: ""
                             val decodedName = URLDecoder.decode(productName, StandardCharsets.UTF_8.toString())
