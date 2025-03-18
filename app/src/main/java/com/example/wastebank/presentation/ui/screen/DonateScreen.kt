@@ -1,11 +1,13 @@
 package com.example.donation.presentation.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,10 +27,20 @@ import com.example.wastebank.presentation.ui.component.CardDestination
 import com.example.wastebank.presentation.ui.component.CardDonate
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
+import com.example.wastebank.presentation.viewmodel.DonationViewModel
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
-fun DonateScreen(navController: NavController) {
+fun DonateScreen(navController: NavController, donationViewModel: DonationViewModel) {
     var searchText by remember { mutableStateOf("") }
+
+    // state donation
+    val donations by donationViewModel.donations.collectAsState()
+
+    LaunchedEffect(Unit) {
+        donationViewModel.getAllDonations()
+    }
 
     Scaffold(
         bottomBar = {
@@ -116,33 +128,12 @@ fun DonateScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         contentPadding = PaddingValues(start = 20.dp, end = 20.dp)
                     ) {
-                        item {
+                        items(donations) { donation ->
                             CardDonate(
-                                imageResId = R.drawable.donate_rumah_portrait,
-                                title = "Rumah Dhuafa Ayna",
-                                description = "Bantu anak-anak untuk beli peralatan sekolah",
-                                modifier = Modifier.clickable {
-                                    navController.navigate("donation_detail_screen")
-                                }
-                            )
-                        }
-                        item {
-                            CardDonate(
-                                imageResId = R.drawable.donate_mengajar_portrait,
-                                title = "Mengajar Pelosok",
-                                description = "Dukung para relawan untuk membeli kebutuhan",
-                                modifier = Modifier.clickable {
-                                    navController.navigate("donation_detail_screen")
-                                }
-                            )
-                        }
-                        item {
-                            CardDonate(
-                                imageResId = R.drawable.donate_papua_portrait,
-                                title = "Papua Dengan Kita",
-                                description = "Beri subsidi untuk mereka yang berada di Timur!",
-                                modifier = Modifier.clickable {
-                                    navController.navigate("donation_detail_screen")
+                                donation = donation,
+                                onClick = {
+                                    val encodedTitle = URLEncoder.encode(donation.title, StandardCharsets.UTF_8.toString())
+                                    navController.navigate("donation_detail_screen/$encodedTitle")
                                 }
                             )
                         }
@@ -170,10 +161,7 @@ fun DonateScreen(navController: NavController) {
                             CardDestination(imageResId = R.drawable.dest_bali, title = "Bali")
                         }
                         item {
-                            CardDestination(
-                                imageResId = R.drawable.dest_labuan,
-                                title = "Labuan Bajo"
-                            )
+                            CardDestination(imageResId = R.drawable.dest_labuan, title = "Labuan Bajo")
                         }
                         item {
                             CardDestination(imageResId = R.drawable.dest_lombok, title = "Lombok")
@@ -205,10 +193,10 @@ fun DonateScreen(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewDonateScreen() {
-    DonateScreen(navController = rememberNavController())
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewDonateScreen() {
+//    DonateScreen(navController = rememberNavController())
+//}
 
 

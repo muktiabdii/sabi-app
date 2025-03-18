@@ -6,17 +6,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.R
-import com.example.wastebank.data.ProductDataSource
-import com.example.wastebank.domain.model.Product
+import com.example.wastebank.domain.model.CartItemDomain
 
 @Composable
 fun CardMyCart(
-    product: Product,
+    product: CartItemDomain,
     quantity: Int
 ) {
     Row(
@@ -27,9 +28,10 @@ fun CardMyCart(
         verticalAlignment = Alignment.CenterVertically
     ) {
         // gambar produk
-        Image(
-            painter = painterResource(id = product.imageRes),
+        AsyncImage(
+            model = product.image,
             contentDescription = product.name,
+            contentScale = ContentScale.Crop,
             modifier = Modifier.size(70.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
@@ -63,7 +65,7 @@ fun CardMyCart(
 
                 // harga produk
                 Text(
-                    text = product.formattedPrice,
+                    text = product.formatRupiah(),
                     style = Typography.headlineSmall
                 )
             }
@@ -71,18 +73,18 @@ fun CardMyCart(
 
             // kategori produk
             Text(
-                text = product.category.displayName,
+                text = product.category,
                 style = Typography.bodyMedium
             )
         }
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun PreviewCardMyCart() {
-    CardMyCart(
-        product = ProductDataSource.productList[2],
-        quantity = 1
-    )
-}
+//@Composable
+//@Preview(showBackground = true)
+//fun PreviewCardMyCart() {
+//    CardMyCart(
+//        product = ProductDataSource.productList[2],
+//        quantity = 1
+//    )
+//}

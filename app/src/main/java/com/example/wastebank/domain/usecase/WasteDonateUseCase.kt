@@ -4,7 +4,7 @@ import com.example.wastebank.data.model.WasteItem
 import com.example.wastebank.domain.repository.WasteDonateRepository
 
 class WasteDonateUseCase (private val wasteDonateRepository: WasteDonateRepository) {
-    fun donateWaste(email: String, items: List<WasteItem>, onResult: (Boolean, String?) -> Unit) {
+    suspend fun donateWaste(email: String, items: List<WasteItem>, onResult: (Boolean, String?) -> Unit) {
 
         // Validasi input
         if (email.isBlank()) {

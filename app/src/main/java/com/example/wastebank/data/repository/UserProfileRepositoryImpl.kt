@@ -14,7 +14,7 @@ class UserProfileRepositoryImpl : UserProfileRepository{
     private val db = FirebaseService.db
     private val userRef = db.getReference("users")
 
-    override fun getUserProfile(onResult: (String?, String?, String?, String?, Int?) -> Unit) {
+    override suspend fun getUserProfile(onResult: (String?, String?, String?, String?, Int?) -> Unit) {
 
         // Ambil userId dari user yang sedang login
         val userId = auth.currentUser?.uid
@@ -34,7 +34,21 @@ class UserProfileRepositoryImpl : UserProfileRepository{
         }
     }
 
-    override fun getUserName(onResult: (String?) -> Unit) {
+    override suspend fun editUserProfile(name: String, phoneNumber: String, email: String, password: String, gender: String, onResult: (Boolean, String?) -> Unit) {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            userRef.child(userId).child("name").setValue(name)
+            userRef.child(userId).child("phoneNumber").setValue(phoneNumber)
+            userRef.child(userId).child("email").setValue(email)
+            userRef.child(userId).child("password").setValue(password)
+            userRef.child(userId).child("gender").setValue(gender)
+            onResult(true, null)
+        } else {
+            onResult(false, "User not authenticated")
+        }
+    }
+
+    override suspend fun getUserName(onResult: (String?) -> Unit) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
             userRef.child(userId).child("name").get().addOnSuccessListener { snapshot ->
@@ -52,7 +66,7 @@ class UserProfileRepositoryImpl : UserProfileRepository{
     }
 
 
-    override fun getUserPoint(onResult: (Int?) -> Unit) {
+    override suspend fun getUserPoint(onResult: (Int?) -> Unit) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
             userRef.child(userId).child("points").addValueEventListener(object :
@@ -71,5 +85,25 @@ class UserProfileRepositoryImpl : UserProfileRepository{
         }
     }
 
+    override suspend fun deleteAccount(onResult: (Boolean, String?) -> Unit) {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            try {
+                userRef.child(userId).removeValue().addOnSuccessListener {
+                    // Logout setelah penghapusan akun
+                    auth.signOut()
+                    onResult(true, null)
+                }.addOnFailureListener { exception ->
+                    // Memberikan pesan error yang lebih spesifik
+                    onResult(false, exception.localizedMessage)
+                }
+            } catch (e: Exception) {
+                // Menangani kesalahan umum yang mungkin terjadi
+                onResult(false, e.localizedMessage)
+            }
+        } else {
+            onResult(false, "User not authenticated")
+        }
+    }
 
 }

@@ -19,6 +19,11 @@ class WasteDonateViewModel (private val wasteDonateUseCase: WasteDonateUseCase, 
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
+    fun resetDonationState() {
+        _isDonated.value = false
+        _errorMessage.value = null
+    }
+
     fun donateWaste(items: List<WasteItem>) {
         viewModelScope.launch {
             wasteDonateUseCase.donateWaste(email.value, items) { success, message ->
@@ -29,11 +34,6 @@ class WasteDonateViewModel (private val wasteDonateUseCase: WasteDonateUseCase, 
                 }
             }
         }
-    }
-
-    fun resetDonationState() {
-        _isDonated.value = false
-        _errorMessage.value = null
     }
 
     class Factory(

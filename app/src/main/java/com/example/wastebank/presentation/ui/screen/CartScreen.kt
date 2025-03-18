@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
-import com.example.wastebank.data.ProductDataSource
 import com.example.wastebank.presentation.components.CardMyCart
 import com.example.wastebank.presentation.ui.component.BottomNavigation
 import com.example.wastebank.presentation.ui.component.ButtonAuth
@@ -26,10 +27,12 @@ import com.example.wastebank.presentation.ui.component.PriceDetailRow
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreyLine
 import com.example.wastebank.presentation.ui.theme.Typography
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 
 @Composable
-fun CartScreen(navController: NavController) {
-    val cartItems = ProductDataSource.productList
+fun CartScreen(navController: NavController, productViewModel: ProductViewModel) {
+    val cartItems by productViewModel.cartProducts.collectAsState()
+
     val subtotal = cartItems.sumOf { it.price }
     val shippingCost = 0
     val total = subtotal + shippingCost
@@ -130,8 +133,8 @@ fun CartScreen(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewCartScreen() {
-    CartScreen(navController = rememberNavController())
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewCartScreen() {
+//    CartScreen(navController = rememberNavController())
+//}

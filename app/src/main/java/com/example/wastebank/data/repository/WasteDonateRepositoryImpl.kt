@@ -12,12 +12,11 @@ import java.util.UUID
 // Implementasi dari WasteDonateRepository
 class WasteDonateRepositoryImpl : WasteDonateRepository{
 
-    // Inisialisasi Firebase Auth dan Firebase Realtime Database
-    private val auth = FirebaseService.auth
+    // Inisialisasi Firebase Realtime Database
     private val db = FirebaseService.db
 
     // Fungsi untuk melakukan donasi sampah
-    override fun donateWaste(email: String, items: List<WasteItem>, onResult: (Boolean, String?) -> Unit) {
+    override suspend fun donateWaste(email: String, items: List<WasteItem>, onResult: (Boolean, String?) -> Unit) {
 
         val userRef = db.getReference("users")
 

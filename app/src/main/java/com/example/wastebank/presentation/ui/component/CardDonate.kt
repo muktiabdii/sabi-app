@@ -2,6 +2,7 @@ package com.example.wastebank.presentation.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -17,14 +18,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.wastebank.R
+import com.example.wastebank.domain.model.DonationDomain
 
 @Composable
 fun CardDonate(
-    imageResId: Int,
-    title: String,
-    description: String,
-    modifier: Modifier = Modifier
+    donation: DonationDomain,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -32,9 +34,12 @@ fun CardDonate(
             .height(250.dp)
             .background(Color.LightGray, shape = RoundedCornerShape(16.dp))
             .clip(RoundedCornerShape(16.dp))
+            .clickable {
+                onClick()
+            }
     ) {
-        Image(
-            painter = painterResource(id = imageResId),
+        AsyncImage(
+            model = donation.image,
             contentDescription = "donate section",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -58,14 +63,14 @@ fun CardDonate(
                     .padding(horizontal = 8.dp, vertical = 12.dp)
             ) {
                 Text(
-                    text = title,
+                    text = donation.title,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
-                    text = description,
+                    text = donation.description,
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White
                 )
@@ -74,12 +79,12 @@ fun CardDonate(
     }
 }
 
-@Preview
-@Composable
-fun CardDonatePreview() {
-    CardDonate(
-        imageResId = R.drawable.donate_rumah_portrait,
-        title = "Rumah Dhuafa Ayna",
-        description = "Bantu anak-anak untuk beli peralatan sekolah."
-    )
-}
+//@Preview
+//@Composable
+//fun CardDonatePreview() {
+//    CardDonate(
+//        imageResId = R.drawable.donate_rumah_portrait,
+//        title = "Rumah Dhuafa Ayna",
+//        description = "Bantu anak-anak untuk beli peralatan sekolah."
+//    )
+//}

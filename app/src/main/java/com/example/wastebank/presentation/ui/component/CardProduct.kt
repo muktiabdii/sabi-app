@@ -1,6 +1,5 @@
 package com.example.wastebank.presentation.ui.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,14 +17,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.wastebank.R
 import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
+import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.presentation.ui.theme.*
 
 @Composable
 fun CardProduct(
-    product: Product,
+    product: ProductDomain,
     modifier: Modifier = Modifier,
     imageHeight: Int = 100,
     onClick: () -> Unit,
@@ -44,13 +45,14 @@ fun CardProduct(
                 .height(imageHeight.dp),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(id = product.imageRes),
-                contentDescription = "Gambar produk",
+            AsyncImage(
+                model = product.image,
+                contentDescription = "gambar produk",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
         }
+        Spacer(modifier = Modifier.height(6.dp))
 
         Column(
             modifier = Modifier
@@ -72,8 +74,9 @@ fun CardProduct(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
+                    // kategori produk
                     Text(
-                        text = product.category.displayName,
+                        text = product.category,
                         style = Typography.bodyMedium.copy(
                             color = GreyMedium,
                             fontWeight = FontWeight.SemiBold
@@ -83,13 +86,15 @@ fun CardProduct(
                     )
                     Spacer(modifier = Modifier.height(5.dp))
 
+                    // harga produk
                     Text(
-                        text = product.formattedPrice,
+                        text = product.formatRupiah(),
                         style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
 
+                // ikon tas untuk menambah ke keranjang
                 Box(
                     modifier = Modifier
                         .size(35.dp)
@@ -112,22 +117,19 @@ fun CardProduct(
     }
 }
 
-@Preview(showBackground = false)
-@Composable
-fun PreviewCardProduct() {
-    CardProduct(
-        product = Product(
-            name = "Pot Bunga Hewan",
-            category = ProductCategory.VASE,
-            price = 20000,
-            imageRes = R.drawable.product_pot,
-            description = "Pot bunga lucu berbentuk hewan yang dibuat dari botol plastik bekas. Desainnya menarik dengan berbagai karakter seperti kucing, panda, dan kelinci."
-        ),
-        modifier = Modifier
-            .width(160.dp)
-            .height(215.dp),
-        imageHeight = 110,
-        onClick = { },
-        onAddToCart = { }
-    )
-}
+//@Preview(showBackground = false)
+//@Composable
+//fun PreviewCardProduct() {
+//    CardProduct(
+//        productImageResId = R.drawable.product_pot,
+//        productName = "Pot Bunga Hewan",
+//        productCategory = ProductCategory.VASE.toString(),
+//        productPrice = "Rp20.000",
+//        modifier = Modifier
+//            .width(135.dp)
+//            .height(175.dp),
+//        imageHeight = 100,
+//        onClick = { },
+//        onAddToCart = { }
+//    )
+//}

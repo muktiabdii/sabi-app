@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,30 +20,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.wastebank.R
-import com.example.wastebank.data.ProductDataSource
 import com.example.wastebank.domain.model.Product
+import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.theme.*
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 
 @Composable
-fun ProductDetailScreen(
-    navController: NavController,
-    product: Product
-) {
+fun ProductDetailScreen(navController: NavController, productViewModel: ProductViewModel) {
+    val product by productViewModel.selectedProduct.collectAsState()
+    val point = (product?.price ?: 0) / 10
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         Box {
-            Image(
-                painter = painterResource(id = product.imageRes),
-                contentDescription = "Product Image",
-                modifier = Modifier.fillMaxWidth()
+            AsyncImage(
+                model = product?.image ?: "",
+                contentDescription = "gambar produk",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
 
-            // tombol back
+            // Tombol back
             Box(
                 modifier = Modifier
                     .padding(horizontal = 24.dp, vertical = 40.dp)
@@ -66,13 +70,12 @@ fun ProductDetailScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-            // nama produk
-            Text(text = product.name, style = Typography.headlineLarge.copy(fontSize = 24.sp))
+            // Jika product null, tampilkan teks placeholder
+            Text(text = product?.name ?: "Nama Produk", style = Typography.headlineLarge.copy(fontSize = 24.sp))
             Spacer(modifier = Modifier.height(2.dp))
 
-            // kategori produk
             Text(
-                text = product.category.displayName,
+                text = product?.category ?: "Kategori",
                 style = Typography.headlineMedium,
                 color = GreyMedium
             )
@@ -83,13 +86,12 @@ fun ProductDetailScreen(
                 color = GreyLine
             )
 
-            // harga produk
-            Text(text = product.formattedPrice, style = Typography.headlineLarge)
+            // Harga produk
+            Text(text = product?.formatRupiah() ?: "Rp 0", style = Typography.headlineLarge)
             Spacer(modifier = Modifier.height(4.dp))
 
-            // nilai poin
             Text(
-                text = "Setara dengan ${product.pointsEquivalent} poin",
+                text = "Setara dengan $point poin",
                 style = Typography.bodyLarge,
                 color = GreyMedium
             )
@@ -100,34 +102,36 @@ fun ProductDetailScreen(
                 color = GreyLine
             )
 
-            // tentang produk
             Text(text = "Tentang Produk", style = Typography.headlineLarge)
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = product.description,
+                text = product?.description ?: "Deskripsi tidak tersedia",
                 style = Typography.bodyLarge,
                 color = GreyMedium,
                 textAlign = TextAlign.Justify
             )
             Spacer(modifier = Modifier.height(32.dp))
 
-            // button masukkan keranjang
             ButtonAuth(
                 text = "MASUKKAN KERANJANG",
-                onClick = { navController.navigate("cart_screen") }
+                onClick = {
+                    product?.let { productViewModel.addToCart(it) }
+                    navController.navigate("cart_screen")
+                }
             )
         }
         Spacer(modifier = Modifier.height(40.dp))
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ProductDetailScreenPreview() {
-    val navController = rememberNavController()
-    ProductDetailScreen(
-        navController = navController,
-        product = ProductDataSource.productList[0],
-    )
-}
+
+//@Preview(showBackground = true)
+//@Composable
+//fun ProductDetailScreenPreview() {
+//    val navController = rememberNavController()
+//    ProductDetailScreen(
+//        navController = navController,
+//        product = ProductDataSource.productList[0],
+//    )
+//}
