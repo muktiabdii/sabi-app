@@ -31,6 +31,7 @@ fun EditProfileScreen(navController: NavController, userProfileViewModel: UserPr
     var phoneNumber by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var points by remember { mutableStateOf(0) }
     var gender by remember { mutableStateOf("Wanita") } // Default ke Wanita
 
     // Ambil data user saat layar pertama kali dimuat
@@ -47,6 +48,7 @@ fun EditProfileScreen(navController: NavController, userProfileViewModel: UserPr
             phoneNumber = it.phoneNumber
             email = it.email
             gender = it.gender
+            points = it.points
         }
     }
 
@@ -161,7 +163,8 @@ fun EditProfileScreen(navController: NavController, userProfileViewModel: UserPr
                         name = name,
                         phoneNumber = phoneNumber,
                         email = email,
-                        gender = gender
+                        gender = gender,
+                        points = points
                     )
                     userProfileViewModel.editUserProfile(updatedUser)
                     navController.navigate("profile_screen")

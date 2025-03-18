@@ -147,6 +147,9 @@ class MainActivity : ComponentActivity() {
                         composable("edit_profile_screen") {
                             EditProfileScreen(navController, userProfileViewModel)
                         }
+                        composable("payment_screen") {
+                            PaymentScreen(navController)
+                        }
                     }
                 }
             }
