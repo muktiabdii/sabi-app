@@ -1,6 +1,8 @@
 package com.example.wastebank.domain.usecase
 
+import com.example.wastebank.data.model.PaymentData
 import com.example.wastebank.domain.model.CartItemDomain
+import com.example.wastebank.domain.model.PaymentDomain
 import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.domain.repository.ProductRepository
 import kotlinx.coroutines.flow.Flow
@@ -25,5 +27,9 @@ class ProductUseCase(private val productRepository: ProductRepository) {
 
     suspend fun removeFromCart(productId: String): Result<Unit> {
         return productRepository.removeFromCart(productId)
+    }
+
+    suspend fun payment(payment: PaymentDomain): Result<Boolean> {
+        return productRepository.payment(payment)
     }
 }

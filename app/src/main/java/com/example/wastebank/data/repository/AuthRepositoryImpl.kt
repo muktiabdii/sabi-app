@@ -1,7 +1,7 @@
 package com.example.wastebank.data.repository
 
 import android.util.Log
-import com.example.wastebank.data.model.UserModel
+import com.example.wastebank.data.model.UserData
 import com.example.wastebank.data.source.firebase.FirebaseService
 import com.example.wastebank.domain.repository.AuthRepository
 
@@ -23,7 +23,7 @@ class AuthRepositoryImpl : AuthRepository {
                         val userRef = db.getReference("users").child(userId)
 
                         // Menyimpan data pengguna ke Firebase Database menggunakan UserModel
-                        val userData = UserModel(userId, name, email, phoneNumber, gender)
+                        val userData = UserData(userId, name, email, phoneNumber, gender)
                         userRef.setValue(userData)
                             .addOnSuccessListener {
                                 onResult(true, null)

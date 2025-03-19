@@ -2,9 +2,11 @@ package com.example.wastebank.data.repository
 
 import com.example.wastebank.data.mapper.ProductMapper
 import com.example.wastebank.data.model.CartItemData
+import com.example.wastebank.data.model.PaymentData
 import com.example.wastebank.data.model.ProductData
 import com.example.wastebank.data.source.firebase.FirebaseService
 import com.example.wastebank.domain.model.CartItemDomain
+import com.example.wastebank.domain.model.PaymentDomain
 import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.domain.repository.ProductRepository
 import com.google.firebase.database.DataSnapshot
@@ -14,6 +16,9 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ProductRepositoryImpl : ProductRepository {
 
@@ -123,4 +128,44 @@ class ProductRepositoryImpl : ProductRepository {
             Result.failure(e)
         }
     }
+
+    override suspend fun payment(payment: PaymentDomain): Result<Boolean> {
+        return try {
+            val currentUser = auth.currentUser ?: return Result.failure(Exception("User belum login"))
+            val userName = db.getReference("users").child(currentUser.uid).child("name").get().await().getValue(String::class.java) ?: "Unknown"
+
+            val paymentRef = db.getReference("payments").child(payment.paymentMethod).push() // Generate ID unik dari Firebase
+            val paymentId = paymentRef.key ?: return Result.failure(Exception("Gagal generate paymentId"))
+
+            val timestamp = System.currentTimeMillis()
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val date = dateFormat.format(Date(timestamp))
+            val hour = timeFormat.format(Date(timestamp))
+
+            // Buat objek PaymentDomain dengan ID & User Info
+            val updatedPayment = payment.copy(
+                paymentId = paymentId,
+                userId = currentUser.uid,
+                userName = userName,
+                date = date,
+                hour = hour,
+                items = emptyList()
+            )
+
+            paymentRef.setValue(updatedPayment).await()
+
+            val itemsRef = paymentRef.child("items")
+            payment.items.forEachIndexed { index, item ->
+                val customIndex = index + 1
+                itemsRef.child(customIndex.toString()).setValue(item).await()
+            }
+
+            db.getReference("users").child(currentUser.uid).child("cart").removeValue().await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }

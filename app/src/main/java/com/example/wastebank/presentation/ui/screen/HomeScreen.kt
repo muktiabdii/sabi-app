@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,8 +49,7 @@ fun HomeScreen(
     productViewModel: ProductViewModel
 ) {
     // state user profile
-    val name by userProfileViewModel.name.collectAsState()
-    val pointsAmount by userProfileViewModel.userPoint.collectAsState()
+    val userProfile by userProfileViewModel.userProfile.collectAsState()
 
     // state money exchange
     val points by moneyExchangeViewModel.points.collectAsState()
@@ -84,7 +85,6 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         userProfileViewModel.getUserProfile()
-        userProfileViewModel.getUserPoint()
         productViewModel.getProducts()
         productViewModel.getCartItems()
     }
@@ -93,9 +93,10 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(YellowMain)
+            .verticalScroll(rememberScrollState())
     ) {
         // topbar
-        TopBar(username = name, points = pointsAmount)
+        TopBar(username = userProfile?.name.orEmpty(), points = userProfile?.points ?: 0)
 
         Box(
             modifier = Modifier
@@ -113,7 +114,7 @@ fun HomeScreen(
                 // card poin
                 Box(modifier = Modifier.padding(horizontal = 20.dp)) {
                     CardPoint(
-                        points = pointsAmount,
+                        points = userProfile?.points ?: 0,
                         onViewPointsClick = { },
                         onRedeemPointsClick = { isSheetOpen = true } // buka bottom sheet
                     )
@@ -176,7 +177,7 @@ fun HomeScreen(
                             product = product,
                             modifier = Modifier
                                 .width(160.dp)
-                                .height(195.dp),
+                                .height(230.dp),
                             imageHeight = 110,
                             onClick = {
                                 val encodedName = URLEncoder.encode(product.name, StandardCharsets.UTF_8.toString())

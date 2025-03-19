@@ -3,6 +3,7 @@ package com.example.wastebank.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.wastebank.domain.model.UserDomain
 import com.example.wastebank.domain.usecase.UserProfileUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,76 +11,35 @@ import kotlinx.coroutines.launch
 
 class UserProfileViewModel(private val userProfileUseCase: UserProfileUseCase) : ViewModel() {
 
-    private val _name = MutableStateFlow("")
-    val name: StateFlow<String> = _name
+    private val _userProfile = MutableStateFlow<UserDomain?>(null)
+    val userProfile: StateFlow<UserDomain?> = _userProfile
 
-    private val _email = MutableStateFlow("")
-    val email: StateFlow<String> = _email
+    private val _updateSuccess = MutableStateFlow<Boolean?>(null)
+    val updateSuccess: StateFlow<Boolean?> = _updateSuccess
 
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password
-
-    private val _phoneNumber = MutableStateFlow("")
-    val phoneNumber: StateFlow<String> = _phoneNumber
-
-    private val _gender = MutableStateFlow("")
-    val gender: StateFlow<String> = _gender
-
-    private val _point = MutableStateFlow(0)
-    val userPoint: StateFlow<Int> = _point
+    private val _deleteSuccess = MutableStateFlow<Boolean?>(null)
+    val deleteSuccess: StateFlow<Boolean?> = _deleteSuccess
 
     fun getUserProfile() {
         viewModelScope.launch {
-            userProfileUseCase.getUserProfile { name, email, phoneNumber, gender, point ->
-                _name.value = name ?: ""
-                _email.value = email ?: ""
-                _phoneNumber.value = phoneNumber ?: ""
-                _gender.value = gender ?: ""
-                _point.value = point ?: 0
-            }
+            val profile = userProfileUseCase.getUserProfile()
+            _userProfile.value = profile
         }
     }
 
-
-    fun editUserProfile() {
+    fun editUserProfile(user: UserDomain) {
         viewModelScope.launch {
-            userProfileUseCase.editUserProfile(
-                name.value, phoneNumber.value, email.value, password.value, gender.value, onResult = { success, message ->
-                    if (success) {
-                        // Handle success
-                    } else {
-                        // Handle error
-                    }
-                }
-            )
+            val result = userProfileUseCase.editUserProfile(user)
+            _updateSuccess.value = result.isSuccess
         }
     }
 
-
-    fun getUserPoint() {
+    fun deleteAccount() {
         viewModelScope.launch {
-            userProfileUseCase.getUserPoint { point ->
-                _point.value = point ?: 0
-            }
+            val result = userProfileUseCase.deleteAccount()
+            _deleteSuccess.value = result.isSuccess
         }
     }
-
-
-    fun getUserName() {
-        viewModelScope.launch {
-            userProfileUseCase.getUserName { name ->
-                _name.value = name ?: ""
-            }
-        }
-    }
-
-
-    fun deleteAccount(onResult: (Boolean, String?) -> Unit) {
-        viewModelScope.launch {
-            userProfileUseCase.deleteAccount(onResult)
-        }
-    }
-
 
     class Factory(private val userProfileUseCase: UserProfileUseCase) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

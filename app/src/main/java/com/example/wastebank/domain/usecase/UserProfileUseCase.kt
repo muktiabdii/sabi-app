@@ -1,26 +1,27 @@
 package com.example.wastebank.domain.usecase
 
+import com.example.wastebank.domain.model.UserDomain
 import com.example.wastebank.domain.repository.UserProfileRepository
 
-class UserProfileUseCase(private val userProfilerepository: UserProfileRepository) {
-    suspend fun getUserProfile(onResult: (String?, String?, String?, String?, Int?) -> Unit) {
-        userProfilerepository.getUserProfile(onResult)
+class UserProfileUseCase(private val userProfileRepository: UserProfileRepository) {
+
+    suspend fun getUserProfile(): UserDomain? {
+        return userProfileRepository.getUserProfile()
     }
 
-    suspend fun editUserProfile(name: String, phoneNumber: String, email: String, password: String, gender: String, onResult: (Boolean, String?) -> Unit) {
-        userProfilerepository.editUserProfile(name, phoneNumber, email, password, gender, onResult)
+    suspend fun editUserProfile(user: UserDomain): Result<Unit> {
+        return userProfileRepository.editUserProfile(user)
     }
 
-    suspend fun getUserPoint(onResult: (Int?) -> Unit) {
-        userProfilerepository.getUserPoint(onResult)
+    suspend fun getUserPoint(): Int? {
+        return userProfileRepository.getUserPoint()
     }
 
-    suspend fun getUserName(onResult: (String?) -> Unit) {
-        userProfilerepository.getUserName(onResult)
+    suspend fun getUserName(): String? {
+        return userProfileRepository.getUserName()
     }
 
-    suspend fun deleteAccount(onResult: (Boolean, String?) -> Unit) {
-        userProfilerepository.deleteAccount(onResult)
+    suspend fun deleteAccount(): Result<Unit> {
+        return userProfileRepository.deleteAccount()
     }
-
 }
