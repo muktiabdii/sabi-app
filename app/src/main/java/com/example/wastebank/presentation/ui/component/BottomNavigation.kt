@@ -31,7 +31,7 @@ fun BottomNavigation(navController: NavController) {
     // daftar screen yang menampilkan BottomNav
     val sectionRoutes = mapOf(
         "home_screen" to listOf("home_screen"),
-        "maps_screen" to listOf("maps_screen"),
+        "maps_screen" to listOf("maps_screen", "request_screen"),
         "marketplace_screen" to listOf("marketplace_screen", "donate_screen"),
         "article_screen" to listOf("article_screen"),
         "profile_screen" to listOf("profile_screen", "edit_profile_screen")

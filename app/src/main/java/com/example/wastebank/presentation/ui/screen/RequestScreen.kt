@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.*
+import com.example.wastebank.R
 
 @Composable
 fun RequestScreen(navController: NavController?) {
@@ -33,20 +34,22 @@ fun RequestScreen(navController: NavController?) {
     val times =
         listOf("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00")
 
+    var showPopUpNotif by remember { mutableStateOf(false) }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 24.dp)
     ) {
         item {
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
             // jadwal dan request
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                navController?.let { SwitchSchedule(it) }
+                navController?.let { SwitchSchedule(it, defaultSelected = true) }
             }
             Spacer(modifier = Modifier.height(28.dp))
         }
@@ -195,10 +198,26 @@ fun RequestScreen(navController: NavController?) {
         item {
             ButtonAuth(
                 text = "KIRIM PERMINTAAN",
-                onClick = {}
+                onClick = { showPopUpNotif = true }
             )
             Spacer(modifier = Modifier.height(90.dp))
         }
+    }
+
+    // PopUp Notifikasi Permintaan Terkirim
+    if (showPopUpNotif) {
+        PopUpNotif(
+            iconResId = R.drawable.ic_success,
+            message = "Permintaan Terkirim!",
+            buttonText = "KEMBALI",
+            navController = navController,
+            onDismiss = {
+                showPopUpNotif = false
+                navController?.navigate("maps_screen") {
+                    popUpTo("request_screen") { inclusive = true }
+                }
+            }
+        )
     }
 }
 
