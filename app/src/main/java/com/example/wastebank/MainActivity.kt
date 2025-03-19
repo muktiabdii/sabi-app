@@ -24,11 +24,13 @@ import com.example.wastebank.data.repository.AuthRepositoryImpl
 import com.example.wastebank.data.repository.DonationRepositoryImpl
 import com.example.wastebank.data.repository.MoneyExchangeRepositoryImpl
 import com.example.wastebank.data.repository.ProductRepositoryImpl
+import com.example.wastebank.data.repository.UploadcareRepositoryImpl
 import com.example.wastebank.data.repository.UserProfileRepositoryImpl
 import com.example.wastebank.domain.usecase.AuthUseCase
 import com.example.wastebank.domain.usecase.DonationUseCase
 import com.example.wastebank.domain.usecase.MoneyExchangeUseCase
 import com.example.wastebank.domain.usecase.ProductUseCase
+import com.example.wastebank.domain.usecase.UploadcareUseCase
 import com.example.wastebank.domain.usecase.UserProfileUseCase
 import com.example.wastebank.presentation.ui.component.BottomNavigation
 import com.example.wastebank.presentation.ui.screen.*
@@ -37,6 +39,7 @@ import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.DonationViewModel
 import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
+import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 import com.example.wastebank.ui.splash.RegisterScreen
 import java.net.URLDecoder
@@ -76,6 +79,11 @@ class MainActivity : ComponentActivity() {
                 val donationRepo = DonationRepositoryImpl()
                 val donationUseCase = DonationUseCase(donationRepo)
                 val donationViewModel: DonationViewModel = viewModel(factory = DonationViewModel.Factory(donationUseCase))
+
+                // Inisiasi uploadcareRepo, uploadcareUseCase, dan uploadcareViewModel
+                 val uploadcareRepo = UploadcareRepositoryImpl(this)
+                 val uploadcareUseCase = UploadcareUseCase(uploadcareRepo)
+                 val uploadcareViewModel: UploadcareViewModel = viewModel(factory = UploadcareViewModel.Factory(uploadcareUseCase))
 
 
                 Scaffold(
@@ -130,7 +138,7 @@ class MainActivity : ComponentActivity() {
                             val decodedTitle = URLDecoder.decode(donationTitle, StandardCharsets.UTF_8.toString())
 
                             donationViewModel.getDonationByTitle(decodedTitle)
-                            DonationDetailScreen(navController, donationViewModel)
+                            DonationDetailScreen(navController, donationViewModel, uploadcareViewModel)
                         }
 
                         composable("product_detail_screen/{productName}") { backStackEntry ->
@@ -159,7 +167,7 @@ class MainActivity : ComponentActivity() {
                             val subtotal = backStackEntry.arguments?.getInt("subtotal") ?: 0
                             val shippingCost = backStackEntry.arguments?.getInt("shippingCost") ?: 0
                             val total = backStackEntry.arguments?.getInt("total") ?: 0
-                            PaymentScreen(navController, subtotal, shippingCost, total, productViewModel)
+                            PaymentScreen(navController, subtotal, shippingCost, total, productViewModel, uploadcareViewModel)
                         }
                     }
                 }

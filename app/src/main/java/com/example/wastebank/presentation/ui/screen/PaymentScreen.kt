@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import com.example.wastebank.presentation.ui.component.PriceDetailRow
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
+import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 
 @Composable
 fun PaymentScreen(
@@ -38,15 +40,22 @@ fun PaymentScreen(
     subtotal: Int,
     shippingCost: Int,
     total: Int,
-    productViewModel: ProductViewModel
+    productViewModel: ProductViewModel,
+    uploadcareViewModel: UploadcareViewModel
 ) {
     var showPopUpNotif by remember { mutableStateOf(false) }
+
+    val uploadResult by uploadcareViewModel.uploadResult.collectAsState()
 
     val clipboardManager = LocalClipboardManager.current
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         productViewModel.getCartItems()
+    }
+
+    LaunchedEffect(uploadResult) {
+        uploadResult?.let { productViewModel.setProofImageUrl(it) }
     }
 
     Column(
@@ -106,7 +115,7 @@ fun PaymentScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             // Upload Bukti Transfer
-            CardTransferSlip(subtotal = subtotal, shippingCost = shippingCost)
+            CardTransferSlip(subtotal = subtotal, shippingCost = shippingCost, uploadcareViewModel)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -135,8 +144,13 @@ fun PaymentScreen(
                 backgroundColor = BrownMain,
                 textColor = Color.White,
                 onClick = {
-                    productViewModel.payment()
-                    showPopUpNotif = true
+                    val proofUrl = productViewModel.proofImageUrl.value
+                    if (proofUrl.isNullOrEmpty()) {
+                        Toast.makeText(context, "Harap upload bukti transfer terlebih dahulu!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        productViewModel.payment()
+                        showPopUpNotif = true
+                    }
                 }
             )
         }

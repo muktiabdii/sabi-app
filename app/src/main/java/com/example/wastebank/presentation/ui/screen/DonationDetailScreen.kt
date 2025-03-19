@@ -27,9 +27,10 @@ import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.viewmodel.DonationViewModel
+import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 
 @Composable
-fun DonationDetailScreen(navController: NavController, donationViewModel: DonationViewModel) {
+fun DonationDetailScreen(navController: NavController, donationViewModel: DonationViewModel, uploadcareViewModel: UploadcareViewModel) {
     var selectedNominal by remember { mutableStateOf<Int?>(null) }
     var customNominal by remember { mutableStateOf("") }
 
@@ -188,7 +189,7 @@ fun DonationDetailScreen(navController: NavController, donationViewModel: Donati
             subtotal = selectedNominal ?: customNominal.toIntOrNull() ?: 0,
             pengiriman = 0,
             onDismiss = { showDialogUpload = false },
-            onUploadClick = { showPopUpNotif = true }
+            uploadcareViewModel = uploadcareViewModel
         )
     }
 

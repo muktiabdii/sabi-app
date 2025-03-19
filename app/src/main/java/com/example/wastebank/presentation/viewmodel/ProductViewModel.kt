@@ -32,6 +32,13 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
     private val _paymentState = MutableStateFlow<Result<Boolean>?>(null)
     val paymentState: StateFlow<Result<Boolean>?> = _paymentState.asStateFlow()
 
+    private val _proofImageUrl = MutableStateFlow<String?>(null)
+    val proofImageUrl: StateFlow<String?> = _proofImageUrl
+
+    fun setProofImageUrl(url: String) {
+        _proofImageUrl.value = url
+    }
+
     fun getProducts() {
         viewModelScope.launch {
             val result = productUseCase.getProducts()
@@ -82,6 +89,7 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
         viewModelScope.launch {
             _paymentState.value = Result.success(false) // Menandakan proses sedang berjalan
 
+            val proofUrl = _proofImageUrl.value
             val cartItems = _cartProducts.value
             if (cartItems.isEmpty()) {
                 _errorMessage.value = "Keranjang belanja kosong!"
@@ -90,7 +98,8 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
 
             val paymentData = PaymentDomain(
                 items = cartItems, // Kirim semua produk yang ada di cart
-                totalAmount = cartItems.sumOf { it.price }
+                totalAmount = cartItems.sumOf { it.price },
+                receiptImage = proofUrl ?: ""
             )
 
             val result = productUseCase.payment(paymentData)

@@ -13,5 +13,5 @@ data class PaymentData(
     val status: String = "Pending",
     val date: String = "",
     val hour: String = "",
-    val receiptImage: String? = null
+    val receiptImage: String
 )
