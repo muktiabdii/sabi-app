@@ -2,9 +2,11 @@ package com.example.wastebank.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.wastebank.domain.usecase.MoneyExchangeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class MoneyExchangeViewModel(private val moneyExchangeUseCase: MoneyExchangeUseCase) : ViewModel() {
 
@@ -24,14 +26,6 @@ class MoneyExchangeViewModel(private val moneyExchangeUseCase: MoneyExchangeUseC
     private val _amount = MutableStateFlow(0)
     val amount: StateFlow<Int> = _amount
 
-    // State untuk menyimpan biaya administrasi yang dikenakan
-    private val _adminFee = MutableStateFlow(0)
-    val adminFee: StateFlow<Int> = _adminFee
-
-    // State untuk menyimpan jumlah total yang harus dibayar (termasuk biaya administrasi)
-    private val _totalAmount = MutableStateFlow(0)
-    val totalAmount: StateFlow<Int> = _totalAmount
-
     // State untuk menyimpan pesan error jika ada kesalahan selama proses penukaran
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
@@ -41,8 +35,6 @@ class MoneyExchangeViewModel(private val moneyExchangeUseCase: MoneyExchangeUseC
     fun updatePointAndAmount(value: Int) {
         _points.value = value
         _amount.value = value * 10 // Setiap poin setara dengan 10 rupiah
-        _adminFee.value = value + 2500 // Biaya administrasi sebesar nilai poin + 2500
-        _totalAmount.value = _amount.value + _adminFee.value // Total yang harus dibayar
     }
 
     // Fungsi untuk memperbarui nama bank tujuan
@@ -57,17 +49,20 @@ class MoneyExchangeViewModel(private val moneyExchangeUseCase: MoneyExchangeUseC
     // Fungsi untuk memproses penukaran uang dengan menggunakan use case
     // Mengirimkan hasil ke onResult callback
     fun exchangeMoney(onResult: (Boolean, String) -> Unit) {
-        moneyExchangeUseCase.exchangeMoney(
-            points.value, bankName.value, accountNumber.value
-        ) { success, message ->
-            if (success) {
-                onResult(true, "") // Penukaran berhasil
-            } else {
-                onResult(false, "") // Penukaran gagal
-                _errorMessage.value = message // Menyimpan pesan error untuk ditampilkan
+        viewModelScope.launch {
+            moneyExchangeUseCase.exchangeMoney(
+                points.value, bankName.value, accountNumber.value
+            ) { success, message ->
+                if (success) {
+                    onResult(true, "") // Penukaran berhasil
+                } else {
+                    onResult(false, "") // Penukaran gagal
+                    _errorMessage.value = message // Menyimpan pesan error untuk ditampilkan
+                }
             }
         }
     }
+
 
     // Factory class untuk membuat instance ViewModel dengan dependensi
     class Factory(

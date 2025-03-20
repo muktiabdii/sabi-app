@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
-import com.example.wastebank.data.ProductDataSource
 import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
@@ -34,8 +33,11 @@ import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.YellowMain
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,23 +45,24 @@ fun HomeScreen(
     navController: NavController,
     userProfileViewModel: UserProfileViewModel,
     moneyExchangeViewModel: MoneyExchangeViewModel,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    productViewModel: ProductViewModel
 ) {
     // state user profile
-    val name by userProfileViewModel.name.collectAsState()
-    val pointsAmount by userProfileViewModel.userPoint.collectAsState()
+    val userProfile by userProfileViewModel.userProfile.collectAsState()
 
     // state money exchange
     val points by moneyExchangeViewModel.points.collectAsState()
     val amount by moneyExchangeViewModel.amount.collectAsState()
     val selectedBank by moneyExchangeViewModel.bankName.collectAsState()
     val accountNumber by moneyExchangeViewModel.accountNumber.collectAsState()
-    val adminFee by moneyExchangeViewModel.adminFee.collectAsState()
-    val totalAmount by moneyExchangeViewModel.totalAmount.collectAsState()
     val errorMessageMoneyExchange by moneyExchangeViewModel.errorMessage.collectAsState()
 
     // state auth
     val password by authViewModel.password.collectAsState()
+
+    // state product
+    val products by productViewModel.products.collectAsState()
 
     // kelola state bottom sheet tukar poin
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -82,7 +85,8 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         userProfileViewModel.getUserProfile()
-        userProfileViewModel.getUserPoint()
+        productViewModel.getProducts()
+        productViewModel.getCartItems()
     }
 
     Column(
@@ -92,7 +96,7 @@ fun HomeScreen(
             .verticalScroll(rememberScrollState())
     ) {
         // topbar
-        TopBar(username = name, points = pointsAmount)
+        TopBar(username = userProfile?.name.orEmpty(), points = userProfile?.points ?: 0)
 
         Box(
             modifier = Modifier
@@ -110,7 +114,7 @@ fun HomeScreen(
                 // card poin
                 Box(modifier = Modifier.padding(horizontal = 20.dp)) {
                     CardPoint(
-                        points = pointsAmount,
+                        points = userProfile?.points ?: 0,
                         onViewPointsClick = { },
                         onRedeemPointsClick = { isSheetOpen = true } // buka bottom sheet
                     )
@@ -164,10 +168,7 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // ambil data produk dari ProductDataSource
-                val products = ProductDataSource.productList
-
-                // looping daftar produk
+                // looping list produk
                 LazyRow(
                     contentPadding = PaddingValues(start = 20.dp, end = 10.dp)
                 ) {
@@ -176,10 +177,13 @@ fun HomeScreen(
                             product = product,
                             modifier = Modifier
                                 .width(160.dp)
-                                .height(215.dp),
+                                .height(230.dp),
                             imageHeight = 110,
-                            onClick = { navController.navigate("product_detail_screen") },
-                            onAddToCart = { navController.navigate("cart_screen") }
+                            onClick = {
+                                val encodedName = URLEncoder.encode(product.name, StandardCharsets.UTF_8.toString())
+                                navController.navigate("product_detail_screen/$encodedName")
+                            },
+                            onAddToCart = { product?.let { productViewModel.addToCart(it)} }
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                     }
@@ -218,8 +222,6 @@ fun HomeScreen(
                     amount,
                     selectedBank,
                     accountNumber,
-                    adminFee,
-                    totalAmount,
                     password,
                     currentStep = currentStep,
                     onExchangeClick = {
@@ -265,10 +267,8 @@ fun HomeScreen(
             PopUpNotif(
                 iconResId = if (errorPopupPoint || errorPopupPassword) R.drawable.ic_alert else R.drawable.ic_success,
                 message = when {
-                    errorPopupPoint -> errorMessageMoneyExchange
-                        ?: "Maaf, poin Anda tidak mencukupi" // Pesan error terkait poin
-                    errorPopupPassword -> errorMessageMoneyExchange
-                        ?: "Maaf, password Anda salah" // Pesan error password
+                    errorPopupPoint -> errorMessageMoneyExchange ?: "Maaf, poin Anda tidak mencukupi" // Pesan error terkait poin
+                    errorPopupPassword -> errorMessageMoneyExchange ?: "Maaf, password Anda salah" // Pesan error password
                     else -> "Permintaan tukar poin berhasil!" // Pesan sukses
                 },
                 buttonText = "Tutup",

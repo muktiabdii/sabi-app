@@ -4,5 +4,5 @@ import com.example.wastebank.data.model.WasteItem
 
 // Repository untuk donasi sampah
 interface WasteDonateRepository {
-    fun donateWaste(email: String, items: List<WasteItem>, onResult: (Boolean, String?) -> Unit)
+    suspend fun donateWaste(email: String, items: List<WasteItem>, onResult: (Boolean, String?) -> Unit)
 }

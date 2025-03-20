@@ -7,7 +7,7 @@ class MoneyExchangeUseCase(private val moneyExchangeRepository: MoneyExchangeRep
     // Fungsi untuk melakukan penukaran uang
     // Menerima poin, nama bank, dan nomor rekening sebagai input
     // Akan mengembalikan hasil operasi melalui onResult callback
-    fun exchangeMoney(point: Int, bankName: String, accountNumber: String, onResult: (Boolean, String?) -> Unit) {
+    suspend fun exchangeMoney(point: Int, bankName: String, accountNumber: String, onResult: (Boolean, String?) -> Unit) {
 
         // Validasi input: memastikan poin lebih besar dari 0 dan nama bank serta nomor rekening tidak kosong
         if (point <= 0 || bankName.isBlank() || accountNumber.isBlank()) {

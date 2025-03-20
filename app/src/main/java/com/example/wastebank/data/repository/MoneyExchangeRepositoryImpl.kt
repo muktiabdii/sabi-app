@@ -20,7 +20,7 @@ class MoneyExchangeRepositoryImpl : MoneyExchangeRepository {
      * Jika berhasil, poin pengguna akan diperbarui di database.
      * Jika gagal, pesan error akan dikirimkan.
      */
-    override fun exchangeMoney(point: Int, bankName: String, accountNumber: String, onResult: (Boolean, String?) -> Unit) {
+    override suspend fun exchangeMoney(point: Int, bankName: String, accountNumber: String, onResult: (Boolean, String?) -> Unit) {
         val userId = auth.currentUser?.uid // Mendapatkan ID pengguna yang sedang login
 
         // Memeriksa apakah pengguna telah login

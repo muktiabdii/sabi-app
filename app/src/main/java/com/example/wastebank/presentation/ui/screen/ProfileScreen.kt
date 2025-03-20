@@ -7,6 +7,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -27,9 +29,16 @@ import com.example.wastebank.presentation.ui.component.CardProfileMenu
 import com.example.wastebank.presentation.ui.component.CardProfileNotif
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.RedBg
+import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfileViewModel) {
+    val userProfile by userProfileViewModel.userProfile.collectAsState()
+
+    LaunchedEffect(Unit) {
+        userProfileViewModel.getUserProfile()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,7 +68,7 @@ fun ProfileScreen(navController: NavController) {
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Column {
-                    Text(text = "Raion", style = Typography.headlineMedium)
+                    Text(text = userProfile?.name.orEmpty(), style = Typography.headlineMedium)
                     Text(text = "Jakarta, Indonesia", style = Typography.bodyLarge)
                 }
             }
@@ -123,9 +132,9 @@ fun ProfileScreen(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewProfileScreen() {
-    val navController = rememberNavController()
-    ProfileScreen(navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewProfileScreen() {
+//    val navController = rememberNavController()
+//    ProfileScreen(navController)
+//}

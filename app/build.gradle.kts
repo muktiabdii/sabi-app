@@ -60,6 +60,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // coil untuk async image
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // uploadcare
+    implementation ("com.uploadcare.android.library:uploadcare-android:4.3.1")
+    implementation ("com.uploadcare.android.widget:uploadcare-android-widget:4.3.1")
+
     // keyboard options
     implementation("androidx.compose.ui:ui:1.5.4")
     implementation("androidx.compose.material3:material3:1.2.0")

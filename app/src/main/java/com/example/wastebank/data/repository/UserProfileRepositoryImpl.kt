@@ -1,75 +1,60 @@
 package com.example.wastebank.data.repository
 
 import com.example.wastebank.data.mapper.UserMapper
+import com.example.wastebank.data.model.UserData
 import com.example.wastebank.data.source.firebase.FirebaseService
+import com.example.wastebank.domain.model.UserDomain
 import com.example.wastebank.domain.repository.UserProfileRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.tasks.await
 
-class UserProfileRepositoryImpl : UserProfileRepository{
+class UserProfileRepositoryImpl : UserProfileRepository {
 
-    // Inisialisasi Firebase Auth dan Firebase Realtime Database
     private val auth = FirebaseService.auth
     private val db = FirebaseService.db
     private val userRef = db.getReference("users")
 
-    override fun getUserProfile(onResult: (String?, String?, String?, String?, Int?) -> Unit) {
-
-        // Ambil userId dari user yang sedang login
-        val userId = auth.currentUser?.uid
-        if (userId != null) {
-            userRef.child(userId).get().addOnSuccessListener { snapshot ->
-                val user = UserMapper.mapToDomain(snapshot)
-
-                // Mengambil data user
-                onResult(user?.name, user?.email, user?.phoneNumber, user?.gender, user?.points)
-            }.addOnFailureListener {
-                onResult(null, null, null, null, null)
-            }
-        }
-
-        else{
-            onResult(null, null, null, null, null)
-        }
-    }
-
-    override fun getUserName(onResult: (String?) -> Unit) {
-        val userId = auth.currentUser?.uid
-        if (userId != null) {
-            userRef.child(userId).child("name").get().addOnSuccessListener { snapshot ->
-                val name = snapshot.getValue(String::class.java) ?: ""
-                println("Nama yang didapat dari Firebase: $name") // Debugging
-                onResult(name)
-            }.addOnFailureListener {
-                println("Gagal mengambil nama dari Firebase") // Debugging
-                onResult("")
-            }
-        } else {
-            println("User tidak login") // Debugging
-            onResult("")
-        }
+    override suspend fun getUserProfile(): UserDomain? {
+        val userId = auth.currentUser?.uid ?: return null
+        val snapshot = userRef.child(userId).get().await()
+        val userData = snapshot.getValue(UserData::class.java) ?: return null
+        return UserMapper.mapToDomain(userData)
     }
 
 
-    override fun getUserPoint(onResult: (Int?) -> Unit) {
-        val userId = auth.currentUser?.uid
-        if (userId != null) {
-            userRef.child(userId).child("points").addValueEventListener(object :
-                ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val point = snapshot.getValue(Int::class.java) ?: 0
-                    onResult(point)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    onResult(null)
-                }
-            })
-        } else {
-            onResult(null)
+    override suspend fun editUserProfile(user: UserDomain): Result<Unit> {
+        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("User not authenticated"))
+        return try {
+            userRef.child(userId).setValue(user).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
+    override suspend fun getUserPoint(): Int? {
+        val userId = auth.currentUser?.uid ?: return null
+        val snapshot = userRef.child(userId).child("points").get().await()
+        return snapshot.getValue(Int::class.java)
+    }
 
+    override suspend fun getUserName(): String? {
+        val userId = auth.currentUser?.uid ?: return null
+        val snapshot = userRef.child(userId).child("name").get().await()
+        return snapshot.getValue(String::class.java)
+    }
+
+    override suspend fun deleteAccount(): Result<Unit> {
+        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("User not authenticated"))
+        return try {
+            userRef.child(userId).removeValue().await()
+            auth.currentUser?.delete()?.await()
+            auth.signOut()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

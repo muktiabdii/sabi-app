@@ -14,12 +14,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.GreenBg
+import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 
 // Bukti Transfer
 @Composable
 fun CardTransferSlip(
     subtotal: Int,
-    shippingCost: Int
+    shippingCost: Int,
+    uploadcareViewModel: UploadcareViewModel
 ) {
     val total = subtotal + shippingCost
     var showDialogUpload by remember { mutableStateOf(false) }
@@ -61,16 +63,16 @@ fun CardTransferSlip(
             subtotal = subtotal,
             pengiriman = shippingCost,
             onDismiss = { showDialogUpload = false },
-            onUploadClick = { showDialogUpload = false }
+            uploadcareViewModel = uploadcareViewModel
         )
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewCardTransferSlip() {
-    CardTransferSlip(
-        subtotal = 70000,
-        shippingCost = 0
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewCardTransferSlip() {
+//    CardTransferSlip(
+//        subtotal = 70000,
+//        shippingCost = 0
+//    )
+//}

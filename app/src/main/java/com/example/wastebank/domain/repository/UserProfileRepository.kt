@@ -1,7 +1,11 @@
 package com.example.wastebank.domain.repository
 
+import com.example.wastebank.domain.model.UserDomain
+
 interface UserProfileRepository {
-    fun getUserProfile(onResult: (String?, String?, String?, String?, Int?) -> Unit)
-    fun getUserPoint(onResult: (Int?) -> Unit)
-    fun getUserName(onResult: (String?) -> Unit)
+    suspend fun getUserProfile(): UserDomain?
+    suspend fun editUserProfile(user: UserDomain): Result<Unit>
+    suspend fun getUserPoint(): Int?
+    suspend fun getUserName(): String?
+    suspend fun deleteAccount(): Result<Unit>
 }

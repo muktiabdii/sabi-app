@@ -19,16 +19,38 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
+import com.example.wastebank.domain.model.UserDomain
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.*
+import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 
 @Composable
-fun EditProfileScreen(navController: NavController) {
+fun EditProfileScreen(navController: NavController, userProfileViewModel: UserProfileViewModel) {
+    // State untuk input field
     var name by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf("Wanita") }
+    var points by remember { mutableStateOf(0) }
+    var gender by remember { mutableStateOf("Wanita") } // Default ke Wanita
+
+    // Ambil data user saat layar pertama kali dimuat
+    val userProfile by userProfileViewModel.userProfile.collectAsState()
+
+    LaunchedEffect(Unit) {
+        userProfileViewModel.getUserProfile()
+    }
+
+    // Update state ketika data user tersedia
+    LaunchedEffect(userProfile) {
+        userProfile?.let {
+            name = it.name
+            phoneNumber = it.phoneNumber
+            email = it.email
+            gender = it.gender
+            points = it.points
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -41,7 +63,6 @@ fun EditProfileScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // button back
             Image(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = "Back",
@@ -51,20 +72,19 @@ fun EditProfileScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.width(12.dp))
 
-            // Edit Profil
             Text(
                 text = "Edit Profil",
                 style = Typography.headlineLarge,
                 modifier = Modifier.weight(1f)
             )
         }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         Column(
-            modifier = Modifier
-                .weight(1f)
+            modifier = Modifier.weight(1f)
         ) {
-            // profile picture
+            // Profile Picture
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
@@ -83,55 +103,42 @@ fun EditProfileScreen(navController: NavController) {
                     )
                 }
             }
+
             Spacer(modifier = Modifier.height(24.dp))
 
-            // TextFields Nama
+            // Nama
             Text(text = "Nama", style = Typography.bodyLarge)
             Spacer(modifier = Modifier.height(5.dp))
+            TextFieldAuth(value = name, onValueChange = { name = it }, placeholder = "Masukkan nama Anda")
 
-            TextFieldAuth(
-                value = name,
-                onValueChange = { name = it },
-                placeholder = "Masukkan nama Anda"
-            )
             Spacer(modifier = Modifier.height(8.dp))
 
-            // TextFields No. Telepon
+            // No. Telepon
             Text(text = "No. Telepon", style = Typography.bodyLarge)
             Spacer(modifier = Modifier.height(5.dp))
-
             TextFieldAuth(
                 value = phoneNumber,
                 onValueChange = {
-                    if (it.all { char -> char.isDigit() || char == '+' }) {
-                        phoneNumber = it
-                    }
+                    if (it.all { char -> char.isDigit() || char == '+' }) phoneNumber = it
                 },
                 placeholder = "Masukkan nomor telepon",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
+
             Spacer(modifier = Modifier.height(8.dp))
 
-            // TextFields Email
+            // Email
             Text(text = "Email", style = Typography.bodyLarge)
             Spacer(modifier = Modifier.height(5.dp))
+            TextFieldAuth(value = email, onValueChange = { email = it }, placeholder = "Masukkan email")
 
-            TextFieldAuth(
-                value = email,
-                onValueChange = { email = it },
-                placeholder = "Masukkan email"
-            )
             Spacer(modifier = Modifier.height(8.dp))
 
-            // TextFields Kata Sandi
+            // Kata Sandi
             Text(text = "Kata Sandi", style = Typography.bodyLarge)
             Spacer(modifier = Modifier.height(5.dp))
+            TextFieldPassword(value = password, onValueChange = { password = it }, placeholder = "Minimal 8 karakter")
 
-            TextFieldPassword(
-                value = password,
-                onValueChange = { password = it },
-                placeholder = "Minimal 8 karakter"
-            )
             Spacer(modifier = Modifier.height(8.dp))
 
             // Gender Selection
@@ -145,22 +152,33 @@ fun EditProfileScreen(navController: NavController) {
 
         // Button Simpan Perubahan
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             ButtonAuth(
                 text = "SIMPAN PERUBAHAN",
                 backgroundColor = BrownMain,
                 textColor = Color.White,
-                onClick = { navController.navigate("profile_screen") }
+                onClick = {
+                    val updatedUser = UserDomain(
+                        name = name,
+                        phoneNumber = phoneNumber,
+                        email = email,
+                        gender = gender,
+                        points = points
+                    )
+                    userProfileViewModel.editUserProfile(updatedUser)
+                    navController.navigate("profile_screen")
+                }
             )
         }
+
         Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewEditProfileScreen() {
-    EditProfileScreen(navController = rememberNavController())
-}
+
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewEditProfileScreen() {
+//    EditProfileScreen(navController = rememberNavController())
+//}

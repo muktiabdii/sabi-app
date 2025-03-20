@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,7 +12,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,14 +26,21 @@ import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
+import com.example.wastebank.presentation.viewmodel.DonationViewModel
+import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 
 @Composable
-fun DonationDetailScreen(navController: NavController) {
+fun DonationDetailScreen(navController: NavController, donationViewModel: DonationViewModel, uploadcareViewModel: UploadcareViewModel) {
     var selectedNominal by remember { mutableStateOf<Int?>(null) }
     var customNominal by remember { mutableStateOf("") }
 
+    val selectedDonation by donationViewModel.selectedDonation.collectAsState()
+
     var showDialogUpload by remember { mutableStateOf(false) }
     var showPopUpNotif by remember { mutableStateOf(false) }
+
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
 
     val nominalList = listOf(10000, 25000, 50000, 100000, 250000, 500000)
 
@@ -66,9 +77,7 @@ fun DonationDetailScreen(navController: NavController) {
         item {
             // Card detail donasi
             CardDonationDetail(
-                title = "Papua Dengan Kita",
-                description = "Beri Subsidi untuk mereka yang berada di Timur!",
-                percent = 67
+                donation = selectedDonation
             )
         }
 
@@ -136,10 +145,8 @@ fun DonationDetailScreen(navController: NavController) {
 
         item {
             CardInfoTransfer(
-                bank = "BCA",
-                accountNo = "1234567890",
-                name = "Yayasan Papua Dengan Kita",
-                total = selectedNominal ?: customNominal.toIntOrNull() ?: 0
+                donation = selectedDonation,
+                totalAmount = selectedNominal ?: customNominal.toIntOrNull() ?: 0
             )
         }
 
@@ -150,7 +157,14 @@ fun DonationDetailScreen(navController: NavController) {
                 backgroundColor = Color.White,
                 textColor = BrownMain,
                 borderColor = BrownMain,
-                onClick = { /* Handle Copy Account Number */ }
+                onClick = {
+                    val accountNumber = selectedDonation?.accountNumber.orEmpty()
+                    if (accountNumber.isNotEmpty()) {
+                        clipboardManager.setText(AnnotatedString(accountNumber))
+                        Toast.makeText(context, "Nomor rekening disalin!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
             )
         }
 
@@ -175,7 +189,7 @@ fun DonationDetailScreen(navController: NavController) {
             subtotal = selectedNominal ?: customNominal.toIntOrNull() ?: 0,
             pengiriman = 0,
             onDismiss = { showDialogUpload = false },
-            onUploadClick = { showPopUpNotif = true }
+            uploadcareViewModel = uploadcareViewModel
         )
     }
 
@@ -197,9 +211,9 @@ fun DonationDetailScreen(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewDonationDetailScreen() {
-    val navController = rememberNavController()
-    DonationDetailScreen(navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewDonationDetailScreen() {
+//    val navController = rememberNavController()
+//    DonationDetailScreen(navController)
+//}

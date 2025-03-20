@@ -21,15 +21,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import coil.compose.AsyncImage
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.theme.*
+import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 
 @Composable
 fun DialogUpload(
     subtotal: Int,
     pengiriman: Int,
     onDismiss: () -> Unit,
-    onUploadClick: (Uri?) -> Unit
+    uploadcareViewModel: UploadcareViewModel
 ) {
     val context = LocalContext.current
     val total = subtotal + pengiriman
@@ -133,14 +135,14 @@ fun DialogUpload(
                         contentAlignment = Alignment.Center
                     ) {
                         if (selectedFileUri != null) {
-                            // jika file sudah dipilih, hanya tampilkan nama file
-                            Text(
-                                text = selectedFileName,
-                                style = Typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                                textAlign = TextAlign.Center
+                            // Jika file sudah dipilih, tampilkan gambar
+                            AsyncImage(
+                                model = selectedFileUri,
+                                contentDescription = "Gambar Terpilih",
+                                modifier = Modifier.fillMaxSize()
                             )
                         } else {
-                            // jika belum ada file, tampilkan ikon dan teks instruksi
+                            // Jika belum ada file, tampilkan ikon dan teks instruksi
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
@@ -171,7 +173,12 @@ fun DialogUpload(
                         text = "UPLOAD DAN KONFIRMASI",
                         backgroundColor = BrownMain,
                         textColor = Color.White,
-                        onClick = { onUploadClick(selectedFileUri) }
+                        onClick = {
+                            selectedFileUri?.let { uri ->
+                                uploadcareViewModel.uploadImage(uri)
+                                onDismiss()
+                            }
+                        }
                     )
                 }
             }
@@ -199,12 +206,12 @@ fun DetailRow(label: String, value: Int) {
     }
 }
 
-@Preview(showBackground = false)
-@Composable
-fun PreviewDialogUpload() {
-    DialogUpload(
-        subtotal = 70000,
-        pengiriman = 0,
-        onDismiss = {},
-        onUploadClick = {})
-}
+//@Preview(showBackground = false)
+//@Composable
+//fun PreviewDialogUpload() {
+//    DialogUpload(
+//        subtotal = 70000,
+//        pengiriman = 0,
+//        onDismiss = {},
+//        onUploadClick = {})
+//}
