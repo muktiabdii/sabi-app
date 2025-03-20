@@ -27,14 +27,21 @@ import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.viewmodel.DonationViewModel
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 
 @Composable
-fun DonationDetailScreen(navController: NavController, donationViewModel: DonationViewModel, uploadcareViewModel: UploadcareViewModel) {
+fun DonationDetailScreen(
+    navController: NavController,
+    donationViewModel: DonationViewModel,
+    uploadcareViewModel: UploadcareViewModel,
+) {
     var selectedNominal by remember { mutableStateOf<Int?>(null) }
     var customNominal by remember { mutableStateOf("") }
 
     val selectedDonation by donationViewModel.selectedDonation.collectAsState()
+
+    val uploadResult by uploadcareViewModel.uploadResult.collectAsState()
 
     var showDialogUpload by remember { mutableStateOf(false) }
     var showPopUpNotif by remember { mutableStateOf(false) }

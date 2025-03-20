@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wastebank.domain.model.DonateDomain
 import com.example.wastebank.domain.model.DonationDomain
 import com.example.wastebank.domain.usecase.DonationUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +25,12 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
     private val _selectedDonation = MutableStateFlow<DonationDomain?>(null)
     val selectedDonation: StateFlow<DonationDomain?> = _selectedDonation.asStateFlow()
 
+    private val _donateState = MutableStateFlow<Result<Boolean>?>(null)
+    val donateState: StateFlow<Result<Boolean>?> = _donateState.asStateFlow()
+
+    private val _proofImageUrl = MutableStateFlow<String?>(null)
+    val proofImageUrl: StateFlow<String?> = _proofImageUrl
+
     fun getAllDonations() {
         viewModelScope.launch {
             donationUseCase.getAllDonations()
@@ -41,6 +48,30 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
             val result = donationUseCase.getDonationByTitle(title)
             _selectedDonation.value = result
 
+        }
+    }
+
+    fun donate() {
+        viewModelScope.launch {
+            _donateState.value = Result.success(false) // Menandakan proses sedang berjalan
+
+            val proofUrl = _proofImageUrl.value
+            val donation = _selectedDonation.value ?: DonationDomain()
+
+            val donateData = DonateDomain(
+                donations = donation,
+                totalAmount = donation.totalAmount.toIntOrNull(),
+                receiptImage = proofUrl ?: ""
+            )
+
+            val result = donationUseCase.donate(donateData)
+            _donateState.value = result
+
+            result.onSuccess {
+                _errorMessage.value = null
+            }.onFailure { exception ->
+                _errorMessage.value = exception.message
+            }
         }
     }
 

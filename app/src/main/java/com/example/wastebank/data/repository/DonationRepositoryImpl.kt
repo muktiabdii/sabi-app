@@ -3,6 +3,7 @@ package com.example.wastebank.data.repository
 import com.example.wastebank.data.mapper.DonationMapper
 import com.example.wastebank.data.model.DonationData
 import com.example.wastebank.data.source.firebase.FirebaseService
+import com.example.wastebank.domain.model.DonateDomain
 import com.example.wastebank.domain.model.DonationDomain
 import com.example.wastebank.domain.repository.DonationRepository
 import com.google.firebase.database.DataSnapshot
@@ -13,9 +14,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DonationRepositoryImpl : DonationRepository {
 
+    private val auth = FirebaseService.auth
     private val db = FirebaseService.db
 
     override fun getAllDonation(): Flow<List<DonationDomain>> = callbackFlow {
@@ -51,6 +56,37 @@ class DonationRepositoryImpl : DonationRepository {
             donation
         } catch (e: Exception) {
             null
+        }
+    }
+
+    override suspend fun donate(donate: DonateDomain): Result<Boolean> {
+        return try{
+            val currentUser = auth.currentUser ?: return Result.failure(Exception("User belum login"))
+            val userName = db.getReference("users").child(currentUser.uid).child("name").get().await().getValue(String::class.java) ?: "Unknown"
+
+            val donateRef = db.getReference("donations").child(donate.donateMethod).push()
+            val donateId = donateRef.key ?: return Result.failure(Exception("Gagal generate donateId"))
+
+            val timestamp = System.currentTimeMillis()
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val date = dateFormat.format(Date(timestamp))
+            val hour = timeFormat.format(Date(timestamp))
+
+            // Buat objek DonateDomain dengan ID & User Info
+            val updatedDonate = donate.copy(
+                donateId = donateId,
+                userId = currentUser.uid,
+                userName = userName,
+                date = date,
+                hour = hour
+            )
+
+            donateRef.setValue(updatedDonate).await()
+
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }
