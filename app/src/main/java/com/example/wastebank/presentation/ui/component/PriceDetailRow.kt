@@ -10,7 +10,14 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.wastebank.presentation.ui.theme.Typography
 
 @Composable
-fun PriceDetailRow(label: String, amount: Int) {
+fun PriceDetailRow(label: String, amount: Int, type: String) {
+    // format berdasarkan rupiah atau poin
+    val formattedAmount = when (type) {
+        "transfer" -> "Rp %,d".format(amount)
+        "point" -> "%,d pts".format(amount / 10)
+        else -> amount.toString()
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -20,7 +27,7 @@ fun PriceDetailRow(label: String, amount: Int) {
             style = Typography.bodyLarge
         )
         Text(
-            text = "Rp %,d".format(amount),
+            text = formattedAmount,
             style = Typography.bodyLarge.copy(
                 fontWeight = FontWeight.Bold
             )

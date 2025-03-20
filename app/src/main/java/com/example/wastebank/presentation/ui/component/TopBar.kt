@@ -19,7 +19,7 @@ fun TopBar(username: String, points: Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 30.dp, bottom = 20.dp, start = 20.dp, end = 20.dp)
+            .padding(top = 40.dp, bottom = 20.dp, start = 20.dp, end = 20.dp)
             .background(Color.Transparent),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -41,12 +41,12 @@ fun TopBar(username: String, points: Int) {
             Text(
                 text = "Hi, $username",
                 style = Typography.headlineMedium,
-                modifier = Modifier.width(144.dp)
+                modifier = Modifier.width(155.dp)
             )
             Text(
                 text = "Poin saat ini: $points pts",
                 style = Typography.bodyLarge,
-                modifier = Modifier.width(144.dp)
+                modifier = Modifier.width(155.dp)
             )
         }
     }

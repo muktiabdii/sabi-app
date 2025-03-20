@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.presentation.ui.theme.YellowMain
+import org.hamcrest.core.StringStartsWith.startsWith
 
 @Composable
 fun BottomNavigation(navController: NavController) {
@@ -52,11 +53,17 @@ fun BottomNavigation(navController: NavController) {
         "edit_profile_screen"
     )
 
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentRoute = navBackStackEntry?.destination?.route ?: ""
+
+    // apakah screen perlu menampilkan BottomNav
+    val shouldShowBottomNav = !hiddenScreens.any { hiddenRoute ->
+        currentRoute.startsWith(hiddenRoute)
+    }
 
     // tampilkan BottomNav jika tidak berada di list hidden screen
-    if (currentRoute !in hiddenScreens) {
+    if (shouldShowBottomNav) {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()

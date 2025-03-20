@@ -104,11 +104,11 @@ fun CartScreen(navController: NavController, productViewModel: ProductViewModel)
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Column {
-                        PriceDetailRow(label = "Subtotal", amount = subtotal)
+                        PriceDetailRow(label = "Subtotal", amount = subtotal, type = "transfer")
                         Spacer(modifier = Modifier.height(4.dp))
-                        PriceDetailRow(label = "Pengiriman", amount = shippingCost)
+                        PriceDetailRow(label = "Pengiriman", amount = shippingCost, type = "transfer")
                         Spacer(modifier = Modifier.height(4.dp))
-                        PriceDetailRow(label = "Total", amount = total)
+                        PriceDetailRow(label = "Total", amount = total, type = "transfer")
                     }
                     Spacer(modifier = Modifier.height(80.dp))
                 }

@@ -69,7 +69,7 @@ fun ProductDetailScreen(navController: NavController, productViewModel: ProductV
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             // Jika product null, tampilkan teks placeholder
             Text(text = product?.name ?: "Nama Produk", style = Typography.headlineLarge.copy(fontSize = 24.sp))
             Spacer(modifier = Modifier.height(2.dp))

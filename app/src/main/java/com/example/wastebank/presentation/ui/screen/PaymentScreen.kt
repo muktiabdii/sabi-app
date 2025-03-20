@@ -24,8 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
+import com.example.wastebank.presentation.components.RadioButtonPayment
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.component.CardBankTransfer
+import com.example.wastebank.presentation.ui.component.CardPaymentPoint
 import com.example.wastebank.presentation.ui.component.CardTransferSlip
 import com.example.wastebank.presentation.ui.component.PopUpNotif
 import com.example.wastebank.presentation.ui.component.PriceDetailRow
@@ -33,6 +35,7 @@ import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
+import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 
 @Composable
 fun PaymentScreen(
@@ -41,9 +44,14 @@ fun PaymentScreen(
     shippingCost: Int,
     total: Int,
     productViewModel: ProductViewModel,
-    uploadcareViewModel: UploadcareViewModel
+    uploadcareViewModel: UploadcareViewModel,
+    userProfileViewModel: UserProfileViewModel
 ) {
+    // ambil poin milik user
+    val userProfile by userProfileViewModel.userProfile.collectAsState()
+
     var showPopUpNotif by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf("Transfer Bank") }
 
     val uploadResult by uploadcareViewModel.uploadResult.collectAsState()
 
@@ -97,27 +105,59 @@ fun PaymentScreen(
                 text = "Opsi Pembayaran yang Direkomendasikan",
                 style = Typography.bodyLarge
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Metode Transfer Bank
-            CardBankTransfer(
-                bank = "BCA",
-                accountNo = "9384759381",
-                name = "SABI Official",
-                total = total,
-                onCopyClick = {
-                    val accountNo = "9384759381"
-                    clipboardManager.setText(AnnotatedString(accountNo))
+            // pilih metode pembayaran
+            Text(
+                text = "Pilih Metode Pembayaran",
+                style = Typography.headlineMedium
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // radio button metode
+            Column() {
+                RadioButtonPayment(label = "Transfer Bank", selected = selectedOption) {
+                    selectedOption = it
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                RadioButtonPayment(label = "Gunakan Poin", selected = selectedOption) {
+                    selectedOption = it
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // bagian yang berubah berdasarkan metode pembayaran
+            if (selectedOption == "Transfer Bank") {
+                // Metode Transfer Bank
+                CardBankTransfer(
+                    bank = "BCA",
+                    accountNo = "9384759381",
+                    name = "SABI Official",
+                    total = total,
+                    onCopyClick = {
+                        clipboardManager.setText(AnnotatedString("9384759381"))
                         Toast.makeText(context, "Nomor rekening disalin!", Toast.LENGTH_SHORT)
                             .show()
                     }
-            )
-            Spacer(modifier = Modifier.height(20.dp))
+                )
+                Spacer(modifier = Modifier.height(20.dp))
 
-            // Upload Bukti Transfer
-            CardTransferSlip(subtotal = subtotal, shippingCost = shippingCost, uploadcareViewModel)
+                // Upload Bukti Transfer
+                CardTransferSlip(
+                    subtotal = subtotal,
+                    shippingCost = shippingCost,
+                    uploadcareViewModel
+                )
 
-            Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+            } else {
+                // Metode Gunakan Poin
+                CardPaymentPoint(
+                    availablePoints = userProfile?.points ?: 0,
+                    requiredPoints = subtotal / 10,
+                    onConfirmClick = {})
+                Spacer(modifier = Modifier.height(20.dp))
+            }
 
             // Detail Harga
             Text(
@@ -126,13 +166,24 @@ fun PaymentScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            PriceDetailRow(label = "Subtotal", amount = subtotal)
+            PriceDetailRow(
+                label = "Subtotal",
+                amount = subtotal,
+                type = if (selectedOption == "Transfer Bank") "transfer" else "point"
+            )
             Spacer(modifier = Modifier.height(4.dp))
-            PriceDetailRow(label = "Pengiriman", amount = shippingCost)
+            PriceDetailRow(
+                label = "Pengiriman",
+                amount = shippingCost,
+                type = if (selectedOption == "Transfer Bank") "transfer" else "point"
+            )
             Spacer(modifier = Modifier.height(4.dp))
-            PriceDetailRow(label = "Total", amount = total)
+            PriceDetailRow(
+                label = "Total",
+                amount = total,
+                type = if (selectedOption == "Transfer Bank") "transfer" else "point"
+            )
         }
-
         // Tombol Bayar
         Box(
             modifier = Modifier
@@ -146,7 +197,11 @@ fun PaymentScreen(
                 onClick = {
                     val proofUrl = productViewModel.proofImageUrl.value
                     if (proofUrl.isNullOrEmpty()) {
-                        Toast.makeText(context, "Harap upload bukti transfer terlebih dahulu!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Harap upload bukti transfer terlebih dahulu!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         productViewModel.payment()
                         showPopUpNotif = true
@@ -157,7 +212,7 @@ fun PaymentScreen(
         Spacer(modifier = Modifier.height(40.dp))
     }
 
-    // PopUp Notifikasi Pembayaran Berhasil
+// PopUp Notifikasi Pembayaran Berhasil
     if (showPopUpNotif) {
         PopUpNotif(
             iconResId = R.drawable.ic_success,
