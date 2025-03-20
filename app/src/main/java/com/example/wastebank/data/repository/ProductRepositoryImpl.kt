@@ -132,7 +132,11 @@ class ProductRepositoryImpl : ProductRepository {
     override suspend fun payment(payment: PaymentDomain): Result<Boolean> {
         return try {
             val currentUser = auth.currentUser ?: return Result.failure(Exception("User belum login"))
-            val userName = db.getReference("users").child(currentUser.uid).child("name").get().await().getValue(String::class.java) ?: "Unknown"
+            val userRef = db.getReference("users").child(currentUser.uid)
+            val userName = userRef.child("name").get().await().getValue(String::class.java) ?: "Unknown"
+
+            val userPoints = userRef.child("points").get().await().getValue(Int::class.java) ?: 0
+            val requiredPoints = (payment.totalAmount ?: 0) / 10
 
             val paymentRef = db.getReference("payments").child(payment.paymentMethod).push() // Generate ID unik dari Firebase
             val paymentId = paymentRef.key ?: return Result.failure(Exception("Gagal generate paymentId"))
@@ -150,22 +154,30 @@ class ProductRepositoryImpl : ProductRepository {
                 userName = userName,
                 date = date,
                 hour = hour,
-                items = emptyList()
+                totalPoints = if (payment.paymentMethod == "points") requiredPoints else null,
+                totalAmount = if (payment.paymentMethod == "points") null else payment.totalAmount
             )
 
             paymentRef.setValue(updatedPayment).await()
 
+            // Tambahkan item ke dalam transaksi
             val itemsRef = paymentRef.child("items")
             payment.items.forEachIndexed { index, item ->
-                val customIndex = index + 1
-                itemsRef.child(customIndex.toString()).setValue(item).await()
+                itemsRef.child((index + 1).toString()).setValue(item).await()
             }
 
-            db.getReference("users").child(currentUser.uid).child("cart").removeValue().await()
+            // Jika pembayaran pakai poin, kurangi poin user & update ke database
+            if (payment.paymentMethod == "points") {
+                val newPoints = userPoints - requiredPoints
+                userRef.child("points").setValue(newPoints).await() // Update jumlah poin user
+            }
+
+            // Hapus keranjang user setelah transaksi berhasil
+            userRef.child("cart").removeValue().await()
+
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
-
 }

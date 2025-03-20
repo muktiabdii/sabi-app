@@ -5,7 +5,7 @@ data class PaymentDomain(
     val userId: String = "",
     val userName: String = "",
     val items: List<CartItemDomain> = emptyList(),
-    val paymentMethod: String = "Money",
+    val paymentMethod: String = "",
     val totalPoints: Int? = null,
     val totalAmount: Int? = null,
     val status: String = "Pending",

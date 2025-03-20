@@ -195,19 +195,34 @@ fun PaymentScreen(
                 backgroundColor = BrownMain,
                 textColor = Color.White,
                 onClick = {
-                    val proofUrl = productViewModel.proofImageUrl.value
-                    if (proofUrl.isNullOrEmpty()) {
+                    // Cek apakah pakai poin dan apakah poin cukup
+                    if (selectedOption == "Gunakan Poin" && (userProfile?.points ?: 0) < total / 10) {
                         Toast.makeText(
                             context,
-                            "Harap upload bukti transfer terlebih dahulu!",
+                            "Poin tidak mencukupi!",
                             Toast.LENGTH_SHORT
                         ).show()
-                    } else {
-                        productViewModel.payment()
-                        showPopUpNotif = true
+                        return@ButtonAuth // Hentikan eksekusi lebih lanjut
                     }
+
+                    if (selectedOption == "Transfer Bank") {
+                        val proofUrl = productViewModel.proofImageUrl.value
+                        if (proofUrl.isNullOrEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "Harap upload bukti transfer terlebih dahulu!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@ButtonAuth // Hentikan eksekusi lebih lanjut
+                        }
+                    }
+
+                    // Kalau semua validasi lolos, lanjutkan pembayaran
+                    productViewModel.payment(selectedOption)
+                    showPopUpNotif = true
                 }
             )
+
         }
         Spacer(modifier = Modifier.height(40.dp))
     }
