@@ -153,7 +153,8 @@ class MainActivity : ComponentActivity() {
                             DonationDetailScreen(
                                 navController,
                                 donationViewModel,
-                                uploadcareViewModel
+                                uploadcareViewModel,
+                                userProfileViewModel
                             )
                         }
 
