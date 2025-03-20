@@ -180,25 +180,19 @@ fun HomeScreen(
                                 .height(230.dp),
                             imageHeight = 110,
                             onClick = {
-                                val encodedName = URLEncoder.encode(product.name, StandardCharsets.UTF_8.toString())
+                                val encodedName = URLEncoder.encode(
+                                    product.name,
+                                    StandardCharsets.UTF_8.toString()
+                                )
                                 navController.navigate("product_detail_screen/$encodedName")
                             },
-                            onAddToCart = { product?.let { productViewModel.addToCart(it)} }
+                            onAddToCart = { product?.let { productViewModel.addToCart(it) } }
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                     }
                 }
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(90.dp))
             }
-
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-        ) {
-            BottomNavigation(navController = navController)
         }
 
         // Bottom sheet exchange
@@ -267,8 +261,10 @@ fun HomeScreen(
             PopUpNotif(
                 iconResId = if (errorPopupPoint || errorPopupPassword) R.drawable.ic_alert else R.drawable.ic_success,
                 message = when {
-                    errorPopupPoint -> errorMessageMoneyExchange ?: "Maaf, poin Anda tidak mencukupi" // Pesan error terkait poin
-                    errorPopupPassword -> errorMessageMoneyExchange ?: "Maaf, password Anda salah" // Pesan error password
+                    errorPopupPoint -> errorMessageMoneyExchange
+                        ?: "Maaf, poin Anda tidak mencukupi" // Pesan error terkait poin
+                    errorPopupPassword -> errorMessageMoneyExchange
+                        ?: "Maaf, password Anda salah" // Pesan error password
                     else -> "Permintaan tukar poin berhasil!" // Pesan sukses
                 },
                 buttonText = "Tutup",

@@ -63,28 +63,32 @@ class MainActivity : ComponentActivity() {
                 // Inisiasi userProfilRepo, userProfileUseCase, dan userProfileViewModel
                 val userProfileRepo = UserProfileRepositoryImpl()
                 val userProfileUseCase = UserProfileUseCase(userProfileRepo)
-                val userProfileViewModel: UserProfileViewModel = viewModel(factory = UserProfileViewModel.Factory(userProfileUseCase))
+                val userProfileViewModel: UserProfileViewModel =
+                    viewModel(factory = UserProfileViewModel.Factory(userProfileUseCase))
 
                 // Inisiasi moneyExchangeRepo, moneyExchangeUseCase, dan moneyExchangeViewModel
                 val moneyExchangeRepo = MoneyExchangeRepositoryImpl()
                 val moneyExchangeUseCase = MoneyExchangeUseCase(moneyExchangeRepo)
-                val moneyExchangeViewModel: MoneyExchangeViewModel = viewModel(factory = MoneyExchangeViewModel.Factory(moneyExchangeUseCase))
+                val moneyExchangeViewModel: MoneyExchangeViewModel =
+                    viewModel(factory = MoneyExchangeViewModel.Factory(moneyExchangeUseCase))
 
                 // Inisasi productRepo, productUseCase, dan productViewModel
                 val productRepo = ProductRepositoryImpl()
                 val productUseCase = ProductUseCase(productRepo)
-                val productViewModel: ProductViewModel = viewModel(factory = ProductViewModel.Factory(productUseCase))
+                val productViewModel: ProductViewModel =
+                    viewModel(factory = ProductViewModel.Factory(productUseCase))
 
                 // Inisiasi donationrRepo, donationUseCase, dan donationViewModel
                 val donationRepo = DonationRepositoryImpl()
                 val donationUseCase = DonationUseCase(donationRepo)
-                val donationViewModel: DonationViewModel = viewModel(factory = DonationViewModel.Factory(donationUseCase))
+                val donationViewModel: DonationViewModel =
+                    viewModel(factory = DonationViewModel.Factory(donationUseCase))
 
                 // Inisiasi uploadcareRepo, uploadcareUseCase, dan uploadcareViewModel
-                 val uploadcareRepo = UploadcareRepositoryImpl(this)
-                 val uploadcareUseCase = UploadcareUseCase(uploadcareRepo)
-                 val uploadcareViewModel: UploadcareViewModel = viewModel(factory = UploadcareViewModel.Factory(uploadcareUseCase))
-
+                val uploadcareRepo = UploadcareRepositoryImpl(this)
+                val uploadcareUseCase = UploadcareUseCase(uploadcareRepo)
+                val uploadcareViewModel: UploadcareViewModel =
+                    viewModel(factory = UploadcareViewModel.Factory(uploadcareUseCase))
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -116,7 +120,13 @@ class MainActivity : ComponentActivity() {
                             SetNewPasswordScreen(navController)
                         }
                         composable("home_screen") {
-                            HomeScreen(navController, userProfileViewModel, moneyExchangeViewModel, authViewModel, productViewModel)
+                            HomeScreen(
+                                navController,
+                                userProfileViewModel,
+                                moneyExchangeViewModel,
+                                authViewModel,
+                                productViewModel
+                            )
                         }
                         composable("maps_screen") {
                             MapsScreen(navController)
@@ -134,16 +144,24 @@ class MainActivity : ComponentActivity() {
                             DonateScreen(navController, donationViewModel)
                         }
                         composable("donation_detail_screen/{donationTitle}") { backStackEntry ->
-                            val donationTitle = backStackEntry.arguments?.getString("donationTitle") ?: ""
-                            val decodedTitle = URLDecoder.decode(donationTitle, StandardCharsets.UTF_8.toString())
+                            val donationTitle =
+                                backStackEntry.arguments?.getString("donationTitle") ?: ""
+                            val decodedTitle =
+                                URLDecoder.decode(donationTitle, StandardCharsets.UTF_8.toString())
 
                             donationViewModel.getDonationByTitle(decodedTitle)
-                            DonationDetailScreen(navController, donationViewModel, uploadcareViewModel)
+                            DonationDetailScreen(
+                                navController,
+                                donationViewModel,
+                                uploadcareViewModel
+                            )
                         }
 
                         composable("product_detail_screen/{productName}") { backStackEntry ->
-                            val productName = backStackEntry.arguments?.getString("productName") ?: ""
-                            val decodedName = URLDecoder.decode(productName, StandardCharsets.UTF_8.toString())
+                            val productName =
+                                backStackEntry.arguments?.getString("productName") ?: ""
+                            val decodedName =
+                                URLDecoder.decode(productName, StandardCharsets.UTF_8.toString())
 
                             productViewModel.getProductByName(decodedName)
                             ProductDetailScreen(navController, productViewModel)
@@ -167,7 +185,15 @@ class MainActivity : ComponentActivity() {
                             val subtotal = backStackEntry.arguments?.getInt("subtotal") ?: 0
                             val shippingCost = backStackEntry.arguments?.getInt("shippingCost") ?: 0
                             val total = backStackEntry.arguments?.getInt("total") ?: 0
-                            PaymentScreen(navController, subtotal, shippingCost, total, productViewModel, uploadcareViewModel)
+                            PaymentScreen(
+                                navController,
+                                subtotal,
+                                shippingCost,
+                                total,
+                                productViewModel,
+                                uploadcareViewModel,
+                                userProfileViewModel
+                            )
                         }
                     }
                 }

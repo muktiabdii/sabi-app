@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.component
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,17 +21,20 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
 
+@SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
 fun SwitchSchedule(
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    defaultSelected: Boolean = false
 ) {
     // state untuk menentukan pilihan aktif
-    var isRequestSelected by remember { mutableStateOf(false) }
+    var isRequestSelected by remember { mutableStateOf(defaultSelected) }
 
     // animasi pergeseran tombol switch
     val switchOffset by animateDpAsState(
-        targetValue = if (isRequestSelected) (160.dp) else 0.dp,
+        // geser ke kanan jika request aktif
+        targetValue = if (isRequestSelected) 150.dp else 0.dp,
         animationSpec = tween(durationMillis = 300),
         label = "switchOffset"
     )
@@ -39,26 +43,28 @@ fun SwitchSchedule(
         modifier = modifier
             .width(300.dp)
             .height(45.dp)
-            .border(
-                width = 1.dp,
-                color = BrownMain,
-                shape = RoundedCornerShape(size = 10.dp)
+            .background(
+                color = Color.White,
+                shape = RoundedCornerShape(10.dp)
             )
+            .border(1.dp, BrownMain, RoundedCornerShape(10.dp))
             .padding(3.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+        // indikator latar belakang yang berpindah
+        Box(
+            modifier = Modifier
+                .width(145.dp)
+                .height(39.dp)
+                .offset(x = switchOffset)
+                .background(BrownMain, RoundedCornerShape(10.dp))
+        )
+
+        Row(modifier = Modifier.fillMaxSize()) {
             // tombol jadwal
             Box(
                 modifier = Modifier
-                    .fillMaxHeight()
                     .weight(1f)
-                    .background(
-                        color = if (!isRequestSelected) BrownMain else Color.Transparent,
-                        shape = RoundedCornerShape(size = 10.dp)
-                    )
+                    .fillMaxHeight()
                     .clickable {
                         isRequestSelected = false
                         navController.navigate("maps_screen")
@@ -76,12 +82,8 @@ fun SwitchSchedule(
             // tombol request
             Box(
                 modifier = Modifier
-                    .fillMaxHeight()
                     .weight(1f)
-                    .background(
-                        color = if (isRequestSelected) BrownMain else Color.Transparent,
-                        shape = RoundedCornerShape(size = 10.dp)
-                    )
+                    .fillMaxHeight()
                     .clickable {
                         isRequestSelected = true
                         navController.navigate("request_screen")
