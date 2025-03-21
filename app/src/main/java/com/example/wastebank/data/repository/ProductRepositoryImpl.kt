@@ -43,7 +43,7 @@ class ProductRepositoryImpl : ProductRepository {
             val product = snapshot.children.mapNotNull { dataSnapshot ->
                 val productData = dataSnapshot.getValue(ProductData::class.java)
                 productData?.let { ProductMapper.mapToDomain(it) }
-            }.firstOrNull { it.name == name } // Cari produk berdasarkan nama
+            }.firstOrNull { it.name == name }
 
             product
         } catch (e: Exception) {
@@ -80,7 +80,7 @@ class ProductRepositoryImpl : ProductRepository {
     override fun getCartItems(): Flow<List<CartItemDomain>> = callbackFlow {
         val currentUser = auth.currentUser
         if (currentUser == null) {
-            close() // Tutup Flow jika user belum login
+            close()
             return@callbackFlow
         }
 
@@ -102,17 +102,17 @@ class ProductRepositoryImpl : ProductRepository {
                         )
                     }
                 }
-                trySend(cartItems).isSuccess // Kirim data terbaru ke Flow
+                trySend(cartItems).isSuccess
             }
 
             override fun onCancelled(error: DatabaseError) {
-                close(error.toException()) // Tutup Flow jika error
+                close(error.toException())
             }
         }
 
         cartRef.addValueEventListener(listener)
 
-        awaitClose { cartRef.removeEventListener(listener) } // Hapus listener saat tidak digunakan
+        awaitClose { cartRef.removeEventListener(listener) }
     }
 
 
@@ -132,9 +132,13 @@ class ProductRepositoryImpl : ProductRepository {
     override suspend fun payment(payment: PaymentDomain): Result<Boolean> {
         return try {
             val currentUser = auth.currentUser ?: return Result.failure(Exception("User belum login"))
-            val userName = db.getReference("users").child(currentUser.uid).child("name").get().await().getValue(String::class.java) ?: "Unknown"
+            val userRef = db.getReference("users").child(currentUser.uid)
+            val userName = userRef.child("name").get().await().getValue(String::class.java) ?: "Unknown"
 
-            val paymentRef = db.getReference("payments").child(payment.paymentMethod).push() // Generate ID unik dari Firebase
+            val userPoints = userRef.child("points").get().await().getValue(Int::class.java) ?: 0
+            val requiredPoints = (payment.totalAmount ?: 0) / 10
+
+            val paymentRef = db.getReference("payments").child(payment.paymentMethod).push()
             val paymentId = paymentRef.key ?: return Result.failure(Exception("Gagal generate paymentId"))
 
             val timestamp = System.currentTimeMillis()
@@ -143,29 +147,33 @@ class ProductRepositoryImpl : ProductRepository {
             val date = dateFormat.format(Date(timestamp))
             val hour = timeFormat.format(Date(timestamp))
 
-            // Buat objek PaymentDomain dengan ID & User Info
             val updatedPayment = payment.copy(
                 paymentId = paymentId,
                 userId = currentUser.uid,
                 userName = userName,
                 date = date,
                 hour = hour,
-                items = emptyList()
+                totalPoints = if (payment.paymentMethod == "points") requiredPoints else null,
+                totalAmount = if (payment.paymentMethod == "points") null else payment.totalAmount
             )
 
             paymentRef.setValue(updatedPayment).await()
 
             val itemsRef = paymentRef.child("items")
             payment.items.forEachIndexed { index, item ->
-                val customIndex = index + 1
-                itemsRef.child(customIndex.toString()).setValue(item).await()
+                itemsRef.child((index + 1).toString()).setValue(item).await()
             }
 
-            db.getReference("users").child(currentUser.uid).child("cart").removeValue().await()
+            if (payment.paymentMethod == "points") {
+                val newPoints = userPoints - requiredPoints
+                userRef.child("points").setValue(newPoints).await()
+            }
+
+            userRef.child("cart").removeValue().await()
+
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
-
 }

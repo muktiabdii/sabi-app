@@ -3,6 +3,7 @@ package com.example.wastebank.data.mapper
 import com.example.wastebank.data.model.ProductData
 import com.example.wastebank.domain.model.ProductDomain
 
+// mapper untuk mengonversi data ProductData ke ProductDomain
 object ProductMapper {
     fun mapToDomain(productData: ProductData): ProductDomain {
         return ProductDomain(

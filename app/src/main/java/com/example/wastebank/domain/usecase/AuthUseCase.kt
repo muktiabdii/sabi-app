@@ -4,7 +4,7 @@ import com.example.wastebank.domain.repository.AuthRepository
 
 // Kelas AuthUseCase yang digunakan untuk melakukan validasi dan autentikasi pengguna
 class AuthUseCase(private val authRepository: AuthRepository) {
-    suspend fun registerUser(name: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
+    fun registerUser(name: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
 
         // Validasi input
         if (name.isBlank() || email.isBlank() || password.isBlank() || phoneNumber.isBlank() || gender.isBlank()) {
@@ -34,7 +34,7 @@ class AuthUseCase(private val authRepository: AuthRepository) {
     }
 
 
-    suspend fun loginUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
+    fun loginUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
 
         // Validasi input
         if (email.isBlank() || password.isBlank()) {
@@ -46,7 +46,7 @@ class AuthUseCase(private val authRepository: AuthRepository) {
     }
 
 
-    suspend fun loginAdmin(email: String, password: String, adminId: String, onResult: (Boolean, String?) -> Unit) {
+    fun loginAdmin(email: String, password: String, adminId: String, onResult: (Boolean, String?) -> Unit) {
 
         // Validasi input
         if (email.isBlank() || password.isBlank() || adminId.isBlank()) {
@@ -57,16 +57,16 @@ class AuthUseCase(private val authRepository: AuthRepository) {
         authRepository.loginAdmin(email, password, adminId, onResult) // Panggil fungsi loginAdmin dari AuthRepository
     }
 
-    suspend fun checkPassword(password: String, onResult: (Boolean) -> Unit) {
+    fun checkPassword(password: String, onResult: (Boolean) -> Unit) {
         authRepository.checkPassword(password, onResult) // Panggil fungsi checkPassword dari AuthRepository
     }
 
-    suspend fun logoutUser() {
+    fun logoutUser() {
         authRepository.logoutUser() // Panggil fungsi logoutUser dari AuthRepository
     }
 
 
-    suspend fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
+    fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
         authRepository.resetPassword(email, onResult) // Panggil fungsi resetPassword dari AuthRepository
     }
 
@@ -79,7 +79,7 @@ class AuthUseCase(private val authRepository: AuthRepository) {
 
     // Fungsi untuk melakukan validasi password
     private fun validatePass(password: String): Boolean {
-        return password.length >= 8 && password.any { it.isDigit() }
+        return password.length >= 8 && password.any { it.isDigit() } && password.any { it.isLetter() }
     }
 
 

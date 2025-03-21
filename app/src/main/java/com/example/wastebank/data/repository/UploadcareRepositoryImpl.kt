@@ -18,9 +18,8 @@ class UploadcareRepositoryImpl(private val context: Context) : UploadcareReposit
         return withContext(Dispatchers.IO) {
             try {
                 val uploader = FileUploader(uploadCare, fileUri, context).store(true)
-                val result = uploader.upload() // Upload gambar
+                val result = uploader.upload()
 
-                // Kalau originalFileUrl null, buat URL manual pakai uuid
                 val fileUrl = result.originalFileUrl ?: URI("https://ucarecdn.com/${result.uuid}/")
 
                 return@withContext fileUrl

@@ -3,6 +3,7 @@ package com.example.wastebank.data.mapper
 import com.example.wastebank.data.model.DonationData
 import com.example.wastebank.domain.model.DonationDomain
 
+// mapper untuk mengonversi data DonationData ke DonationDomain
 object DonationMapper {
     fun mapToDomain(donationData: DonationData): DonationDomain {
         return DonationDomain(
@@ -13,7 +14,7 @@ object DonationMapper {
             accountName = donationData.accountName,
             accountNumber = donationData.accountNumber,
             bank = donationData.bank,
-            totalAmount = donationData.totalAmount
+            collected = donationData.collected
         )
     }
 }

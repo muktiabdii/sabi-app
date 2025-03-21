@@ -1,6 +1,6 @@
 package com.example.wastebank.data.model
 
-// Model data pengguna
+// data class UserData
 data class UserData(
     val uid: String = "",
     val name: String = "",

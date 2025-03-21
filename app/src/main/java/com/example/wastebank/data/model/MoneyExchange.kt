@@ -1,5 +1,6 @@
 package com.example.wastebank.data.model
 
+// data class MoneyExchange
 data class MoneyExchange(
     val id: String = "",
     val userId: String = "",

@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.screen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,12 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.components.RadioButtonPayment
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
 import com.example.wastebank.presentation.viewmodel.DonationViewModel
+import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 
@@ -43,19 +46,38 @@ fun DonationDetailScreen(
 
     var selectedNominal by remember { mutableStateOf<Int?>(null) }
     var customNominal by remember { mutableStateOf("") }
-    val selectedDonation by donationViewModel.selectedDonation.collectAsState()
+    val totalAmount by donationViewModel.totalAmountState.collectAsState()
 
-    // ambil poin milik user
-    val userProfile by userProfileViewModel.userProfile.collectAsState()
-    val availablePoints = userProfile?.points ?: 0
-    var customPoint by remember { mutableStateOf("") }
+    val selectedDonation by donationViewModel.selectedDonation.collectAsState()
 
     var showDialogUpload by remember { mutableStateOf(false) }
     var showPopUpNotif by remember { mutableStateOf(false) }
 
+    val userProfile by userProfileViewModel.userProfile.collectAsState()
+    val availablePoints = userProfile?.points ?: 0
+    var customPoint by remember { mutableStateOf("") }
+
+    val uploadResult by uploadcareViewModel.uploadResult.collectAsState()
+
     val clipboardManager = LocalClipboardManager.current
     val context = LocalContext.current
     val nominalList = listOf(10000, 25000, 50000, 100000, 250000, 500000)
+
+    // Panggil fungsi untuk update total amount setiap kali nilai berubah
+    LaunchedEffect(selectedNominal, customNominal) {
+        donationViewModel.updateTotalAmount(selectedNominal, customNominal)
+    }
+
+    LaunchedEffect(selectedNominal, customPoint) {
+        donationViewModel.updateTotalPoint(selectedNominal, customPoint)
+    }
+
+    LaunchedEffect(uploadResult) {
+        uploadResult?.let {
+            donationViewModel.setProofImageUrl(it)
+            Toast.makeText(context, "Upload Berhasil!", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -186,7 +208,7 @@ fun DonationDetailScreen(
             item {
                 CardInfoTransfer(
                     donation = selectedDonation,
-                    totalAmount = selectedNominal ?: customNominal.toIntOrNull() ?: 0
+                    totalAmount = totalAmount ?: 0
                 )
             }
 
@@ -282,7 +304,11 @@ fun DonationDetailScreen(
                     // input nominal point
                     TextFieldPoint(
                         value = customPoint,
-                        onValueChange = { customPoint = it }
+                        onValueChange = { newValue ->
+                            if (newValue.all { it.isDigit() }) { // Cek apakah hanya angka
+                                customPoint = newValue
+                            }
+                        }
                     )
                 }
             }
@@ -296,7 +322,35 @@ fun DonationDetailScreen(
                 text = "BAYAR",
                 backgroundColor = BrownMain,
                 textColor = Color.White,
-                onClick = { showPopUpNotif = true }
+                onClick = {
+                    // Cek apakah pakai poin dan apakah poin cukup
+                    if (selectedOption == "Gunakan Poin" && (userProfile?.points ?: 0) < (totalAmount ?: 0) / 10) {
+                        Toast.makeText(
+                            context,
+                            "Poin tidak mencukupi!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@ButtonAuth // Hentikan eksekusi lebih lanjut
+                    }
+
+                    if (selectedOption == "Transfer Bank") {
+                        val proofUrl = donationViewModel.proofImageUrl.value
+                        if (proofUrl.isNullOrEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "Harap upload bukti transfer terlebih dahulu!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@ButtonAuth // Hentikan eksekusi lebih lanjut
+                        }
+                    }
+
+                    // Kalau semua validasi lolos, lanjutkan pembayaran
+                    donationViewModel.donate(selectedOption)
+                    donationViewModel.resetProofImageUrl()
+                    uploadcareViewModel.resetUploadResult()
+                    showPopUpNotif = true
+                }
             )
             Spacer(modifier = Modifier.height(30.dp))
         }

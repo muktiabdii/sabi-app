@@ -1,14 +1,16 @@
 package com.example.wastebank.data.model
 
-// data class PaymentData
-data class PaymentData(
-    val paymentId: String = "",
+// data class DonateData
+data class DonateData(
+    val donateId: String = "",
     val userId: String = "",
     val userName: String = "",
-    val productName: String = "",
-    val productPrice: Int = 0,
-    val productQuantity: Int = 0,
-    val paymentMethod: String = "Money",
+    val instanceName: String = "",
+    val instanceLocation: String = "",
+    val accountName: String = "",
+    val accountNumber: String = "",
+    val bank: String = "",
+    val donateMethod: String = "Money",
     val totalPoints: Int? = null,
     val totalAmount: Int? = null,
     val status: String = "Pending",

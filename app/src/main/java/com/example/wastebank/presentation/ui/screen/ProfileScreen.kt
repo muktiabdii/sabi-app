@@ -29,10 +29,11 @@ import com.example.wastebank.presentation.ui.component.CardProfileMenu
 import com.example.wastebank.presentation.ui.component.CardProfileNotif
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.RedBg
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfileViewModel) {
+fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfileViewModel, authViewModel: AuthViewModel) {
     val userProfile by userProfileViewModel.userProfile.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -118,7 +119,10 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
             iconResId = R.drawable.ic_delete,
             backgroundColor = RedBg,
             text = "Hapus Akun",
-            onClick = {}
+            onClick = {
+                userProfileViewModel.deleteAccount()
+                navController.navigate("splash_screen")
+            }
         )
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -127,7 +131,10 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
             iconResId = R.drawable.ic_exit,
             backgroundColor = GreenBg,
             text = "Keluar",
-            onClick = { navController.navigate("splash_screen") }
+            onClick = {
+                authViewModel.logout()
+                navController.navigate("splash_screen")
+            }
         )
     }
 }

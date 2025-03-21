@@ -13,6 +13,10 @@ class UploadcareViewModel(private val uploadcareUseCase: UploadcareUseCase) : Vi
     private val _uploadResult = MutableStateFlow<String?>(null)
     val uploadResult: StateFlow<String?> = _uploadResult
 
+    fun resetUploadResult() {
+        _uploadResult.value = null
+    }
+
     // Fungsi untuk mengunggah gambar
     fun uploadImage(fileUri: Uri) {
         viewModelScope.launch {

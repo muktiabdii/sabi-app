@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
@@ -56,7 +55,7 @@ fun CardDonationDetail(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "${donation?.totalAmount.orEmpty()} terkumpul",
+                    text = "${donation?.collected ?: "0"} terkumpul",
                     style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = Color.Black,
                     textAlign = TextAlign.Center
