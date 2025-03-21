@@ -36,6 +36,7 @@ import com.example.wastebank.presentation.screen.InputTrashScreen
 import com.example.wastebank.presentation.screen.ManageRequestScreen
 import com.example.wastebank.presentation.ui.component.BottomNavigation
 import com.example.wastebank.presentation.ui.screen.*
+import com.example.wastebank.presentation.ui.screen.article.ArticleScreen
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.DonationViewModel
@@ -98,8 +99,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-//                        startDestination = "splash_screen"
-                        startDestination = "home_screen"
+                        startDestination = "splash_screen"
+//                        startDestination = "home_screen"
                     ) {
                         composable("splash_screen") {
                             SplashScreen(navController)
