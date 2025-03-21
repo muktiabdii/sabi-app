@@ -1,5 +1,6 @@
 package com.example.wastebank.data.repository
 
+import android.util.Log
 import com.example.wastebank.data.mapper.UserMapper
 import com.example.wastebank.data.model.UserData
 import com.example.wastebank.data.source.firebase.FirebaseService
@@ -19,6 +20,7 @@ class UserProfileRepositoryImpl : UserProfileRepository {
     override suspend fun getUserProfile(): UserDomain? {
         val userId = auth.currentUser?.uid ?: return null
         val snapshot = userRef.child(userId).get().await()
+        Log.d("UserProfileRepository", "Snapshot: ${snapshot.value}") // Debugging
         val userData = snapshot.getValue(UserData::class.java) ?: return null
         return UserMapper.mapToDomain(userData)
     }
@@ -37,6 +39,7 @@ class UserProfileRepositoryImpl : UserProfileRepository {
     override suspend fun getUserPoint(): Int? {
         val userId = auth.currentUser?.uid ?: return null
         val snapshot = userRef.child(userId).child("points").get().await()
+        Log.d("UserProfileRepository", "User points snapshot: ${snapshot.value}") // Debugging
         return snapshot.getValue(Int::class.java)
     }
 

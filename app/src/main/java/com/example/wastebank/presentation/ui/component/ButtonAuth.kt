@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,10 +28,10 @@ fun ButtonAuth(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(34.dp)
-            .background(color = backgroundColor, shape = RoundedCornerShape(size = 20.dp))
+            .height(40.dp)
+            .background(color = backgroundColor, shape = RoundedCornerShape(size = 30.dp))
             .then(
-                if (borderColor != null) Modifier.border(1.dp, borderColor, RoundedCornerShape(20.dp))
+                if (borderColor != null) Modifier.border(1.dp, borderColor, RoundedCornerShape(30.dp))
                 else Modifier
             )
             .clickable { onClick() },

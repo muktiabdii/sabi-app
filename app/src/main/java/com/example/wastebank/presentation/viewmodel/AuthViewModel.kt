@@ -31,6 +31,9 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
     private val _adminId = MutableStateFlow("")
     val adminId: StateFlow<String> = _adminId
 
+    private val _role = MutableStateFlow<String?>(null)
+    val role: StateFlow<String?> = _role
+
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
@@ -65,7 +68,6 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
     fun resetIsLoggedIn() { _isLoggedIn.value = false }
     fun resetIsResetPassword() { _isResetPassword.value = false }
 
-
     fun register() {
         viewModelScope.launch {
             authUseCase.registerUser(
@@ -82,8 +84,6 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
         }
     }
 
-
-
     fun loginUser() {
         viewModelScope.launch {
             authUseCase.loginUser(
@@ -91,6 +91,7 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
             ) { success, message ->
                 if (success) {
                     _isLoggedIn.value = true // Simpan status login ke state
+                    _role.value = "user"
                 }
 
                 else {
@@ -99,8 +100,6 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
             }
         }
     }
-
-
 
     fun loginAdmin() {
         viewModelScope.launch {
@@ -109,6 +108,7 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
             ) { success, message ->
                 if (success) {
                     _isLoggedIn.value = true // Simpan status login ke state
+                    _role.value = "admin"
                 }
 
                 else {
@@ -117,7 +117,6 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
             }
         }
     }
-
 
     fun checkPassword(onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
@@ -131,15 +130,13 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
         }
     }
 
-
-
     fun logout() {
         viewModelScope.launch {
             authUseCase.logoutUser() // Panggil fungsi logoutUser dari AuthUseCase
+            _isLoggedIn.value = false
+            _role.value = null
         }
     }
-
-
 
     fun resetPassword() {
         viewModelScope.launch {
@@ -156,8 +153,6 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
             }
         }
     }
-
-
 
     class Factory(private val authUseCase: AuthUseCase) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

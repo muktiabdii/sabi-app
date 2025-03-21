@@ -37,11 +37,7 @@ fun CartScreen(navController: NavController, productViewModel: ProductViewModel)
     val shippingCost = 0
     val total = subtotal + shippingCost
 
-    Scaffold(
-        bottomBar = {
-            BottomNavigation(navController)
-        }
-    ) { paddingValues ->
+    Scaffold { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -106,7 +102,11 @@ fun CartScreen(navController: NavController, productViewModel: ProductViewModel)
                     Column {
                         PriceDetailRow(label = "Subtotal", amount = subtotal, type = "transfer")
                         Spacer(modifier = Modifier.height(4.dp))
-                        PriceDetailRow(label = "Pengiriman", amount = shippingCost, type = "transfer")
+                        PriceDetailRow(
+                            label = "Pengiriman",
+                            amount = shippingCost,
+                            type = "transfer"
+                        )
                         Spacer(modifier = Modifier.height(4.dp))
                         PriceDetailRow(label = "Total", amount = total, type = "transfer")
                     }
