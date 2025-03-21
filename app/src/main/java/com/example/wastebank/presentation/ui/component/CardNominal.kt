@@ -19,9 +19,17 @@ import com.example.wastebank.presentation.ui.theme.Typography
 @Composable
 fun CardNominal(
     nominal: Int,
+    type: String,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
+    // menyesuaikan format berdasarkan tipe
+    val displayText = when (type) {
+        "transfer" -> "Rp %,d".format(nominal)
+        "point" -> (nominal / 10).toString()
+        else -> nominal.toString()
+    }
+
     Box(
         modifier = Modifier
             .width(115.dp)
@@ -35,7 +43,7 @@ fun CardNominal(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Rp %,d".format(nominal),
+            text = displayText,
             style = Typography.headlineSmall.copy(
                 color = if (isSelected) Color.White else Color.Black,
                 textAlign = TextAlign.Center
@@ -44,9 +52,14 @@ fun CardNominal(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewCardNominalTransfer() {
+    CardNominal(nominal = 10000, type = "transfer", isSelected = false, onClick = {})
+}
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewCardNominal() {
-    CardNominal(nominal = 10000, isSelected = false, onClick = {})
+fun PreviewCardNominalPoint() {
+    CardNominal(nominal = 10000, type = "point", isSelected = true, onClick = {})
 }

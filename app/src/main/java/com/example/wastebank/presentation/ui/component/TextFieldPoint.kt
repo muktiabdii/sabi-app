@@ -20,7 +20,7 @@ import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.Typography
 
 @Composable
-fun TextFieldNominal(
+fun TextFieldPoint(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String = "0"
@@ -32,26 +32,13 @@ fun TextFieldNominal(
             .border(1.dp, BrownMain, RoundedCornerShape(10.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // prefix rp
-        Box(
-            modifier = Modifier
-                .background(BrownMain, RoundedCornerShape(10.dp))
-                .fillMaxHeight()
-                .padding(horizontal = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Rp",
-                style = Typography.headlineSmall.copy(color = Color.White)
-            )
-        }
         Spacer(modifier = Modifier.width(12.dp))
 
-        // input nominal
+        // Input point
         Box(
             modifier = Modifier
                 .weight(1f)
-                .padding(end = 10.dp)
+                .padding(start = 10.dp)
         ) {
             BasicTextField(
                 value = value,
@@ -59,7 +46,6 @@ fun TextFieldNominal(
                 textStyle = Typography.bodyLarge.copy(color = Color.Black),
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number).copy(
-                    // nonaktifkan enter
                     imeAction = ImeAction.Done
                 ),
                 decorationBox = { innerTextField ->
@@ -73,16 +59,33 @@ fun TextFieldNominal(
                 }
             )
         }
+
+        // Suffix pts
+        Box(
+            modifier = Modifier
+                .background(
+                    color = BrownMain,
+                    shape = RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp)
+                )
+                .fillMaxHeight()
+                .padding(horizontal = 14.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "pts",
+                style = Typography.headlineSmall.copy(color = Color.White)
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewTextFieldNominal() {
-    var nominal by remember { mutableStateOf("") }
+fun PreviewTextFieldPoint() {
+    var points by remember { mutableStateOf("") }
 
-    TextFieldNominal(
-        value = nominal,
-        onValueChange = { nominal = it }
+    TextFieldPoint(
+        value = points,
+        onValueChange = { points = it }
     )
 }
