@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
                             ArticleScreen(navController)
                         }
                         composable("profile_screen") {
-                            ProfileScreen(navController, userProfileViewModel)
+                            ProfileScreen(navController, userProfileViewModel, authViewModel)
                         }
                         composable("donate_screen") {
                             DonateScreen(navController, donationViewModel)
