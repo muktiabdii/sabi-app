@@ -275,6 +275,9 @@ fun HomeScreen(
                     errorPopupPoint = false
                     errorPopupPassword = false
                     moneyExchangeViewModel.resetErrorMessage()
+                    userProfileViewModel.getUserProfile()
+                    moneyExchangeViewModel.clearState()
+                    authViewModel.clearPasswordInput()
                 }
             )
         }

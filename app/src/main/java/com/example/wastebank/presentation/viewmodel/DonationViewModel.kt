@@ -34,6 +34,9 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
     private val totalAmount = MutableStateFlow<Int?>(null)
     val totalAmountState: StateFlow<Int?> = totalAmount.asStateFlow()
 
+    private val _totalPoint = MutableStateFlow<Int?>(null)
+    val totalPoint: StateFlow<Int?> = _totalPoint.asStateFlow()
+
     fun setProofImageUrl(url: String) {
         _proofImageUrl.value = url
     }
@@ -41,6 +44,14 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
     fun updateTotalAmount(selectedNominal: Int?, customNominal: String) {
         val nominal = selectedNominal ?: customNominal.toIntOrNull() ?: 0
         totalAmount.value = nominal
+    }
+
+    fun updateTotalPoint(selectedNominal: Int?, customPoint: String) {
+        val trimmedCustomPoint = customPoint.trim()
+        val parsedCustomPoint = trimmedCustomPoint.toIntOrNull()
+
+        val point = selectedNominal ?: parsedCustomPoint ?: 0
+        _totalPoint.value = point
     }
 
     fun getAllDonations() {
@@ -59,7 +70,6 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
         viewModelScope.launch {
             val result = donationUseCase.getDonationByTitle(title)
             _selectedDonation.value = result
-
         }
     }
 
@@ -74,10 +84,9 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
                 donateMethod = if (selectedOption == "Transfer Bank") "money" else "points",
                 donations = donation,
                 totalAmount = totalAmount.value,
+                totalPoints = totalPoint.value,
                 receiptImage = proofUrl ?: "",
             )
-            Log.d("DonationViewModel", "Total Amount: ${donation.collected}")
-
 
             val result = donationUseCase.donate(donateData)
             _donateState.value = result

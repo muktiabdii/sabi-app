@@ -55,7 +55,7 @@ fun CardDonationDetail(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "${donation?.collected.orEmpty()} terkumpul",
+                    text = "${donation?.collected ?: "0"} terkumpul",
                     style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = Color.Black,
                     textAlign = TextAlign.Center

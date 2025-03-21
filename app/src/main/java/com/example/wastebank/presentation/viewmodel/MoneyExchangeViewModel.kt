@@ -30,6 +30,14 @@ class MoneyExchangeViewModel(private val moneyExchangeUseCase: MoneyExchangeUseC
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
+    fun clearState() {
+        _points.value = 0
+        _bankName.value = ""
+        _accountNumber.value = ""
+        _amount.value = 0
+        _errorMessage.value = null
+    }
+
     // Fungsi untuk memperbarui data poin dan jumlah uang yang ingin ditukarkan
     // Menghitung jumlah uang berdasarkan poin dan biaya administrasi
     fun updatePointAndAmount(value: Int) {

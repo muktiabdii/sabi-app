@@ -66,7 +66,7 @@ class DonationRepositoryImpl : DonationRepository {
             val userName = db.getReference("users").child(currentUser.uid).child("name").get().await().getValue(String::class.java) ?: "Unknown"
 
             val userPoints = userRef.child("points").get().await().getValue(Int::class.java) ?: 0
-            val requiredPoints = (donate.totalAmount ?: 0) / 10
+            val requiredPoints = (donate.totalPoints ?: 0) / 10
 
             val donateRef = db.getReference("donates").child(donate.donateMethod).push()
             val donateId = donateRef.key ?: return Result.failure(Exception("Gagal generate donateId"))

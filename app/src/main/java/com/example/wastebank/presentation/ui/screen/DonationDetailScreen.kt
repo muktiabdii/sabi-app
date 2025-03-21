@@ -1,5 +1,6 @@
 package com.example.wastebank.presentation.ui.screen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -65,6 +66,10 @@ fun DonationDetailScreen(
     // Panggil fungsi untuk update total amount setiap kali nilai berubah
     LaunchedEffect(selectedNominal, customNominal) {
         donationViewModel.updateTotalAmount(selectedNominal, customNominal)
+    }
+
+    LaunchedEffect(selectedNominal, customPoint) {
+        donationViewModel.updateTotalPoint(selectedNominal, customPoint)
     }
 
     LaunchedEffect(uploadResult) {
@@ -203,7 +208,7 @@ fun DonationDetailScreen(
             item {
                 CardInfoTransfer(
                     donation = selectedDonation,
-                    collected = selectedDonation?.collected?.toIntOrNull() ?: 0
+                    totalAmount = totalAmount ?: 0
                 )
             }
 
@@ -299,7 +304,11 @@ fun DonationDetailScreen(
                     // input nominal point
                     TextFieldPoint(
                         value = customPoint,
-                        onValueChange = { customPoint = it }
+                        onValueChange = { newValue ->
+                            if (newValue.all { it.isDigit() }) { // Cek apakah hanya angka
+                                customPoint = newValue
+                            }
+                        }
                     )
                 }
             }
@@ -338,6 +347,7 @@ fun DonationDetailScreen(
 
                     // Kalau semua validasi lolos, lanjutkan pembayaran
                     donationViewModel.donate(selectedOption)
+                    uploadcareViewModel.resetUploadResult()
                     showPopUpNotif = true
                 }
             )
