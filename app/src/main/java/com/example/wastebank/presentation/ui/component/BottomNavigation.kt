@@ -58,6 +58,7 @@ fun BottomNavigation(navController: NavController, authViewModel: AuthViewModel)
     // screen yang tidak menampilkan BottomNav
     val hiddenScreens = listOf(
         "splash_screen",
+        "login_role_screen",
         "admin_login_screen",
         "user_login_screen",
         "register_screen",

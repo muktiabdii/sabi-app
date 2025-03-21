@@ -114,6 +114,9 @@ class MainActivity : ComponentActivity() {
                         composable("splash_screen") {
                             SplashScreen(navController)
                         }
+                        composable("login_role_screen") {
+                            LoginRoleScreen(navController)
+                        }
                         composable("admin_login_screen") {
                             AdminLoginScreen(navController, authViewModel)
                         }
