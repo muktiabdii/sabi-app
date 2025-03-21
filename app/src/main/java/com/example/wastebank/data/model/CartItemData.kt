@@ -1,5 +1,6 @@
 package com.example.wastebank.data.model
 
+// data class CartItemData
 data class CartItemData(
     val name: String = "",
     val category: String = "",

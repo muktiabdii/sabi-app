@@ -1,5 +1,6 @@
 package com.example.wastebank.data.model
 
+// data class DonationData
 data class DonationData(
     val title: String = "",
     val description: String = "",

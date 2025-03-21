@@ -3,6 +3,7 @@ package com.example.wastebank.data.mapper
 import com.example.wastebank.data.model.PickupData
 import com.example.wastebank.domain.model.PickupDomain
 
+// mapper untuk mengonversi data PickupDomain ke PickupData
 object PickupMapper {
     fun PickupDomain.toPickupData(): PickupData {
         return PickupData(

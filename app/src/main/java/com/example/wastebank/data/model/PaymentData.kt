@@ -1,5 +1,6 @@
 package com.example.wastebank.data.model
 
+// data class PaymentData
 data class PaymentData(
     val paymentId: String = "",
     val userId: String = "",

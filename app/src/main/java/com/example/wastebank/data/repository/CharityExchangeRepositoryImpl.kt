@@ -7,24 +7,32 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID
 
+// kelas implementasi dari CharityExchangeRepository
 class CharityExchangeRepositoryImpl : CharityExchangeRepository {
 
-    // Inisialisasi Firebase Auth dan Firebase Realtime Database
+    // inisialisasi Firebase Auth dan Firebase Realtime Database
     private val auth = FirebaseService.auth
     private val db = FirebaseService.db
 
+    // fungsi untuk melakukan tukar point ke organisasi
     override suspend fun exchangeCharity(point: Int, charityName: String, onResult: (Boolean, String?) -> Unit) {
         val userId = auth.currentUser?.uid
         if(userId != null) {
+
+            // generate ID untuk charityExchange
             val id = UUID.randomUUID().toString()
+
+            // mendapatkan tanggal dan waktu saat ini
             val timestamp = System.currentTimeMillis()
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             val date = dateFormat.format(timestamp)
             val hour = timeFormat.format(timestamp)
 
+            // membuat objek CharityExchange dan menyimpannya ke Firebase Realtime Database
             val charityExchange = CharityExchange(id, userId, point, charityName, date, hour)
 
+            // menyimpan charityExchange ke Firebase Realtime Database
             val userRef = db.getReference("users")
             val charityExchangeRef = db.getReference("charityExchange").child("charity").child(id)
             charityExchangeRef.setValue(charityExchange)

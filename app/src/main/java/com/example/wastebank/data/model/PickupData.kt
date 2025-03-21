@@ -1,5 +1,6 @@
 package com.example.wastebank.data.model
 
+// data class UserData
 data class PickupData(
     val email: String = "",
     val address: String = "",

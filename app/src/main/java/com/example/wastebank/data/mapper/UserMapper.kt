@@ -4,8 +4,8 @@ import com.example.wastebank.data.model.UserData
 import com.example.wastebank.domain.model.UserDomain
 import com.google.firebase.database.DataSnapshot
 
+// mapper untuk mengonversi data UserData ke UserDomain
 object UserMapper {
-
     fun mapToDomain(userData: UserData): UserDomain {
         return UserDomain(
             name = userData.name,
@@ -14,19 +14,5 @@ object UserMapper {
             gender = userData.gender,
             points = userData.points
         )
-    }
-
-    fun mapToData(userDomain: UserDomain): UserData {
-        return UserData(
-            name = userDomain.name,
-            email = userDomain.email,
-            phoneNumber = userDomain.phoneNumber,
-            gender = userDomain.gender,
-            points = userDomain.points
-        )
-    }
-
-    fun fromSnapshot(snapshot: DataSnapshot): UserData? {
-        return snapshot.getValue(UserData::class.java)
     }
 }

@@ -43,7 +43,7 @@ class ProductRepositoryImpl : ProductRepository {
             val product = snapshot.children.mapNotNull { dataSnapshot ->
                 val productData = dataSnapshot.getValue(ProductData::class.java)
                 productData?.let { ProductMapper.mapToDomain(it) }
-            }.firstOrNull { it.name == name } // Cari produk berdasarkan nama
+            }.firstOrNull { it.name == name }
 
             product
         } catch (e: Exception) {
@@ -80,7 +80,7 @@ class ProductRepositoryImpl : ProductRepository {
     override fun getCartItems(): Flow<List<CartItemDomain>> = callbackFlow {
         val currentUser = auth.currentUser
         if (currentUser == null) {
-            close() // Tutup Flow jika user belum login
+            close()
             return@callbackFlow
         }
 
@@ -102,17 +102,17 @@ class ProductRepositoryImpl : ProductRepository {
                         )
                     }
                 }
-                trySend(cartItems).isSuccess // Kirim data terbaru ke Flow
+                trySend(cartItems).isSuccess
             }
 
             override fun onCancelled(error: DatabaseError) {
-                close(error.toException()) // Tutup Flow jika error
+                close(error.toException())
             }
         }
 
         cartRef.addValueEventListener(listener)
 
-        awaitClose { cartRef.removeEventListener(listener) } // Hapus listener saat tidak digunakan
+        awaitClose { cartRef.removeEventListener(listener) }
     }
 
 
@@ -138,7 +138,7 @@ class ProductRepositoryImpl : ProductRepository {
             val userPoints = userRef.child("points").get().await().getValue(Int::class.java) ?: 0
             val requiredPoints = (payment.totalAmount ?: 0) / 10
 
-            val paymentRef = db.getReference("payments").child(payment.paymentMethod).push() // Generate ID unik dari Firebase
+            val paymentRef = db.getReference("payments").child(payment.paymentMethod).push()
             val paymentId = paymentRef.key ?: return Result.failure(Exception("Gagal generate paymentId"))
 
             val timestamp = System.currentTimeMillis()
@@ -147,7 +147,6 @@ class ProductRepositoryImpl : ProductRepository {
             val date = dateFormat.format(Date(timestamp))
             val hour = timeFormat.format(Date(timestamp))
 
-            // Buat objek PaymentDomain dengan ID & User Info
             val updatedPayment = payment.copy(
                 paymentId = paymentId,
                 userId = currentUser.uid,
@@ -160,19 +159,16 @@ class ProductRepositoryImpl : ProductRepository {
 
             paymentRef.setValue(updatedPayment).await()
 
-            // Tambahkan item ke dalam transaksi
             val itemsRef = paymentRef.child("items")
             payment.items.forEachIndexed { index, item ->
                 itemsRef.child((index + 1).toString()).setValue(item).await()
             }
 
-            // Jika pembayaran pakai poin, kurangi poin user & update ke database
             if (payment.paymentMethod == "points") {
                 val newPoints = userPoints - requiredPoints
-                userRef.child("points").setValue(newPoints).await() // Update jumlah poin user
+                userRef.child("points").setValue(newPoints).await()
             }
 
-            // Hapus keranjang user setelah transaksi berhasil
             userRef.child("cart").removeValue().await()
 
             Result.success(true)
