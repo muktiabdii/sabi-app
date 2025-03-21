@@ -45,6 +45,9 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn) {
             navController.navigate("home_screen")
+            authViewModel.clearEmailInput()
+            authViewModel.clearPasswordInput()
+            authViewModel.clearAdminIdInput()
             authViewModel.resetIsLoggedIn()
         }
     }

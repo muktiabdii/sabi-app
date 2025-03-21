@@ -50,8 +50,9 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn) {
             navController.navigate("home_screen")
-            authViewModel.resetIsLoggedIn()
+            authViewModel.clearEmailInput()
             authViewModel.clearPasswordInput()
+            authViewModel.resetIsLoggedIn()
         }
     }
 

@@ -13,7 +13,7 @@ class AuthRepositoryImpl : AuthRepository {
     private val db = FirebaseService.db
 
     // Fungsi untuk melakukan registrasi pengguna
-    override suspend fun registerUser(name: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
+    override fun registerUser(name: String, email: String, password: String, phoneNumber: String, gender: String, onResult: (Boolean, String?) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -28,13 +28,14 @@ class AuthRepositoryImpl : AuthRepository {
                             .addOnSuccessListener {
                                 onResult(true, null)
                             }
-
                             .addOnFailureListener { exception ->
-                                onResult(false, null)
+                                // Jika gagal menyimpan ke database, hapus akun dari Authentication
+                                user.delete().addOnCompleteListener {
+                                    onResult(false, "Gagal menyimpan data user, coba lagi nanti.")
+                                }
                             }
                     }
                 }
-
                 // Jika registrasi gagal, kirim pesan error
                 else {
                     val errorMessage = task.exception?.message
@@ -45,8 +46,9 @@ class AuthRepositoryImpl : AuthRepository {
     }
 
 
+
     // Fungsi untuk melakukan login pengguna
-    override suspend fun loginUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
+    override fun loginUser(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -64,7 +66,7 @@ class AuthRepositoryImpl : AuthRepository {
     }
 
 
-    override suspend fun loginAdmin(email: String, password: String, adminId: String, onResult: (Boolean, String?) -> Unit) {
+    override fun loginAdmin(email: String, password: String, adminId: String, onResult: (Boolean, String?) -> Unit) {
         val adminRef = db.getReference("admins").child(adminId)
 
         // Memeriksa apakah adminId ada di Firebase Database
@@ -103,7 +105,7 @@ class AuthRepositoryImpl : AuthRepository {
     }
 
     // Fungsi untuk memeriksa password user
-    override suspend fun checkPassword(password: String, onResult: (Boolean) -> Unit) {
+    override fun checkPassword(password: String, onResult: (Boolean) -> Unit) {
         val email = auth.currentUser?.email
         if (email != null) {
             auth.signInWithEmailAndPassword(email, password)
@@ -118,13 +120,13 @@ class AuthRepositoryImpl : AuthRepository {
     }
 
     // Fungsi untuk melakukan logout pengguna
-    override suspend fun logoutUser() {
+    override fun logoutUser() {
         auth.signOut()
     }
 
 
     // Fungsi untuk melakukan reset password
-    override suspend fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
+    override fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -150,7 +152,7 @@ class AuthRepositoryImpl : AuthRepository {
             errorMessage?.contains("A network error") == true ->
                 "Terjadi kesalahan jaringan"
 
-            else -> "Terjadi kesalahan saat login"
+            else -> errorMessage ?: "Terjadi kesalahan saat login"
         }
     }
 }

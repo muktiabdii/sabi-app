@@ -51,8 +51,15 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
     fun updateGender(value: String) { _gender.value = value }
     fun updateAdminId(value: String) { _adminId.value = value }
 
-    // Fungsi untuk mereset status registrasi
+    // fungsi untuk reset data pengguna
+    fun clearNameInput() { _name.value = "" }
+    fun clearEmailInput() { _email.value = "" }
+    fun clearPhoneNumberInput() { _phoneNumber.value = "" }
     fun clearPasswordInput() { _password.value = "" }
+    fun clearGenderInput() { _gender.value = "" }
+    fun clearAdminIdInput() { _adminId.value = "" }
+
+    // Fungsi untuk mereset status registrasi
     fun resetErrorMessage() { _errorMessage.value = null }
     fun resetIsRegistered() { _isRegistered.value = false }
     fun resetIsLoggedIn() { _isLoggedIn.value = false }

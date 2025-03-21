@@ -57,7 +57,12 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
     // Berpindah halaman ke halaman login jika registrasi berhasil
     LaunchedEffect(isRegistered) {
         if (isRegistered) {
+            authViewModel.clearEmailInput()
+            authViewModel.clearPasswordInput()
             navController.navigate("user_login_screen")
+            authViewModel.clearNameInput()
+            authViewModel.clearPhoneNumberInput()
+            authViewModel.clearGenderInput()
             authViewModel.resetIsRegistered()
         }
     }
