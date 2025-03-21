@@ -91,7 +91,7 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
 
     fun payment(selectedOption: String) {
         viewModelScope.launch {
-            _paymentState.value = Result.success(false) // Menandakan proses sedang berjalan
+            _paymentState.value = Result.success(false)
 
             val proofUrl = _proofImageUrl.value
             val cartItems = _cartProducts.value
@@ -102,7 +102,7 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
 
             val paymentData = PaymentDomain(
                 paymentMethod = if (selectedOption == "Transfer Bank") "money" else "points",
-                items = cartItems, // Kirim semua produk yang ada di cart
+                items = cartItems,
                 totalAmount = cartItems.sumOf { it.price },
                 receiptImage = proofUrl ?: ""
             )
@@ -111,7 +111,7 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
             _paymentState.value = result
 
             result.onSuccess {
-                _cartProducts.value = emptyList() // Kosongkan cart setelah pembayaran sukses
+                _cartProducts.value = emptyList()
             }.onFailure { exception ->
                 _errorMessage.value = exception.message
             }
