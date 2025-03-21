@@ -79,7 +79,7 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
 
     fun donate(selectedOption: String) {
         viewModelScope.launch {
-            _donateState.value = Result.success(false) // Menandakan proses sedang berjalan
+            _donateState.value = Result.success(false)
 
             val proofUrl = _proofImageUrl.value
             val donation = _selectedDonation.value ?: DonationDomain()
