@@ -107,8 +107,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-//                        startDestination = "splash_screen"
-                        startDestination = "home_screen"
+                        startDestination = "splash_screen"
 
                     ) {
                         composable("splash_screen") {
@@ -210,7 +209,7 @@ class MainActivity : ComponentActivity() {
                             AdminHomeScreen(navController)
                         }
                         composable("admin_marketplace_screen") {
-                            AdminMarketplaceScreen(navController, productViewModel, authViewModel)
+                            AdminMarketplaceScreen(navController, productViewModel, authViewModel, uploadcareViewModel)
                         }
                         composable("input_trash_screen") {
                             InputTrashScreen(navController)

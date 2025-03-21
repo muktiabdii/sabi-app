@@ -39,6 +39,10 @@ class ProductViewModel(private val productUseCase: ProductUseCase) : ViewModel()
         _proofImageUrl.value = url
     }
 
+    fun resetProofImageUrl() {
+        _proofImageUrl.value = null
+    }
+
     fun getProducts() {
         viewModelScope.launch {
             val result = productUseCase.getProducts()

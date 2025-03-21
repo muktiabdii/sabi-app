@@ -27,12 +27,13 @@ import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
+import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminMarketplaceScreen(navController: NavController, productViewModel: ProductViewModel, authViewModel: AuthViewModel) {
+fun AdminMarketplaceScreen(navController: NavController, productViewModel: ProductViewModel, authViewModel: AuthViewModel, uploadcareViewModel: UploadcareViewModel) {
     // State input search
     var searchText by remember { mutableStateOf("") }
 
@@ -155,6 +156,7 @@ fun AdminMarketplaceScreen(navController: NavController, productViewModel: Produ
             dragHandle = null
         ) {
             BtmSheetAddProduct(
+                uploadcareViewModel = uploadcareViewModel,
                 categoryList = categoryList,
                 onAddProduct = {
                     isSheetOpen = false

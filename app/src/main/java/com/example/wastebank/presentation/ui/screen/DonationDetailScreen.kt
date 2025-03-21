@@ -347,6 +347,7 @@ fun DonationDetailScreen(
 
                     // Kalau semua validasi lolos, lanjutkan pembayaran
                     donationViewModel.donate(selectedOption)
+                    donationViewModel.resetProofImageUrl()
                     uploadcareViewModel.resetUploadResult()
                     showPopUpNotif = true
                 }

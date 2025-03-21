@@ -12,9 +12,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
+import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 
 @Composable
 fun BtmSheetAddProduct(
+    uploadcareViewModel: UploadcareViewModel,
     categoryList: List<String>,
     onAddProduct: () -> Unit
 ) {
@@ -84,7 +86,7 @@ fun BtmSheetAddProduct(
             // Foto Produk
             Text(text = "Foto Produk", style = Typography.headlineSmall)
             Spacer(modifier = Modifier.height(6.dp))
-            CardUpload(text = "Ketuk untuk Upload")
+            CardUpload(uploadcareViewModel)
             Spacer(modifier = Modifier.height(12.dp))
 
             // Deskripsi Produk
@@ -106,11 +108,11 @@ fun BtmSheetAddProduct(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewBtmSheetAddProduct() {
-    BtmSheetAddProduct(
-        categoryList = listOf("Vas Bunga", "Fashion", "Prakarya", "Mainan", "Dekorasi"),
-        onAddProduct = { }
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewBtmSheetAddProduct() {
+//    BtmSheetAddProduct(
+//        categoryList = listOf("Vas Bunga", "Fashion", "Prakarya", "Mainan", "Dekorasi"),
+//        onAddProduct = { }
+//    )
+//}

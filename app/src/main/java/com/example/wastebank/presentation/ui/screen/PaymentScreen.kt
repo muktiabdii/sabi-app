@@ -222,6 +222,8 @@ fun PaymentScreen(
 
                     // Kalau semua validasi lolos, lanjutkan pembayaran
                     productViewModel.payment(selectedOption)
+                    productViewModel.resetProofImageUrl()
+                    uploadcareViewModel.resetUploadResult()
                     showPopUpNotif = true
                 }
             )

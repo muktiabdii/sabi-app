@@ -29,6 +29,16 @@ class PickupViewModel(private val pickupUseCase: PickupUseCase) : ViewModel() {
         _proofImageUrl.value = url
     }
 
+    fun resetProofImageUrl() {
+        _proofImageUrl.value = null
+    }
+
+    fun resetPickupData() {
+        _pickupData.value = PickupDomain()
+    }
+
+
+
     fun updatePickupData(updatedData: PickupDomain) {
         _pickupData.value = updatedData
     }

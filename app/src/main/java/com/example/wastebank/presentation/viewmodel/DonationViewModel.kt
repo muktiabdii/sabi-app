@@ -41,6 +41,10 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
         _proofImageUrl.value = url
     }
 
+    fun resetProofImageUrl() {
+        _proofImageUrl.value = null
+    }
+
     fun updateTotalAmount(selectedNominal: Int?, customNominal: String) {
         val nominal = selectedNominal ?: customNominal.toIntOrNull() ?: 0
         totalAmount.value = nominal

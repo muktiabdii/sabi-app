@@ -44,7 +44,12 @@ fun RequestScreen(navController: NavController?, pickupViewModel: PickupViewMode
             pickupViewModel.setProofImageUrl(it)
             Toast.makeText(context, "Upload Berhasil!", Toast.LENGTH_SHORT).show()
         }
+    }
 
+    LaunchedEffect(showPopUpNotif) {
+        if (showPopUpNotif) {
+            pickupViewModel.resetPickupData()
+        }
     }
 
     LazyColumn(
@@ -223,6 +228,9 @@ fun RequestScreen(navController: NavController?, pickupViewModel: PickupViewMode
                         return@ButtonAuth // Hentikan eksekusi lebih lanjut
                     } else {
                         pickupViewModel.requestPickup(pickupData)
+                        pickupViewModel.resetPickupData()
+                        pickupViewModel.resetProofImageUrl()
+                        uploadcareViewModel.resetUploadResult()
                         showPopUpNotif = true
                     }
                 }
