@@ -96,7 +96,11 @@ fun HomeScreen(
             .verticalScroll(rememberScrollState())
     ) {
         // topbar
-        TopBar(username = userProfile?.name.orEmpty(), points = userProfile?.points ?: 0)
+        TopBar(
+            username = userProfile?.name.orEmpty(),
+            points = userProfile?.points ?: 0,
+            role = "user"
+        )
 
         Box(
             modifier = Modifier

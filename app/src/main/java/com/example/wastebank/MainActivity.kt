@@ -99,7 +99,6 @@ class MainActivity : ComponentActivity() {
 //                        ganti halaman start pertama di sini
 //                        startDestination = "splash_screen"
                         startDestination = "home_screen"
-//                        startDestination = "marketplace_screen"
                     ) {
                         composable("splash_screen") {
                             SplashScreen(navController)
@@ -195,6 +194,9 @@ class MainActivity : ComponentActivity() {
                                 uploadcareViewModel,
                                 userProfileViewModel
                             )
+                        }
+                        composable("admin_home_screen") {
+                            AdminHomeScreen(navController)
                         }
                     }
                 }

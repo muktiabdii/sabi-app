@@ -15,7 +15,7 @@ import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.theme.Typography
 
 @Composable
-fun TopBar(username: String, points: Int) {
+fun TopBar(username: String, points: Int = 0, role: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -23,7 +23,7 @@ fun TopBar(username: String, points: Int) {
             .background(Color.Transparent),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // logo sabi
+        // Logo Sabi
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo Sabi",
@@ -34,20 +34,21 @@ fun TopBar(username: String, points: Int) {
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // teks username dan poin
+        // Teks username dan poin rata kanan
         Column(
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.End
         ) {
             Text(
                 text = "Hi, $username",
-                style = Typography.headlineMedium,
-                modifier = Modifier.width(155.dp)
+                style = Typography.headlineMedium
             )
-            Text(
-                text = "Poin saat ini: $points pts",
-                style = Typography.bodyLarge,
-                modifier = Modifier.width(155.dp)
-            )
+            if (role == "user") {
+                Text(
+                    text = "Poin saat ini: $points pts",
+                    style = Typography.bodyLarge
+                )
+            }
         }
     }
 }
@@ -55,5 +56,5 @@ fun TopBar(username: String, points: Int) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewTopBar() {
-    TopBar(username = "Raion", points = 2450)
+    TopBar(username = "Raion", points = 2450, role = "user")
 }

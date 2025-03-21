@@ -19,7 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.presentation.ui.theme.YellowMain
 
 @Composable
-fun BottomNavigation(navController: NavController) {
+fun AdminBottomNavigation(navController: NavController) {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Maps,
@@ -51,7 +51,6 @@ fun BottomNavigation(navController: NavController) {
         "product_detail_screen",
         "edit_profile_screen"
     )
-
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: ""
@@ -122,7 +121,7 @@ fun BottomNavigation(navController: NavController) {
 
 @Preview(showBackground = false)
 @Composable
-fun BottomNavigationPreview() {
+fun AdminBottomNavigationPreview() {
     val navController = rememberNavController()
     BottomNavigation(navController = navController)
 }

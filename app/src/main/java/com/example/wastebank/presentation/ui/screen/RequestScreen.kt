@@ -179,7 +179,7 @@ fun RequestScreen(navController: NavController?) {
             Spacer(modifier = Modifier.height(10.dp))
 
             // upload foto sampah
-            CardUpload()
+            CardUpload(text = "Upload Foto Sampah di Sini")
             Spacer(modifier = Modifier.height(16.dp))
         }
 

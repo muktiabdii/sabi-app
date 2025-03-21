@@ -146,6 +146,7 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
             ButtonAuth(
                 text = "MASUK",
                 onClick = {
+
                     authViewModel.loginUser()
                 }
             )

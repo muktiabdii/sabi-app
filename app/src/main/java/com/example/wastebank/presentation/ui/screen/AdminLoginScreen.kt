@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -44,7 +45,7 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
 
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn) {
-            navController.navigate("home_screen")
+            navController.navigate("admin_home_screen")
             authViewModel.resetIsLoggedIn()
         }
     }
@@ -119,7 +120,7 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
             Spacer(modifier = Modifier.height(5.dp))
             TextFieldAuth(
                 value = adminId,
-                placeholder = "Masukkan ID email",
+                placeholder = "Masukkan ID admin",
                 onValueChange = {
                     authViewModel.updateAdminId(it)
                 })
@@ -146,7 +147,8 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { navController.navigate("forgot_password_screen") },
-                style = Typography.bodyMedium.copy(color = GreyMedium)
+                style = Typography.bodyMedium.copy(color = GreyMedium, textAlign = TextAlign.End)
+
             )
             Spacer(modifier = Modifier.height(90.dp))
 

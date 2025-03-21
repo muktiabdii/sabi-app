@@ -34,7 +34,9 @@ import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.Typography
 
 @Composable
-fun CardUpload() {
+fun CardUpload(
+    text: String
+) {
     val context = LocalContext.current
 
     // Menyimpan file yang dipilih
@@ -86,7 +88,7 @@ fun CardUpload() {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Upload Foto Sampah di Sini",
+                    text = text,
                     style = Typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center
                 )
@@ -104,5 +106,5 @@ fun CardUpload() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewCardUpload(modifier: Modifier = Modifier) {
-    CardUpload()
+    CardUpload(text = "Upload Foto Sampah di Sini")
 }
