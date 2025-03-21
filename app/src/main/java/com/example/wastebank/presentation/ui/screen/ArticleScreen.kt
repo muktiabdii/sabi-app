@@ -23,7 +23,7 @@ import com.example.wastebank.presentation.ui.theme.GreyMedium
 import com.example.wastebank.presentation.ui.theme.Typography
 
 @Composable
-fun ArticleScreen(navController: NavController?) {
+fun ArticleScreen(navController: NavController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
