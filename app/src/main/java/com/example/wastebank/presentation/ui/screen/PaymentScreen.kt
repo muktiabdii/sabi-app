@@ -63,7 +63,10 @@ fun PaymentScreen(
     }
 
     LaunchedEffect(uploadResult) {
-        uploadResult?.let { productViewModel.setProofImageUrl(it) }
+        uploadResult?.let {
+            productViewModel.setProofImageUrl(it)
+            Toast.makeText(context, "Upload Berhasil!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     Column(

@@ -2,6 +2,7 @@ package com.example.wastebank.presentation.ui.component
 
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -10,12 +11,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,12 +34,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.wastebank.R
+import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreenBg
 import com.example.wastebank.presentation.ui.theme.Typography
+import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 
 @Composable
-fun CardUpload() {
+fun CardUpload(uploadcareViewModel: UploadcareViewModel) {
     val context = LocalContext.current
 
     // Menyimpan file yang dipilih
@@ -47,7 +55,6 @@ fun CardUpload() {
     ) { uri: Uri? ->
         selectedFileUri = uri
         uri?.let {
-            // Mendapatkan nama file dari URI
             context.contentResolver.query(it, null, null, null, null)?.use { cursor ->
                 val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 if (cursor.moveToFirst() && nameIndex != -1) {
@@ -68,11 +75,11 @@ fun CardUpload() {
         contentAlignment = Alignment.Center
     ) {
         if (selectedFileUri != null) {
-            // jika file sudah dipilih, hanya tampilkan nama file
-            Text(
-                text = selectedFileName,
-                style = Typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                textAlign = TextAlign.Center
+            // Menampilkan gambar yang telah diunggah ke Uploadcare
+            AsyncImage(
+                model = selectedFileUri,
+                contentDescription = "Gambar Terpilih",
+                modifier = Modifier.fillMaxSize()
             )
         } else {
             // jika belum ada file, tampilkan ikon dan teks instruksi
@@ -99,10 +106,22 @@ fun CardUpload() {
             }
         }
     }
+
+    Spacer(modifier = Modifier.height(24.dp))
+    ButtonAuth(
+        text = "UPLOAD DAN KONFIRMASI",
+        backgroundColor = BrownMain,
+        textColor = Color.White,
+        onClick = {
+            selectedFileUri?.let { uri ->
+                uploadcareViewModel.uploadImage(uri)
+            }
+        }
+    )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewCardUpload(modifier: Modifier = Modifier) {
-    CardUpload()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewCardUpload(modifier: Modifier = Modifier) {
+//    CardUpload()
+//}

@@ -23,12 +23,14 @@ import com.example.donation.presentation.ui.screen.DonateScreen
 import com.example.wastebank.data.repository.AuthRepositoryImpl
 import com.example.wastebank.data.repository.DonationRepositoryImpl
 import com.example.wastebank.data.repository.MoneyExchangeRepositoryImpl
+import com.example.wastebank.data.repository.PickupRepositoryImpl
 import com.example.wastebank.data.repository.ProductRepositoryImpl
 import com.example.wastebank.data.repository.UploadcareRepositoryImpl
 import com.example.wastebank.data.repository.UserProfileRepositoryImpl
 import com.example.wastebank.domain.usecase.AuthUseCase
 import com.example.wastebank.domain.usecase.DonationUseCase
 import com.example.wastebank.domain.usecase.MoneyExchangeUseCase
+import com.example.wastebank.domain.usecase.PickupUseCase
 import com.example.wastebank.domain.usecase.ProductUseCase
 import com.example.wastebank.domain.usecase.UploadcareUseCase
 import com.example.wastebank.domain.usecase.UserProfileUseCase
@@ -38,6 +40,7 @@ import com.example.wastebank.presentation.ui.theme.WasteBankTheme
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.DonationViewModel
 import com.example.wastebank.presentation.viewmodel.MoneyExchangeViewModel
+import com.example.wastebank.presentation.viewmodel.PickupViewModel
 import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
@@ -89,6 +92,12 @@ class MainActivity : ComponentActivity() {
                 val uploadcareUseCase = UploadcareUseCase(uploadcareRepo)
                 val uploadcareViewModel: UploadcareViewModel =
                     viewModel(factory = UploadcareViewModel.Factory(uploadcareUseCase))
+
+                // Inisiasi pickupRepo, pickupUseCase, dan pickupViewModel
+                val pickupRepo = PickupRepositoryImpl()
+                val pickupUseCase = PickupUseCase(pickupRepo)
+                val pickupViewModel: PickupViewModel =
+                    viewModel(factory = PickupViewModel.Factory(pickupUseCase))
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -170,7 +179,7 @@ class MainActivity : ComponentActivity() {
                             CartScreen(navController, productViewModel)
                         }
                         composable("request_screen") {
-                            RequestScreen(navController)
+                            RequestScreen(navController, pickupViewModel, uploadcareViewModel)
                         }
                         composable("edit_profile_screen") {
                             EditProfileScreen(navController, userProfileViewModel)
