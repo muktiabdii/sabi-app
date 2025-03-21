@@ -22,7 +22,7 @@ import com.example.wastebank.presentation.ui.theme.Typography
 @Composable
 fun CardInfoTransfer(
     donation : DonationDomain?,
-    totalAmount: Int
+    collected: Int
 ) {
     Box(
         modifier = Modifier
@@ -65,7 +65,7 @@ fun CardInfoTransfer(
                     color = Color.Black
                 )
                 Text(
-                    text = "Rp %,d".format(totalAmount),
+                    text = "Rp %,d".format(collected),
                     style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = Color.Black,
                     textAlign = TextAlign.End

@@ -62,9 +62,13 @@ class DonationRepositoryImpl : DonationRepository {
     override suspend fun donate(donate: DonateDomain): Result<Boolean> {
         return try{
             val currentUser = auth.currentUser ?: return Result.failure(Exception("User belum login"))
+            val userRef = db.getReference("users").child(currentUser.uid)
             val userName = db.getReference("users").child(currentUser.uid).child("name").get().await().getValue(String::class.java) ?: "Unknown"
 
-            val donateRef = db.getReference("donations").child(donate.donateMethod).push()
+            val userPoints = userRef.child("points").get().await().getValue(Int::class.java) ?: 0
+            val requiredPoints = (donate.totalAmount ?: 0) / 10
+
+            val donateRef = db.getReference("donates").child(donate.donateMethod).push()
             val donateId = donateRef.key ?: return Result.failure(Exception("Gagal generate donateId"))
 
             val timestamp = System.currentTimeMillis()
@@ -79,10 +83,17 @@ class DonationRepositoryImpl : DonationRepository {
                 userId = currentUser.uid,
                 userName = userName,
                 date = date,
-                hour = hour
+                hour = hour,
+                totalPoints = if (donate.donateMethod == "points") requiredPoints else null,
+                totalAmount = if (donate.donateMethod == "points") null else donate.totalAmount
             )
 
             donateRef.setValue(updatedDonate).await()
+
+            if (donate.donateMethod == "points") {
+                val newPoints = userPoints - requiredPoints
+                userRef.child("points").setValue(newPoints).await() // Update jumlah poin user
+            }
 
             Result.success(true)
         } catch (e: Exception) {

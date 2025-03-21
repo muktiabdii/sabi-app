@@ -45,6 +45,8 @@ fun DonationDetailScreen(
 
     var selectedNominal by remember { mutableStateOf<Int?>(null) }
     var customNominal by remember { mutableStateOf("") }
+    val totalAmount by donationViewModel.totalAmountState.collectAsState()
+
     val selectedDonation by donationViewModel.selectedDonation.collectAsState()
 
     var showDialogUpload by remember { mutableStateOf(false) }
@@ -54,9 +56,23 @@ fun DonationDetailScreen(
     val availablePoints = userProfile?.points ?: 0
     var customPoint by remember { mutableStateOf("") }
 
+    val uploadResult by uploadcareViewModel.uploadResult.collectAsState()
+
     val clipboardManager = LocalClipboardManager.current
     val context = LocalContext.current
     val nominalList = listOf(10000, 25000, 50000, 100000, 250000, 500000)
+
+    // Panggil fungsi untuk update total amount setiap kali nilai berubah
+    LaunchedEffect(selectedNominal, customNominal) {
+        donationViewModel.updateTotalAmount(selectedNominal, customNominal)
+    }
+
+    LaunchedEffect(uploadResult) {
+        uploadResult?.let {
+            donationViewModel.setProofImageUrl(it)
+            Toast.makeText(context, "Upload Berhasil!", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -187,7 +203,7 @@ fun DonationDetailScreen(
             item {
                 CardInfoTransfer(
                     donation = selectedDonation,
-                    totalAmount = selectedNominal ?: customNominal.toIntOrNull() ?: 0
+                    collected = selectedDonation?.collected?.toIntOrNull() ?: 0
                 )
             }
 
@@ -297,7 +313,33 @@ fun DonationDetailScreen(
                 text = "BAYAR",
                 backgroundColor = BrownMain,
                 textColor = Color.White,
-                onClick = { showPopUpNotif = true }
+                onClick = {
+                    // Cek apakah pakai poin dan apakah poin cukup
+                    if (selectedOption == "Gunakan Poin" && (userProfile?.points ?: 0) < (totalAmount ?: 0) / 10) {
+                        Toast.makeText(
+                            context,
+                            "Poin tidak mencukupi!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@ButtonAuth // Hentikan eksekusi lebih lanjut
+                    }
+
+                    if (selectedOption == "Transfer Bank") {
+                        val proofUrl = donationViewModel.proofImageUrl.value
+                        if (proofUrl.isNullOrEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "Harap upload bukti transfer terlebih dahulu!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@ButtonAuth // Hentikan eksekusi lebih lanjut
+                        }
+                    }
+
+                    // Kalau semua validasi lolos, lanjutkan pembayaran
+                    donationViewModel.donate(selectedOption)
+                    showPopUpNotif = true
+                }
             )
             Spacer(modifier = Modifier.height(30.dp))
         }

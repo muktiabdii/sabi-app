@@ -1,9 +1,9 @@
 package com.example.wastebank.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wastebank.domain.model.DonateDomain
 import com.example.wastebank.domain.model.DonationDomain
 import com.example.wastebank.domain.usecase.DonationUseCase
@@ -31,6 +31,18 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
     private val _proofImageUrl = MutableStateFlow<String?>(null)
     val proofImageUrl: StateFlow<String?> = _proofImageUrl
 
+    private val totalAmount = MutableStateFlow<Int?>(null)
+    val totalAmountState: StateFlow<Int?> = totalAmount.asStateFlow()
+
+    fun setProofImageUrl(url: String) {
+        _proofImageUrl.value = url
+    }
+
+    fun updateTotalAmount(selectedNominal: Int?, customNominal: String) {
+        val nominal = selectedNominal ?: customNominal.toIntOrNull() ?: 0
+        totalAmount.value = nominal
+    }
+
     fun getAllDonations() {
         viewModelScope.launch {
             donationUseCase.getAllDonations()
@@ -51,7 +63,7 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
         }
     }
 
-    fun donate() {
+    fun donate(selectedOption: String) {
         viewModelScope.launch {
             _donateState.value = Result.success(false) // Menandakan proses sedang berjalan
 
@@ -59,10 +71,13 @@ class DonationViewModel(private val donationUseCase: DonationUseCase) : ViewMode
             val donation = _selectedDonation.value ?: DonationDomain()
 
             val donateData = DonateDomain(
+                donateMethod = if (selectedOption == "Transfer Bank") "money" else "points",
                 donations = donation,
-                totalAmount = donation.totalAmount.toIntOrNull(),
-                receiptImage = proofUrl ?: ""
+                totalAmount = totalAmount.value,
+                receiptImage = proofUrl ?: "",
             )
+            Log.d("DonationViewModel", "Total Amount: ${donation.collected}")
+
 
             val result = donationUseCase.donate(donateData)
             _donateState.value = result

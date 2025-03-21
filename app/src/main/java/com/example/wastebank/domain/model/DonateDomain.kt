@@ -5,7 +5,7 @@ data class DonateDomain(
     val userId: String = "",
     val userName: String = "",
     val donations: DonationDomain = DonationDomain(),
-    val donateMethod: String = "Money",
+    val donateMethod: String = "",
     val totalPoints: Int? = null,
     val totalAmount: Int? = null,
     val status: String = "Pending",

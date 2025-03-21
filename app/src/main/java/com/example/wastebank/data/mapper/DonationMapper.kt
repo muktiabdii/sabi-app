@@ -13,7 +13,7 @@ object DonationMapper {
             accountName = donationData.accountName,
             accountNumber = donationData.accountNumber,
             bank = donationData.bank,
-            totalAmount = donationData.totalAmount
+            collected = donationData.totalAmount
         )
     }
 }

@@ -8,5 +8,5 @@ data class DonationDomain(
     val accountName: String = "",
     val accountNumber: String = "",
     val bank: String = "",
-    val totalAmount: String = ""
+    val collected: String = ""
 )

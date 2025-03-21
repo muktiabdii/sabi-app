@@ -163,7 +163,7 @@ class MainActivity : ComponentActivity() {
                                 navController,
                                 donationViewModel,
                                 uploadcareViewModel,
-                                userProfileViewModel
+                                userProfileViewModel,
                             )
                         }
 
