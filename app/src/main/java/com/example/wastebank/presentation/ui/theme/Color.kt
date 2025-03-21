@@ -2,10 +2,14 @@ package com.example.wastebank.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val BrownMain = Color(0xFF854836)
+val YellowMain = Color(0xFFFFB22C)
+val GreenBg = Color(0xFFF5F5DC)
+val BrownBg = Color(0XFFF9F6EE)
+val YellowBg = Color(0XFFF2C94C).copy(alpha = 0.2f)
+val RedBg = Color(0XFFFDDEDE)
+val GreyMedium = Color(0xFF7F7F7F)
+val GreyLight = Color(0xFF000000).copy(alpha = 0.1f)
+val GreyLine = Color(0XFFB9B9B9)
+val TextRed = Color(0xFFB22222)
+val WhiteBg = Color(0xFFF8F8F8)
