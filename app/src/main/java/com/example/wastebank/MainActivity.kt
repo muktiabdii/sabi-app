@@ -32,6 +32,8 @@ import com.example.wastebank.domain.usecase.MoneyExchangeUseCase
 import com.example.wastebank.domain.usecase.ProductUseCase
 import com.example.wastebank.domain.usecase.UploadcareUseCase
 import com.example.wastebank.domain.usecase.UserProfileUseCase
+import com.example.wastebank.presentation.screen.InputTrashScreen
+import com.example.wastebank.presentation.screen.ManageRequestScreen
 import com.example.wastebank.presentation.ui.component.BottomNavigation
 import com.example.wastebank.presentation.ui.screen.*
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
@@ -92,11 +94,10 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    bottomBar = { BottomNavigation(navController) }
+                    bottomBar = { BottomNavigation(navController, authViewModel) }
                 ) {
                     NavHost(
                         navController = navController,
-//                        ganti halaman start pertama di sini
 //                        startDestination = "splash_screen"
                         startDestination = "home_screen"
                     ) {
@@ -131,7 +132,7 @@ class MainActivity : ComponentActivity() {
                             MapsScreen(navController)
                         }
                         composable("marketplace_screen") {
-                            MarketplaceScreen(navController, productViewModel)
+                            MarketplaceScreen(navController, productViewModel, authViewModel)
                         }
                         composable("article_screen") {
                             ArticleScreen(navController)
@@ -140,7 +141,7 @@ class MainActivity : ComponentActivity() {
                             ProfileScreen(navController, userProfileViewModel)
                         }
                         composable("donate_screen") {
-                            DonateScreen(navController, donationViewModel)
+                            DonateScreen(navController, donationViewModel, authViewModel)
                         }
                         composable("donation_detail_screen/{donationTitle}") { backStackEntry ->
                             val donationTitle =
@@ -197,6 +198,15 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("admin_home_screen") {
                             AdminHomeScreen(navController)
+                        }
+                        composable("admin_marketplace_screen") {
+                            AdminMarketplaceScreen(navController, productViewModel, authViewModel)
+                        }
+                        composable("input_trash_screen") {
+                            InputTrashScreen(navController)
+                        }
+                        composable("manage_request_screen") {
+                            ManageRequestScreen(navController)
                         }
                     }
                 }

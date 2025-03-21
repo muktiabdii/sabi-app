@@ -16,13 +16,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
 import com.example.wastebank.presentation.component.CardRequest
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
 
 @Composable
-fun RequestScreen() {
+fun ManageRequestScreen(navController: NavController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -41,7 +43,7 @@ fun RequestScreen() {
                     color = Color.Black
                 )
                 IconButton(
-                    onClick = { }
+                    onClick = { navController.navigate("input_trash_screen") }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_add),
@@ -84,6 +86,7 @@ val requestList = listOf(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRequestScreen() {
-    RequestScreen()
+fun PreviewManageRequestScreen() {
+    val navController = rememberNavController()
+    ManageRequestScreen(navController)
 }

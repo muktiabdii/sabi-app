@@ -17,22 +17,40 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.presentation.ui.theme.YellowMain
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
-fun BottomNavigation(navController: NavController) {
-    val items = listOf(
-        BottomNavItem.Home,
-        BottomNavItem.Maps,
-        BottomNavItem.Market,
-        BottomNavItem.Article,
-        BottomNavItem.Profile
-    )
+fun BottomNavigation(navController: NavController, authViewModel: AuthViewModel) {
+    // ambil role
+    val role by authViewModel.role.collectAsState()
+
+    val items = if (role == "admin") {
+        listOf(
+            BottomNavItem.HomeAdmin,
+            BottomNavItem.MapsAdmin,
+            BottomNavItem.MarketAdmin,
+            BottomNavItem.ArticleAdmin,
+            BottomNavItem.ProfileAdmin
+        )
+    } else {
+        listOf(
+            BottomNavItem.Home,
+            BottomNavItem.Maps,
+            BottomNavItem.Market,
+            BottomNavItem.Article,
+            BottomNavItem.Profile
+        )
+    }
 
     // daftar screen yang menampilkan BottomNav
     val sectionRoutes = mapOf(
-        "home_screen" to listOf("home_screen"),
-        "maps_screen" to listOf("maps_screen", "request_screen"),
-        "marketplace_screen" to listOf("marketplace_screen", "donate_screen"),
+        "home_screen" to listOf("home_screen", "admin_home_screen"),
+        "maps_screen" to listOf("maps_screen", "request_screen", "manage_request_screen"),
+        "marketplace_screen" to listOf(
+            "marketplace_screen",
+            "donate_screen",
+            "admin_marketplace_screen"
+        ),
         "article_screen" to listOf("article_screen"),
         "profile_screen" to listOf("profile_screen", "edit_profile_screen")
     )
@@ -49,9 +67,9 @@ fun BottomNavigation(navController: NavController) {
         "donation_detail_screen",
         "payment_screen",
         "product_detail_screen",
-        "edit_profile_screen"
+        "edit_profile_screen",
+        "input_trash_screen"
     )
-
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: ""
@@ -120,9 +138,9 @@ fun BottomNavigation(navController: NavController) {
 }
 
 
-@Preview(showBackground = false)
-@Composable
-fun BottomNavigationPreview() {
-    val navController = rememberNavController()
-    BottomNavigation(navController = navController)
-}
+//@Preview(showBackground = false)
+//@Composable
+//fun BottomNavigationPreview() {
+//    val navController = rememberNavController()
+//    BottomNavigation(navController = navController)
+//}

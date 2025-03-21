@@ -27,12 +27,13 @@ import com.example.wastebank.presentation.ui.component.CardDestination
 import com.example.wastebank.presentation.ui.component.CardDonate
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.Typography
+import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.DonationViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun DonateScreen(navController: NavController, donationViewModel: DonationViewModel) {
+fun DonateScreen(navController: NavController, donationViewModel: DonationViewModel, authViewModel: AuthViewModel) {
     var searchText by remember { mutableStateOf("") }
 
     // state donation
@@ -44,7 +45,7 @@ fun DonateScreen(navController: NavController, donationViewModel: DonationViewMo
 
     Scaffold(
         bottomBar = {
-            BottomNavigation(navController)
+            BottomNavigation(navController, authViewModel)
         }
     ) { paddingValues ->
         Box(

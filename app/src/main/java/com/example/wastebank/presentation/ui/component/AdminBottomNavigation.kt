@@ -119,9 +119,9 @@ fun AdminBottomNavigation(navController: NavController) {
 }
 
 
-@Preview(showBackground = false)
-@Composable
-fun AdminBottomNavigationPreview() {
-    val navController = rememberNavController()
-    BottomNavigation(navController = navController)
-}
+//@Preview(showBackground = false)
+//@Composable
+//fun AdminBottomNavigationPreview() {
+//    val navController = rememberNavController()
+//    BottomNavigation(navController = navController)
+//}

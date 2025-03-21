@@ -63,77 +63,79 @@ fun InputTrashScreen(navController: NavController? = null) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Informasi Sampah
-        Text(
-            text = "Informasi Sampah",
-            style = Typography.headlineMedium
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Email
-        Text(
-            text = "Email",
-            style = Typography.headlineSmall
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        TextFieldAuth(
-            value = email,
-            onValueChange = { email = it },
-            placeholder = "Masukkan email"
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Jenis Sampah
-        Text(
-            text = "Jenis Sampah",
-            style = Typography.headlineSmall
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Pilihan Sampah
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 200.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        Column(
+            modifier = Modifier.weight(1f)
         ) {
-            items(trashTypes) { type ->
-                CardSchedule(
-                    content = type,
-                    corner = 20,
-                    backgroundColor = Color.White,
-                    isSelected = selectedTrashType == type,
-                    onClick = { selectedTrashType = type }
-                )
+            // Informasi Sampah
+            Text(
+                text = "Informasi Sampah",
+                style = Typography.headlineMedium
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Email
+            Text(
+                text = "Email",
+                style = Typography.headlineSmall
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            TextFieldAuth(
+                value = email,
+                onValueChange = { email = it },
+                placeholder = "Masukkan email"
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Jenis Sampah
+            Text(
+                text = "Jenis Sampah",
+                style = Typography.headlineSmall
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Pilihan Sampah
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 200.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(trashTypes) { type ->
+                    CardSchedule(
+                        content = type,
+                        corner = 20,
+                        backgroundColor = Color.White,
+                        isSelected = selectedTrashType == type,
+                        onClick = { selectedTrashType = type }
+                    )
+                }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Jumlah
+            Text(
+                text = "Jumlah",
+                style = Typography.headlineSmall
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextFieldAuth(
+                value = amount,
+                onValueChange = { amount = it },
+                placeholder = "Masukkan jumlah",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number).copy(
+                    imeAction = ImeAction.Done
+                ),
+            )
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Jumlah
-        Text(
-            text = "Jumlah",
-            style = Typography.headlineSmall
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TextFieldAuth(
-            value = amount,
-            onValueChange = { amount = it },
-            placeholder = "Masukkan jumlah",
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number).copy(
-                imeAction = ImeAction.Done
-            ),
-        )
-
-        Spacer(modifier = Modifier.height(50.dp))
 
         // Tombol Simpan Informasi
         ButtonAuth(
@@ -142,6 +144,8 @@ fun InputTrashScreen(navController: NavController? = null) {
             textColor = Color.White,
             onClick = { }
         )
+
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
