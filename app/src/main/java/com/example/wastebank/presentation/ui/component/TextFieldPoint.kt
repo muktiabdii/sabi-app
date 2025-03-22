@@ -29,7 +29,7 @@ fun TextFieldPoint(
         modifier = Modifier
             .fillMaxWidth()
             .height(40.dp)
-            .border(1.dp, BrownMain, RoundedCornerShape(10.dp)),
+            .border(1.dp, BrownMain, RoundedCornerShape(12.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(modifier = Modifier.width(12.dp))

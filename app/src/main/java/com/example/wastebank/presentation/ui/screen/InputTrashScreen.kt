@@ -38,13 +38,14 @@ fun InputTrashScreen(navController: NavController? = null) {
             .fillMaxSize()
             .padding(24.dp)
     ) {
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(30.dp))
 
         // Header
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Spacer(modifier = Modifier.height(10.dp))
             Image(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = "Back",

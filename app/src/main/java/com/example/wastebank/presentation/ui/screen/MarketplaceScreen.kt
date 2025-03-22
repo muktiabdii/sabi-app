@@ -25,8 +25,6 @@ import com.example.wastebank.presentation.viewmodel.ProductViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-
-// nanti dituker, masih kebalik
 @Composable
 fun MarketplaceScreen(
     navController: NavController,

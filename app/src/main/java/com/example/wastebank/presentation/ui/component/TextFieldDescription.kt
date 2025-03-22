@@ -33,7 +33,7 @@ fun TextFieldDescription(
             .fillMaxWidth()
             .height(100.dp)
             .background(color = GreenBg)
-            .border(1.dp, BrownMain, RoundedCornerShape(8.dp))
+            .border(1.dp, BrownMain, RoundedCornerShape(12.dp))
             .padding(16.dp),
     ) {
         BasicTextField(

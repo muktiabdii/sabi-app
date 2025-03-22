@@ -31,6 +31,8 @@ fun ArticleScreen(navController: NavController) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
+            Spacer(modifier = Modifier.height(12.dp))
+
             // Search Bar
             SearchBarMarket(
                 value = "",
@@ -83,10 +85,10 @@ fun ArticleScreen(navController: NavController) {
                             .height(120.dp)
                             .clip(RoundedCornerShape(10.dp))
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = "Cara Mengolah Botol Plastik",
-                        style = Typography.bodyLarge
+                        style = Typography.headlineSmall
                     )
                     Text(
                         text = "Jumat, 14 Maret 2025",
@@ -107,10 +109,10 @@ fun ArticleScreen(navController: NavController) {
                             .height(120.dp)
                             .clip(RoundedCornerShape(10.dp))
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = "Pro Kontra Usaha Botol Plastik Warga Lowokwaru",
-                        style = Typography.bodyLarge
+                        style = Typography.headlineSmall
                     )
                     Text(
                         text = "Jumat, 14 Maret 2025",

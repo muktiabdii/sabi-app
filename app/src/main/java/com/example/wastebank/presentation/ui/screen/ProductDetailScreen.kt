@@ -38,7 +38,7 @@ fun ProductDetailScreen(navController: NavController, productViewModel: ProductV
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Box {
+        Box(modifier = Modifier.height(500.dp)) {
             AsyncImage(
                 model = product?.image ?: "",
                 contentDescription = "gambar produk",

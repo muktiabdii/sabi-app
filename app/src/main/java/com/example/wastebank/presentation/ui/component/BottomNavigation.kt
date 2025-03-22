@@ -1,7 +1,5 @@
 package com.example.wastebank.presentation.ui.component
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -9,21 +7,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.presentation.ui.theme.YellowMain
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 
 @Composable
 fun BottomNavigation(navController: NavController, authViewModel: AuthViewModel) {
-    // ambil role
     val role by authViewModel.role.collectAsState()
 
+    // daftar item bottom nav berdasarkan role
     val items = if (role == "admin") {
         listOf(
             BottomNavItem.HomeAdmin,
@@ -42,22 +39,29 @@ fun BottomNavigation(navController: NavController, authViewModel: AuthViewModel)
         )
     }
 
-    // daftar screen yang menampilkan BottomNav
-    val sectionRoutes = mapOf(
-        "home_screen" to listOf("home_screen", "admin_home_screen"),
-        "maps_screen" to listOf("maps_screen", "request_screen", "manage_request_screen"),
-        "marketplace_screen" to listOf(
-            "marketplace_screen",
-            "donate_screen",
-            "admin_marketplace_screen"
-        ),
-        "article_screen" to listOf("article_screen"),
-        "profile_screen" to listOf("profile_screen", "edit_profile_screen")
-    )
+    // pisah daftar route untuk user dan admin
+    val sectionRoutes = if (role == "admin") {
+        mapOf(
+            BottomNavItem.HomeAdmin.route to listOf("admin_home_screen"),
+            BottomNavItem.MapsAdmin.route to listOf("manage_request_screen"),
+            BottomNavItem.MarketAdmin.route to listOf("admin_marketplace_screen"),
+            BottomNavItem.ArticleAdmin.route to listOf("article_screen"),
+            BottomNavItem.ProfileAdmin.route to listOf("profile_screen", "edit_profile_screen")
+        )
+    } else {
+        mapOf(
+            BottomNavItem.Home.route to listOf("home_screen"),
+            BottomNavItem.Maps.route to listOf("maps_screen", "request_screen"),
+            BottomNavItem.Market.route to listOf("marketplace_screen", "donate_screen"),
+            BottomNavItem.Article.route to listOf("article_screen"),
+            BottomNavItem.Profile.route to listOf("profile_screen", "edit_profile_screen")
+        )
+    }
 
-    // screen yang tidak menampilkan BottomNav
+    // halaman yang tidak menampilkan BottomNav
     val hiddenScreens = listOf(
         "splash_screen",
+        "onboarding_screen",
         "login_role_screen",
         "admin_login_screen",
         "user_login_screen",
@@ -68,19 +72,15 @@ fun BottomNavigation(navController: NavController, authViewModel: AuthViewModel)
         "donation_detail_screen",
         "payment_screen",
         "product_detail_screen",
-        "edit_profile_screen",
         "input_trash_screen"
     )
 
+    // ambil halaman saat ini
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: ""
 
-    // apakah screen perlu menampilkan BottomNav
-    val shouldShowBottomNav = !hiddenScreens.any { hiddenRoute ->
-        currentRoute.startsWith(hiddenRoute)
-    }
+    val shouldShowBottomNav = !hiddenScreens.any { currentRoute.startsWith(it) }
 
-    // tampilkan BottomNav jika tidak berada di list hidden screen
     if (shouldShowBottomNav) {
         Surface(
             modifier = Modifier
@@ -99,7 +99,6 @@ fun BottomNavigation(navController: NavController, authViewModel: AuthViewModel)
             shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
             color = Color.White,
             shadowElevation = 10.dp
-
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),
@@ -117,7 +116,7 @@ fun BottomNavigation(navController: NavController, authViewModel: AuthViewModel)
                             onClick = {
                                 if (!isSelected) {
                                     navController.navigate(item.route) {
-                                        popUpTo(item.route)
+                                        popUpTo(navController.graph.startDestinationId)
                                         launchSingleTop = true
                                         restoreState = true
                                     }
@@ -138,10 +137,3 @@ fun BottomNavigation(navController: NavController, authViewModel: AuthViewModel)
     }
 }
 
-
-//@Preview(showBackground = false)
-//@Composable
-//fun BottomNavigationPreview() {
-//    val navController = rememberNavController()
-//    BottomNavigation(navController = navController)
-//}

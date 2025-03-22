@@ -39,10 +39,10 @@ fun LoginRoleScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .padding(30.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.weight(1.2f))
+            Spacer(modifier = Modifier.weight(1f))
 
             // logo
             Image(
@@ -50,7 +50,7 @@ fun LoginRoleScreen(navController: NavController) {
                 contentDescription = "Logo Sabi",
                 modifier = Modifier.size(175.dp)
             )
-            Spacer(modifier = Modifier.weight(2f))
+            Spacer(modifier = Modifier.weight(1.2f))
 
             // button admin
             ButtonAuth(
@@ -58,7 +58,7 @@ fun LoginRoleScreen(navController: NavController) {
                 backgroundColor = BrownMain,
                 onClick = { navController.navigate("admin_login_screen") }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // button pengguna
             ButtonAuth(
@@ -66,7 +66,7 @@ fun LoginRoleScreen(navController: NavController) {
                 backgroundColor = YellowMain,
                 onClick = { navController.navigate("user_login_screen") }
             )
-            Spacer(modifier = Modifier.weight(0.8f))
+            Spacer(modifier = Modifier.weight(0.3f))
         }
     }
 }

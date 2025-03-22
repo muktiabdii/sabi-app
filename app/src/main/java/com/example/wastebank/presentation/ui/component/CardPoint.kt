@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import com.example.wastebank.R
 import com.example.wastebank.presentation.ui.theme.BrownMain
 import com.example.wastebank.presentation.ui.theme.GreenBg
@@ -73,7 +74,7 @@ fun CardPoint(
             ) {
                 Text(
                     text = "Lihat poin",
-                    style = Typography.headlineSmall
+                    style = Typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
 
@@ -103,7 +104,7 @@ fun CardPoint(
             ) {
                 Text(
                     text = "Tukarkan Poin Kamu!",
-                    style = Typography.headlineSmall
+                    style = Typography.headlineMedium
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_next),

@@ -33,7 +33,7 @@ fun SplashScreen(navController: NavController) {
     }
     LaunchedEffect(key1 = true) {
         scale.animateTo(
-            targetValue = 0.8f,
+            targetValue = 1f,
             animationSpec = tween(
                 durationMillis = 400,
                 easing = {
@@ -41,8 +41,8 @@ fun SplashScreen(navController: NavController) {
                 }
             )
         )
-        delay(800L)
-        navController.navigate("login_role_screen")
+        delay(600L)
+        navController.navigate("onboarding_screen")
     }
     Box(
         contentAlignment = Alignment.Center,

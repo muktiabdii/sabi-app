@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.wastebank.R
 import com.example.wastebank.domain.model.Product
@@ -77,9 +78,9 @@ fun CardProduct(
                     // kategori produk
                     Text(
                         text = product.category,
-                        style = Typography.bodyMedium.copy(
+                        style = Typography.headlineSmall.copy(
                             color = GreyMedium,
-                            fontWeight = FontWeight.SemiBold
+                            fontSize = 13.sp
                         ),
                         color = GreyMedium,
                         modifier = Modifier.fillMaxWidth()
@@ -89,7 +90,10 @@ fun CardProduct(
                     // harga produk
                     Text(
                         text = product.formatRupiah(),
-                        style = Typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                        style = Typography.headlineSmall.copy(
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Medium
+                        ),
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

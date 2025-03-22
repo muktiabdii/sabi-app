@@ -60,10 +60,10 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
     ) {
         // Tombol Back
         IconButton(
-            onClick = { navController.navigate("splash_screen") },
+            onClick = { navController.navigate("login_role_screen") },
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(30.dp)
+                .padding(horizontal = 30.dp, vertical = 55.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_back),
@@ -94,47 +94,47 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.height(100.dp))
+            Spacer(modifier = Modifier.height(120.dp))
             Text(
                 text = "Masuk Sebagai Admin",
                 style = Typography.headlineLarge
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             // TextFields Email
             Text(
                 text = "Email atau No. Telepon",
                 style = Typography.bodyLarge.copy(color = GreyMedium)
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             TextFieldAuth(
                 value = email,
                 placeholder = "Masukkan alamat email",
                 onValueChange = {
                     authViewModel.updateEmail(it)
                 })
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             // TextFields ID Admin
             Text(
                 text = "ID Admin",
                 style = Typography.bodyLarge.copy(color = GreyMedium)
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             TextFieldAuth(
                 value = adminId,
                 placeholder = "Masukkan ID admin",
                 onValueChange = {
                     authViewModel.updateAdminId(it)
                 })
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             // TextFields Kata Sandi
             Text(
                 text = "Kata Sandi",
                 style = Typography.bodyLarge.copy(color = GreyMedium)
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             TextFieldPassword(
                 value = password,
                 placeholder = "Masukkan kata sandi",
@@ -142,7 +142,7 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
                     authViewModel.updatePassword(it)
                 },
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             // Lupa Sandi
             Text(
@@ -150,10 +150,10 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { navController.navigate("forgot_password_screen") },
-                style = Typography.bodyMedium.copy(color = GreyMedium, textAlign = TextAlign.End)
+                style = Typography.bodyLarge.copy(color = GreyMedium, textAlign = TextAlign.End)
 
             )
-            Spacer(modifier = Modifier.height(90.dp))
+            Spacer(modifier = Modifier.height(135.dp))
 
             // Button Masuk
             ButtonAuth(
@@ -162,7 +162,7 @@ fun AdminLoginScreen(navController: NavController, authViewModel: AuthViewModel)
                     authViewModel.loginAdmin()
                 }
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Sudah Punya Akun
             RegisterText(navController)
