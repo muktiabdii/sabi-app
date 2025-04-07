@@ -42,7 +42,7 @@ This app follows the Clean Architecture principles:
 - `data` layer for data handling and mapping
 
 
-## 📸 Screenshots
+## 📸 Prototype
 
 <p align="center">
   <img src="./assets/prototype-sabi-github.png" width="700" style="border-radius: 12px;">
