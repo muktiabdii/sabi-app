@@ -77,7 +77,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
             onClick = { navController.popBackStack() },
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(30.dp)
+                .padding(horizontal = 30.dp, vertical = 50.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_back),
@@ -108,17 +108,17 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(60.dp))
             Text(
                 text = "Bergabung dengan SABI",
                 style = Typography.headlineLarge
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Jadilah bagian dari gerakan SABI dalam mengelola sampah organik, berkolaborasi dengan sesama peduli lingkungan, dan raih berbagai reward menarik dari kontribusimu.",
-                style = Typography.bodyMedium.copy(textAlign = TextAlign.Justify)
+                style = Typography.bodyLarge.copy(textAlign = TextAlign.Justify)
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // TextFields Nama
             Text(
@@ -208,7 +208,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
                     authViewModel.register()
                 }
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Sudah Punya Akun
             LoginText(navController)
@@ -233,7 +233,7 @@ fun LoginText(navController: NavController) {
 
     Text(
         text = annotatedText,
-        fontSize = 12.sp,
+        style = Typography.bodyLarge,
         color = GreyMedium,
         textAlign = TextAlign.Center,
         modifier = Modifier

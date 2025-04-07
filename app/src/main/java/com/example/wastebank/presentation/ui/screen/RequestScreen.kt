@@ -25,7 +25,11 @@ import com.example.wastebank.presentation.viewmodel.PickupViewModel
 import com.example.wastebank.presentation.viewmodel.UploadcareViewModel
 
 @Composable
-fun RequestScreen(navController: NavController?, pickupViewModel: PickupViewModel, uploadcareViewModel: UploadcareViewModel) {
+fun RequestScreen(
+    navController: NavController?,
+    pickupViewModel: PickupViewModel,
+    uploadcareViewModel: UploadcareViewModel
+) {
     val context = LocalContext.current
 
     val uploadResult by uploadcareViewModel.uploadResult.collectAsState()
@@ -35,7 +39,8 @@ fun RequestScreen(navController: NavController?, pickupViewModel: PickupViewMode
     var selectedTime by remember { mutableStateOf("") }
 
     val trashTypes = listOf("Plastik", "Kardus", "Kayu", "Kaca", "Bahan", "Lainnya")
-    val times = listOf("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00")
+    val times =
+        listOf("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00")
 
     var showPopUpNotif by remember { mutableStateOf(false) }
 
@@ -93,7 +98,9 @@ fun RequestScreen(navController: NavController?, pickupViewModel: PickupViewMode
                     TextFieldAuth(
                         value = pickupData.weight,
                         onValueChange = {
-                            if (it.isEmpty() || it.toDoubleOrNull() != null) pickupViewModel.updatePickupData(pickupData.copy(weight = it))
+                            if (it.isEmpty() || it.toDoubleOrNull() != null) pickupViewModel.updatePickupData(
+                                pickupData.copy(weight = it)
+                            )
                         },
                         placeholder = "0",
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
@@ -156,7 +163,10 @@ fun RequestScreen(navController: NavController?, pickupViewModel: PickupViewMode
                         corner = 20,
                         backgroundColor = Color.White,
                         isSelected = selectedTrashType == type,
-                        onClick = { pickupViewModel.updatePickupData(pickupData.copy(trashType = type)) }
+                        onClick = {
+                            pickupViewModel.updatePickupData(pickupData.copy(trashType = type))
+                            selectedTrashType = type
+                        }
                     )
                 }
             }
@@ -185,7 +195,10 @@ fun RequestScreen(navController: NavController?, pickupViewModel: PickupViewMode
                         corner = 10,
                         backgroundColor = BrownBg,
                         isSelected = selectedTime == time,
-                        onClick = { pickupViewModel.updatePickupData(pickupData.copy(selectedTime = time)) }
+                        onClick = {
+                            pickupViewModel.updatePickupData(pickupData.copy(selectedTime = time))
+                            selectedTime = time
+                        }
                     )
                 }
             }

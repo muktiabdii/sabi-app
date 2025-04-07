@@ -37,7 +37,7 @@ fun TextFieldDate(
         modifier = Modifier
             .fillMaxWidth()
             .height(40.dp)
-            .border(1.dp, BrownMain, RoundedCornerShape(8.dp))
+            .border(1.dp, BrownMain, RoundedCornerShape(12.dp))
             .clickable { showDatePicker(context, onValueChange) } // buka DatePicker saat diklik
             .padding(horizontal = 12.dp),
         contentAlignment = Alignment.CenterStart

@@ -63,10 +63,10 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
     ) {
         // Tombol Back
         IconButton(
-            onClick = { navController.navigate("splash_screen") },
+            onClick = { navController.navigate("login_role_screen") },
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(30.dp)
+                .padding(horizontal = 30.dp, vertical = 60.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_back),
@@ -97,33 +97,33 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.height(100.dp))
+            Spacer(modifier = Modifier.height(120.dp))
             Text(
                 text = "Masuk Sebagai Pengguna",
                 style = Typography.headlineLarge
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             // TextFields Email
             Text(
                 text = "Email atau No. Telepon",
                 style = Typography.bodyLarge.copy(color = GreyMedium)
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             TextFieldAuth(
                 value = email,
                 placeholder = "Masukkan alamat email",
                 onValueChange = {
                     authViewModel.updateEmail(it)
                 })
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             // TextFields Kata Sandi
             Text(
                 text = "Kata Sandi",
                 style = Typography.bodyLarge.copy(color = GreyMedium)
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             TextFieldPassword(
                 value = password,
                 placeholder = "Masukkan kata sandi",
@@ -131,7 +131,7 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
                     authViewModel.updatePassword(it)
                 },
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // Lupa Sandi
             Text(
@@ -139,9 +139,9 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { navController.navigate("forgot_password_screen") },
-                style = Typography.bodyMedium.copy(color = GreyMedium, textAlign = TextAlign.End)
+                style = Typography.bodyLarge.copy(color = GreyMedium, textAlign = TextAlign.End)
             )
-            Spacer(modifier = Modifier.height(155.dp))
+            Spacer(modifier = Modifier.height(205.dp))
 
             // Button Masuk
             ButtonAuth(
@@ -151,7 +151,7 @@ fun UserLoginScreen(navController: NavController, authViewModel: AuthViewModel) 
                     authViewModel.loginUser()
                 }
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Sudah Punya Akun
             RegisterText(navController)
@@ -176,7 +176,7 @@ fun RegisterText(navController: NavController) {
 
     Text(
         text = annotatedText,
-        style = Typography.bodyMedium.copy(color = GreyMedium),
+        style = Typography.bodyLarge.copy(color = GreyMedium),
         textAlign = TextAlign.Center,
         modifier = Modifier
             .fillMaxWidth()

@@ -93,7 +93,7 @@ fun CardUpload(uploadcareViewModel: UploadcareViewModel) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Upload Foto Sampah di Sini",
+                    text = "Upload Foto Produk di Sini",
                     style = Typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center
                 )
@@ -107,7 +107,7 @@ fun CardUpload(uploadcareViewModel: UploadcareViewModel) {
         }
     }
 
-    Spacer(modifier = Modifier.height(24.dp))
+    Spacer(modifier = Modifier.height(16.dp))
     ButtonAuth(
         text = "UPLOAD DAN KONFIRMASI",
         backgroundColor = BrownMain,

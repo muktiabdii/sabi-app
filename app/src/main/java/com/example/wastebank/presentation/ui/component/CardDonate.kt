@@ -64,14 +64,14 @@ fun CardDonate(
             ) {
                 Text(
                     text = donation.title,
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                    style = MaterialTheme.typography.headlineSmall,
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
                     text = donation.description,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = Color.White
                 )
             }

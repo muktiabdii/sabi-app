@@ -63,7 +63,7 @@ fun ForgotPasswordScreen(navController: NavController, authViewModel: AuthViewMo
             onClick = { navController.popBackStack() },
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(30.dp)
+                .padding(horizontal = 30.dp, vertical = 60.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_back),
@@ -94,16 +94,16 @@ fun ForgotPasswordScreen(navController: NavController, authViewModel: AuthViewMo
                 .fillMaxWidth()
                 .padding(44.dp)
         ) {
-            Spacer(modifier = Modifier.height(100.dp))
+            Spacer(modifier = Modifier.height(120.dp))
             Text(
                 text = "Lupa kata sandi?",
                 style = Typography.headlineLarge
                 )
 
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = "Jangan khawatir! Itu bisa saja terjadi. Silakan masukkan email yang terkait dengan akun Anda.",
-                style = Typography.bodySmall.copy(textAlign = TextAlign.Justify)
+                style = Typography.bodyLarge.copy(textAlign = TextAlign.Justify)
                 )
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -112,14 +112,14 @@ fun ForgotPasswordScreen(navController: NavController, authViewModel: AuthViewMo
                 text = "Email",
                 style = Typography.bodyLarge
                 )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             TextFieldAuth(
                 value = email,
                 placeholder = "Masukkan alamat email",
                 onValueChange = {
                     authViewModel.updateEmail(it)
                 })
-            Spacer(modifier = Modifier.height(190.dp))
+            Spacer(modifier = Modifier.height(267.dp))
 
             // Button kirim kode
             ButtonAuth(
@@ -128,7 +128,7 @@ fun ForgotPasswordScreen(navController: NavController, authViewModel: AuthViewMo
                     authViewModel.resetPassword()
                 }
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Ingat kata sandi
             LoginText(navController)
@@ -165,7 +165,7 @@ fun LoginText(navController: NavController) {
 
     Text(
         text = annotatedText,
-        fontSize = 12.sp,
+        style = Typography.bodyLarge,
         color = GreyMedium,
         textAlign = TextAlign.Center,
         modifier = Modifier
