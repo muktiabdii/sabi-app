@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.wastebank.R
-import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.presentation.ui.theme.*

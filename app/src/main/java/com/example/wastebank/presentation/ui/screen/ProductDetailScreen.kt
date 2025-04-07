@@ -22,7 +22,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.wastebank.R
-import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductDomain
 import com.example.wastebank.presentation.ui.component.ButtonAuth
 import com.example.wastebank.presentation.ui.theme.*

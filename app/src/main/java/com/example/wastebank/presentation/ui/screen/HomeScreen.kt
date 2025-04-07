@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wastebank.R
-import com.example.wastebank.domain.model.Product
 import com.example.wastebank.domain.model.ProductCategory
 import com.example.wastebank.presentation.ui.component.*
 import com.example.wastebank.presentation.ui.theme.Typography

@@ -74,11 +74,11 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
                 name.value, email.value, password.value, phoneNumber.value, gender.value
             ) { success, message ->
                 if (success) {
-                    _isRegistered.value = true // Simpan status registrasi ke state
+                    _isRegistered.value = true
                 }
 
                 else {
-                    _errorMessage.value = message // Simpan message error ke state
+                    _errorMessage.value = message
                 }
             }
         }
@@ -90,12 +90,12 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
                 email.value, password.value
             ) { success, message ->
                 if (success) {
-                    _isLoggedIn.value = true // Simpan status login ke state
+                    _isLoggedIn.value = true
                     _role.value = "user"
                 }
 
                 else {
-                    _errorMessage.value = message // Simpan message error ke state
+                    _errorMessage.value = message
                 }
             }
         }
@@ -107,12 +107,12 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
                 email.value, password.value, adminId.value
             ) { success, message ->
                 if (success) {
-                    _isLoggedIn.value = true // Simpan status login ke state
+                    _isLoggedIn.value = true
                     _role.value = "admin"
                 }
 
                 else {
-                    _errorMessage.value = message // Simpan message error ke state
+                    _errorMessage.value = message
                 }
             }
         }
@@ -122,9 +122,9 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
         viewModelScope.launch {
             authUseCase.checkPassword(password.value) { success ->
                 if (success) {
-                    onResult(true, "") // Kirim hasil sukses dengan pesan kosong
+                    onResult(true, "")
                 } else {
-                    onResult(false, "") // Kirim hasil gagal dengan pesan error
+                    onResult(false, "")
                 }
             }
         }
@@ -132,7 +132,7 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
 
     fun logout() {
         viewModelScope.launch {
-            authUseCase.logoutUser() // Panggil fungsi logoutUser dari AuthUseCase
+            authUseCase.logoutUser()
             _isLoggedIn.value = false
             _role.value = null
         }
@@ -144,11 +144,11 @@ class AuthViewModel(private val authUseCase: AuthUseCase) : ViewModel() {
                 email.value
             ) { success, message ->
                 if (success) {
-                    _isResetPassword.value = true // Simpan status reset password ke state
+                    _isResetPassword.value = true
                 }
 
                 else {
-                    _errorMessage.value = message // Simpan message error ke state
+                    _errorMessage.value = message
                 }
             }
         }

@@ -30,7 +30,7 @@ class AuthUseCase(private val authRepository: AuthRepository) {
             return
         }
 
-        authRepository.registerUser(name, email, password, phoneNumber, gender, onResult) // Panggil fungsi registerUser dari AuthRepository
+        authRepository.registerUser(name, email, password, phoneNumber, gender, onResult)
     }
 
 
@@ -42,7 +42,7 @@ class AuthUseCase(private val authRepository: AuthRepository) {
             return
         }
 
-        authRepository.loginUser(email, password, onResult) // Panggil fungsi loginUser dari AuthRepository
+        authRepository.loginUser(email, password, onResult)
     }
 
 
@@ -54,20 +54,20 @@ class AuthUseCase(private val authRepository: AuthRepository) {
             return
         }
 
-        authRepository.loginAdmin(email, password, adminId, onResult) // Panggil fungsi loginAdmin dari AuthRepository
+        authRepository.loginAdmin(email, password, adminId, onResult)
     }
 
     fun checkPassword(password: String, onResult: (Boolean) -> Unit) {
-        authRepository.checkPassword(password, onResult) // Panggil fungsi checkPassword dari AuthRepository
+        authRepository.checkPassword(password, onResult)
     }
 
     fun logoutUser() {
-        authRepository.logoutUser() // Panggil fungsi logoutUser dari AuthRepository
+        authRepository.logoutUser()
     }
 
 
     fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
-        authRepository.resetPassword(email, onResult) // Panggil fungsi resetPassword dari AuthRepository
+        authRepository.resetPassword(email, onResult)
     }
 
 

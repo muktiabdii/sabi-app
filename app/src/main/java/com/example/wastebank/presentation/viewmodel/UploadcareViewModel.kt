@@ -22,7 +22,7 @@ class UploadcareViewModel(private val uploadcareUseCase: UploadcareUseCase) : Vi
         viewModelScope.launch {
             try {
                 val uploadedUrl = uploadcareUseCase.uploadImage(fileUri).toString()
-                _uploadResult.value = uploadedUrl // Set state
+                _uploadResult.value = uploadedUrl
 
             } catch (e: Exception) {
                 _uploadResult.value = null

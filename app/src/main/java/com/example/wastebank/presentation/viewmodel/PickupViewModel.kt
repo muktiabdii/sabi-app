@@ -49,7 +49,7 @@ class PickupViewModel(private val pickupUseCase: PickupUseCase) : ViewModel() {
             Log.d("proofUrl", proofUrl.toString())
 
             val pickupData = pickupRequest.copy(
-                image = proofUrl ?: "" // Tambahkan gambar ke data pickup
+                image = proofUrl ?: ""
             )
 
             Log.d("pickupData", pickupData.toString())
