@@ -45,10 +45,10 @@ This app follows the Clean Architecture principles:
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="./assets/prototype-sabi-github.png" width="400" style="border-radius: 12px;">
+  <img src="./assets/prototype-sabi-github.png" width="700" style="border-radius: 12px;">
 </p>
 <p align="center">
-  <img src="./assets/prototype-sabi-github-2.png" width="400" style="border-radius: 12px;">
+  <img src="./assets/prototype-sabi-github-2.png" width="700" style="border-radius: 12px;">
 </p>
 
 
