@@ -35,7 +35,7 @@ fun TextFieldNominal(
         // prefix rp
         Box(
             modifier = Modifier
-                .background(BrownMain, RoundedCornerShape(10.dp))
+                .background(BrownMain, RoundedCornerShape(12.dp))
                 .fillMaxHeight()
                 .padding(horizontal = 14.dp),
             contentAlignment = Alignment.Center

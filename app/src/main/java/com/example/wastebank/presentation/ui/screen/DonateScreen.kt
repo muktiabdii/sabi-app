@@ -155,7 +155,7 @@ fun DonateScreen(navController: NavController, donationViewModel: DonationViewMo
                         contentPadding = PaddingValues(
                             start = 20.dp,
                             end = 20.dp,
-                            bottom = 80.dp
+                            bottom = 85.dp
                         )
                     ) {
                         item {

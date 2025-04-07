@@ -38,6 +38,8 @@ import com.example.wastebank.presentation.screen.InputTrashScreen
 import com.example.wastebank.presentation.screen.ManageRequestScreen
 import com.example.wastebank.presentation.ui.component.BottomNavigation
 import com.example.wastebank.presentation.ui.screen.*
+import com.example.wastebank.presentation.ui.screen.article.ArticleScreen
+import com.example.wastebank.presentation.ui.screen.onboarding.OnboardingScreen
 import com.example.wastebank.presentation.ui.theme.WasteBankTheme
 import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.DonationViewModel
@@ -112,6 +114,12 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable("splash_screen") {
                             SplashScreen(navController)
+                        }
+                        composable("onboarding_screen") {
+                            OnboardingScreen(navController)
+                        }
+                        composable("login_role_screen") {
+                            LoginRoleScreen(navController)
                         }
                         composable("admin_login_screen") {
                             AdminLoginScreen(navController, authViewModel)

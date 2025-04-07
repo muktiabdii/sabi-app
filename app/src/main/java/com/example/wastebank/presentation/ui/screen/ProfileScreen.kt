@@ -33,7 +33,11 @@ import com.example.wastebank.presentation.viewmodel.AuthViewModel
 import com.example.wastebank.presentation.viewmodel.UserProfileViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfileViewModel, authViewModel: AuthViewModel) {
+fun ProfileScreen(
+    navController: NavController,
+    userProfileViewModel: UserProfileViewModel,
+    authViewModel: AuthViewModel
+) {
     val userProfile by userProfileViewModel.userProfile.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -121,7 +125,7 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
             text = "Hapus Akun",
             onClick = {
                 userProfileViewModel.deleteAccount()
-                navController.navigate("splash_screen")
+                navController.navigate("login_role_screen")
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -133,7 +137,7 @@ fun ProfileScreen(navController: NavController, userProfileViewModel: UserProfil
             text = "Keluar",
             onClick = {
                 authViewModel.logout()
-                navController.navigate("splash_screen")
+                navController.navigate("login_role_screen")
             }
         )
     }

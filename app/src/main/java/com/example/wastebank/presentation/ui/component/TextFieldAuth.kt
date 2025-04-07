@@ -33,8 +33,8 @@ fun TextFieldAuth(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(34.dp)
-            .border(1.dp, BrownMain, RoundedCornerShape(8.dp))
+            .height(36.dp)
+            .border(1.dp, BrownMain, RoundedCornerShape(12.dp))
             .padding(horizontal = 10.dp),
     ) {
         BasicTextField(

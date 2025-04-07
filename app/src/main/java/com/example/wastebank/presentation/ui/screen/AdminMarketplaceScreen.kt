@@ -66,9 +66,7 @@ fun AdminMarketplaceScreen(navController: NavController, productViewModel: Produ
         productViewModel.getCartItems()
     }
 
-    Scaffold(
-        bottomBar = { BottomNavigation(navController, authViewModel) }
-    ) { paddingValues ->
+    Scaffold { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -144,6 +142,7 @@ fun AdminMarketplaceScreen(navController: NavController, productViewModel: Produ
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(50.dp))
             }
         }
     }

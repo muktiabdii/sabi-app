@@ -29,8 +29,8 @@ fun TextNominal(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(34.dp)
-            .border(1.dp, BrownMain, RoundedCornerShape(8.dp)),
+            .height(36.dp)
+            .border(1.dp, BrownMain, RoundedCornerShape(12.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(

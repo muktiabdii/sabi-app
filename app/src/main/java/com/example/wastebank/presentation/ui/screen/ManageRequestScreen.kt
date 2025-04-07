@@ -32,7 +32,7 @@ fun ManageRequestScreen(navController: NavController) {
         item {
             Row(
                 modifier = Modifier
-                    .padding(start = 24.dp, end = 24.dp, top = 36.dp, bottom = 12.dp)
+                    .padding(start = 24.dp, end = 24.dp, top = 45.dp, bottom = 12.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically

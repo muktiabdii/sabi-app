@@ -29,7 +29,7 @@ fun BtmSheetAddProduct(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(750.dp)
+            .height(830.dp)
             .background(Color.White, RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
             .padding(24.dp)
     ) {
@@ -87,7 +87,7 @@ fun BtmSheetAddProduct(
             Text(text = "Foto Produk", style = Typography.headlineSmall)
             Spacer(modifier = Modifier.height(6.dp))
             CardUpload(uploadcareViewModel)
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Deskripsi Produk
             Text(text = "Deskripsi Produk", style = Typography.headlineSmall)

@@ -33,7 +33,7 @@ fun SearchBarMarket(
         modifier = modifier
             .border(width = 1.dp, color = BrownMain, shape = RoundedCornerShape(20.dp))
             .fillMaxWidth()
-            .height(37.dp)
+            .height(40.dp)
             .background(color = Color.White, shape = RoundedCornerShape(20.dp))
             .padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically

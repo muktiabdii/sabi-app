@@ -80,11 +80,11 @@ fun CardRequest(
                 Box(
                     modifier = Modifier
                         .background(statusColor, shape = RoundedCornerShape(20.dp))
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
                 ) {
                     Text(
                         text = status,
-                        style = Typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                        style = Typography.headlineSmall,
                         color = Color.Black
                     )
                 }
@@ -98,12 +98,12 @@ fun CardRequest(
                     shape = RoundedCornerShape(20.dp),
                     contentPadding = PaddingValues(0.dp),
                     modifier = Modifier
-                        .height(30.dp)
-                        .width(70.dp)
+                        .height(32.dp)
+                        .width(75.dp)
                 ) {
                     Text(
                         text = "Detail",
-                        style = Typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                        style = Typography.headlineSmall,
                         color = Color.White
                     )
                 }
