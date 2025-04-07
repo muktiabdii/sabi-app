@@ -44,8 +44,12 @@ This app follows the Clean Architecture principles:
 
 ## 📸 Screenshots
 
-![Sabi - Waste App](./assets/prototype-sabi-github.png)
-![Sabi - Waste App](./assets/prototype-sabi-github-2.png)
+<p align="center">
+  <img src="./assets/protype-sabi-github.png" width="400" style="border-radius: 12px;">
+</p>
+<p align="center">
+  <img src="./assets/protype-sabi-github-2.png" width="400" style="border-radius: 12px;">
+</p>
 
 
 ## 👥 Group 5 Internship Raion 2025 
