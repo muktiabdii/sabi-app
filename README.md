@@ -1,7 +1,7 @@
 ![Sabi - Waste App](./assets/cover-sabi-github.png)
-<p align="center">
-  <h2>SABI (Sampah Bisa Jadi Berarti) - Mobile App (Jetpack Compose) 🌱</h2><br>
-</p>
+<h2 align="center">
+  <b>SABI (Sampah Bisa Jadi Berarti) - Mobile App (Jetpack Compose) 🌱</b><br>
+</h2>
 
 As a team passionate about sustainable tech solutions, we developed this **Mobile App for Smart Waste Management** to empower individuals in turning everyday waste into meaningful contributions. Through this platform, users can donate waste, collect reward points, and exchange them into money, donate to orphanages, or support local UMKM businesses.
 
@@ -45,7 +45,7 @@ This app follows the Clean Architecture principles:
 ## 📸 Screenshots
 
 ![Sabi - Waste App](./assets/prototype-sabi-github.png)
-![Sabi - Waste App](./assets/prototype-sabi-github 2.png)
+![Sabi - Waste App](./assets/prototype-sabi-github-2.png)
 
 
 ## 👥 Group 5 Internship Raion 2025 
