@@ -53,7 +53,11 @@ This app follows the Clean Architecture principles:
 </p>
 
 
-## 👥 Programmer 
+## 👥 Group 5 Internship Raion 2025 
 
-- [@rhesa](https://www.linkedin.com/in/rhesa-tsaqif-adyatma-b79315289/) — Frontend
-- [@abdi](https://www.linkedin.com/in/muktiabdii/) — Backend
+- [@Toby] (https://www.linkedin.com/in/adidharmadewabrata/) — Product Manager
+- [@Fajar] (https://www.linkedin.com/in/fajar-okta-ramadan-262866281/) — Product Manager
+- [@Syifani] (https://www.linkedin.com/in/syifani-adillah-salsabila-a69140288/) — UI / UX
+- [@Kalingga] (https://www.linkedin.com/in/kalingga-syafa/) — UI / UX
+- [@Rhesa](https://www.linkedin.com/in/rhesa-tsaqif-adyatma-b79315289/) — Frontend
+- [@Abdi](https://www.linkedin.com/in/muktiabdii/) — Backend
