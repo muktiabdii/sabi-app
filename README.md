@@ -53,6 +53,13 @@ This app follows the Clean Architecture principles:
 </p>
 
 
+## 📲 Download APK
+
+Curious to try the app?
+You can download and explore the latest version of SABI here:
+- 📲 [SABI.app](https://drive.google.com/file/d/1Nw4bw7BA_SBrogIqRZGnmOzX2mAgfRQF/view?usp=drive_link)
+
+
 ## 👥 Group 5 Internship Raion 2025 
 
 - [@Toby](https://www.linkedin.com/in/adidharmadewabrata/) — Product Manager
