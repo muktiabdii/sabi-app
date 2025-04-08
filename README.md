@@ -18,7 +18,8 @@ The following features were implemented as part of the app's initial MVP:
 
 - ♻️ Waste donation system with point rewards
 - 💰 Point exchange to money (manual request)
-- 🛍️ Marketplace for UMKM products using points and money (manual request)
+- 🛍️ Marketplace for UMKM products using points or money (manual request)
+- ❤️ Donate to orphanages using points or money (manual request)
 - 🗺️ Daily waste pickup route (displayed as a visual map)
 - 🚚 Request waste pickup for donations over 5kg
 - 📚 Educational resources via external links
