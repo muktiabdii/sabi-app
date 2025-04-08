@@ -52,6 +52,7 @@ This app follows the Clean Architecture principles:
 </p>
 
 
-## 👥 Group 5 Internship Raion 2025 
+## 👥 Programmer 
 
-abc
+- [@rhesa](https://www.linkedin.com/in/rhesa-tsaqif-adyatma-b79315289/) — Frontend
+- [@abdi](https://www.linkedin.com/in/muktiabdii/) — Backend
